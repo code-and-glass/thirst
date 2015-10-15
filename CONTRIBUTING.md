@@ -2,14 +2,13 @@
 
 ##General Workflow
 
-#If you are just beginning#
+###If you are just beginning#
 
 1. Clone the main repository to your local machine
 
+###If you already have the repository on your machine
 
-#If you already have the repository on your machine
-
-1. While working and before big merges use the command:
+1.While working and before big merges use the command:
 
     git pull --rebase origin staging 
 
@@ -25,15 +24,15 @@
 
     git pull --rebase origin staging
 
-5.You can then push your changes to your branch on the remote repository:
+6.You can then push your changes to your branch on the remote repository:
 
     git push origin branchname
 
 (Be careful to not push to master here)
 
-6. The scrum master or another member of the team will review your code and handle the merging
+7. The scrum master or another member of the team will review your code and handle the merging
 
-7. This is known as the gitflow workflow https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow 
+8. This is known as the gitflow workflow https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow 
 Ask questions if anything here is confusing
 
 **Make sure the pull requests are to staging and not master**
