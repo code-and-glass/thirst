@@ -1,48 +1,72 @@
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
-/**
- * Module dependencies.
- */
-
-var express = require('express')
-  , routes = require('./routes')
-  , http = require('http')
-  , path = require('path');
+var routes = require('./routes/index');
+var users = require('./routes/users');
 
 var app = express();
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(app.router);
+var neo4j = require('neo4j');
+var db = new neo4j.GraphDatabase('http://localhost:7474');
 
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+var node = db.createNode({hello: 'world'});     // instantaneous, but...
+node.save(function (err, node) {    // ...this is what actually persists.
+    if (err) {
+        console.error('Error saving new node to database:', err);
+    } else {
+        console.log('Node saved to database with id:', node.id);
+    }
+});
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', routes);
+app.use('/users', users);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
 }
 
-app.locals({
-    title: 'Node-Neo4j Template'    // default title
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
 });
 
-// Routes
 
-app.get('/', routes.site.index);
-
-app.get('/users', routes.users.list);
-app.post('/users', routes.users.create);
-app.get('/users/:username', routes.users.show);
-app.post('/users/:username', routes.users.edit);
-app.del('/users/:username', routes.users.del);
-
-app.post('/users/:username/follow', routes.users.follow);
-app.post('/users/:username/unfollow', routes.users.unfollow);
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening at: http://localhost:%d/', app.get('port'));
-});
+module.exports = app;
