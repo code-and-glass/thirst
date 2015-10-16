@@ -15,5 +15,10 @@
     "neo4j": "^1.1.1",
     "seraph": "^0.13.3",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-watch": "^0.6.1"
   }
 }
