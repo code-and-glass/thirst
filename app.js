@@ -13,10 +13,24 @@ var app = express();
 /********************* start neo4j ***************************/
 var config = require('./config.js');
 
-var db = require("seraph")({server: "http://localhost:7474",
+var db;
+
+if(process.env.GRAPHENEDB_URL){
+
+  var url = require('url').parse(process.env.GRAPHENEDB_URL)
+
+  db = require("seraph")({
+    server: url.protocol + '//' + url.host,
+    user: url.auth.split(':')[0],
+    pass: url.auth.split(':')[1]
+  });
+} else{
+  db = require("seraph")({server: "http://localhost:7474",
                             user: config.neo4jAuth.user,
                             pass: config.neo4jAuth.password //your password here
-                          });
+                          });  
+}
+
 
 db.save({ name: "Test-Man", age: 40 }, function(err, node) {
   if (err) throw err;
