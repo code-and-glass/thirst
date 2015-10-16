@@ -4,13 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var config = require('config.js');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
 
 /********************* start neo4j ***************************/
+var config = require('./config.js');
 
 var db = require("seraph")({server: "http://localhost:7474",
                             user: config.neo4jAuth.user,
