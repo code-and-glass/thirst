@@ -15,6 +15,7 @@ var config = require('./config.js');
 
 var db;
 
+//Checks if deployed or local
 if(process.env.GRAPHENEDB_URL){
 
   var url = require('url').parse(process.env.GRAPHENEDB_URL)
