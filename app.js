@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var config = require('config.js');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -13,8 +13,8 @@ var app = express();
 /********************* start neo4j ***************************/
 
 var db = require("seraph")({server: "http://localhost:7474",
-                            user: "neo4j",
-                            pass: "" //your password here
+                            user: config.neo4jAuth.user,
+                            pass: config.neo4jAuth.password //your password here
                           });
 
 db.save({ name: "Test-Man", age: 40 }, function(err, node) {
