@@ -10,17 +10,40 @@ var users = require('./routes/users');
 
 var app = express();
 
-var neo4j = require('neo4j');
-var db = new neo4j.GraphDatabase('http://localhost:7474');
+/********************* start neo4j ***************************/
+var db;
 
-var node = db.createNode({hello: 'world'});     // instantaneous, but...
-node.save(function (err, node) {    // ...this is what actually persists.
-    if (err) {
-        console.error('Error saving new node to database:', err);
-    } else {
-        console.log('Node saved to database with id:', node.id);
-    }
+//Checks if deployed or local
+if(process.env.GRAPHENEDB_URL){
+
+  var url = require('url').parse(process.env.GRAPHENEDB_URL)
+
+  db = require("seraph")({
+    server: url.protocol + '//' + url.host,
+    user: url.auth.split(':')[0],
+    pass: url.auth.split(':')[1]
+  });
+} else {
+
+  var config = require('./config.js');
+  db = require("seraph")({server: "http://localhost:7474",
+                            user: config.neo4jAuth.user,
+                            pass: config.neo4jAuth.password //your password here
+                          });  
+}
+
+
+db.save({ name: "Test-Man", age: 40 }, function(err, node) {
+  if (err) throw err;
+  console.log("Test-Man inserted.");
+
+  db.delete(node, function(err) {
+    if (err) throw err;
+    console.log("Test-Man away!");
+  });
 });
+
+/************************* end neo4j***********************/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
