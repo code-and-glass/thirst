@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     },
     shell: {
       prodServer: {
-        command: 'git push heroku master',
+        command: 'git push heroku staging:master',
             options: {
             stdout: true,
             stderr: true,
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
   //Need to add testing framework
   grunt.registerTask('test', ['jshint'] );
 
-  //add more build tasks
+  //add more build tasks (concat, uglify, cssmin)
   grunt.registerTask('build', []);
 
   grunt.registerTask('server-dev', function (target) {
@@ -67,6 +67,6 @@ module.exports = function(grunt) {
       }
     });
 
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', ['test', 'build', 'upload']);
 
 };
