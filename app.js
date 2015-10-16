@@ -11,8 +11,6 @@ var users = require('./routes/users');
 var app = express();
 
 /********************* start neo4j ***************************/
-var config = require('./config.js');
-
 var db;
 
 //Checks if deployed or local
@@ -25,7 +23,9 @@ if(process.env.GRAPHENEDB_URL){
     user: url.auth.split(':')[0],
     pass: url.auth.split(':')[1]
   });
-} else{
+} else {
+
+  var config = require('./config.js');
   db = require("seraph")({server: "http://localhost:7474",
                             user: config.neo4jAuth.user,
                             pass: config.neo4jAuth.password //your password here
