@@ -16,7 +16,7 @@ var db;
 //Checks if deployed or local
 if(process.env.GRAPHENEDB_URL){
 
-  var url = require('url').parse(process.env.GRAPHENEDB_URL)
+  var url = require('url').parse(process.env.GRAPHENEDB_URL);
 
   db = require("seraph")({
     server: url.protocol + '//' + url.host,
