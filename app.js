@@ -12,6 +12,7 @@ var users = require('./routes/users');
 
 var app = express();
 
+
 /********************* start neo4j ***************************/
 var db;
 
@@ -33,7 +34,6 @@ if(process.env.GRAPHENEDB_URL){
                             pass: config.neo4jAuth.password //your password here
                           });  
 }
-
 
 // db.save({ name: "Artem"}, function(err, node) {
 //   if (err) throw err;
@@ -79,7 +79,6 @@ var listToMatrix= function(list, elementsPerSubArray) {
   return matrix;
 };
 
-
 db.batch(function(txn) {
 
 var user1 = txn.save({name: 'Artem'});
@@ -123,11 +122,6 @@ function(err, results) {
 });
 
 
-
-
-
-
-
 // MIGRATION
 // var neo4jUrl = ("http://localhost:7474") + "/db/data/transaction/commit";
 
@@ -151,6 +145,119 @@ function(err, results) {
 // });
 
 /************************* end neo4j***********************/
+
+// ***************** absolutAuth Req Used to retrieve data and save to db  ****************/
+//
+// uncomment only to request data from absolut api
+//
+// can only get 25 at a time, the json object has a "next" property that records where
+// it left off, defaults to 25
+// 
+// var request = require('request');
+// var fs = require('fs');
+// var absolutEndPoint = 'https://addb.absolutdrinks.com/drinks/?apiKey=0f80b9b651e546ceb4fbe3ef9360c14a&pageSize=100';
+
+// request(absolutEndPoint, function (error, response, json) {
+//   console.log(JSON.stringify(json));
+//   fs.writeFile('./data.json', json, function(err) {
+//     if(err) {
+//       console.log(err);
+//     } else {
+//       console.log("JSON saved to " + './data.json');
+//     }
+//   }); 
+// });
+// ** use http://jsonprettyprint.com/
+// ** to prety print the json file and export to add to neo4j
+// ** I copied the pretty print into allDrinksTo25.js
+/******************** end absolutAuth ********************/
+
+/******************** start adding data to neo4j ********************/
+/* <------------------ uncomment to save drink data (without conflict from above)
+//config.js contains user/password for neo4j
+var config = require('./config.js'); 
+// allDrinkTo25 contains stored "prettyified" json responses from api request
+var data = require('./allDrinksTo25.js'); 
+// authenticate neo4j
+var db = require("seraph")({server: "http://localhost:7474",
+                            user: config.neo4jAuth.user,
+                            pass: config.neo4jAuth.password //your password here
+                          });
+//this function connects nodes to ingredients and properties
+function createRelationship(nodeId, obj, rel) {
+  var key;
+  var nodeID;
+  for (var prop in obj) {
+    key = prop;
+  }
+  db.save({
+    id: obj[key],
+    key: obj[key]
+  }, function (err, node) {
+    if (err) console.log("error inside doesExist", err);
+    db.relate(nodeId, rel, node.id, function (err, node) {
+      if (err) console.log("error inside relate", err);
+      console.log("relate saved", node);
+    });
+  });
+}
+// this iterates over each drink
+for (var i = 0; i < data.result.length; i++) {
+  var nodeid;
+  var color = data.result[i].color;
+  var isAlcoholic = data.result[i].isAlcoholic;
+  var isCarbonated = data.result[i].isCarbonated;
+  var isHot = data.result[i].isHot;
+  var ingredients = data.result[i].ingredients;
+  var tastes = data.result[i].tastes;
+  //each drink has it's own node (id)
+  db.save({
+    id: data.result[i].id,
+    name: data.result[i].name
+  }, function (err, node) {
+    if (err) console.log("err inside db.save",err);
+    nodeid = node.id;
+    console.log("node saved", node);
+    // build relationships between drink nodes and general properties
+    createRelationship(nodeid, {color: color}, "hasColor");
+    if (isAlcoholic) {
+      createRelationship(nodeid, {isAlcoholic: isAlcoholic}, "hasAlcohol");
+    }
+    if (isCarbonated) {
+      createRelationship(nodeid, {isCarbonated: isCarbonated}, "hasCarbonation");
+    }
+    if (isHot) {
+      createRelationship(nodeid, {isHot: isHot}, "hot");
+    }
+    // iterates over array of taste objects
+    for (var n = 0; n < tastes.length; n++) {
+      var  tasteid;
+      db.save({
+        id: tastes[n].id,
+        text: tastes[n].textPlain
+      }, function (err, node) {
+        if (err) throw err;
+        tasteid = node.id;
+        createRelationship(nodeid, tasteid, "hasIngredient");
+      });
+    }
+    // iterates over array of ingredient objects
+    for (var j = 0; j < ingredients.length; j++) {
+      var ingredientid;
+      db.save({
+        id: ingredients[j].id,
+        type: ingredients[j].type,
+        text: ingredients[j].textPlain,
+      }, function (err, node) {
+        if (err) throw err;
+        ingredientid = node.id;
+        createRelationship(nodeid, ingredientid, "hasIngredient");
+      });
+    }
+  });
+}
+*///<----------------------- uncomment here
+/******************** end seraph/neo4j ********************/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
