@@ -4,6 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var request = require("request");
+var assert = require('assert');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -18,15 +20,120 @@ var db = require("seraph")({server: "http://localhost:7474",
                             pass: config.neo4jAuth.password //your password here
                           });
 
-db.save({ name: "Test-Man", age: 40 }, function(err, node) {
-  if (err) throw err;
-  console.log("Test-Man inserted.");
+// db.save({ name: "Artem"}, function(err, node) {
+//   if (err) throw err;
+//   console.log("new user Artem added to db");
 
-  db.delete(node, function(err) {
-    if (err) throw err;
-    console.log("Test-Man away!");
+//   // db.delete(node, function(err) {
+//   //   if (err) throw err;
+//   //   console.log("Test-Man away!");
+//   // });
+// });
+var array = [];
+var resultMatrix;
+var read = function(err, relationship) {
+ db.rel.read(relationship.id, function(err, readRelationship) {
+    var rating = readRelationship.properties.rating;
+    console.log(rating);
+    array.push(rating);
+    console.log(array);
   });
+};
+
+var write = function(err, relationship) {
+ db.rel.read(relationship.id, function(err, readRelationship) {
+    var rating = readRelationship.properties.rating;
+    console.log(rating);
+    array.push(rating);
+    console.log(array);
+    resultMatrix = listToMatrix(array, 4);
+    console.log(resultMatrix);
+
+  });
+};
+
+var listToMatrix= function(list, elementsPerSubArray) {
+  var matrix = [], i, k;
+  for (i = 0, k = -1; i < list.length; i++) {
+    if (i % elementsPerSubArray === 0) {
+      k++;
+      matrix[k] = [];
+    }
+    matrix[k].push(list[i]);
+  }
+  return matrix;
+};
+
+
+db.batch(function(txn) {
+
+var user1 = txn.save({name: 'Artem'});
+var user2 = txn.save({name: 'Ben'});
+var user3 = txn.save({name: 'Victoria'});
+var user4 = txn.save({name: 'Igor'});
+
+var likedDrinks = txn.save([
+  { drinkName: 'maple syrup'},
+  { drinkName: 'blood of my enemies'},
+  { drinkName: 'Dihydrogen Monoxide'},
+  { drinkName: 'liquid cocaine'}
+]);
+
+txn.relate(user1, 'likes', likedDrinks[1], {rating: '5'}, read);
+txn.relate(user1, 'likes', likedDrinks[2], {rating: '1'}, read);
+txn.relate(user1, 'likes', likedDrinks[0], {rating: '3'}, read);
+txn.relate(user1, 'likes', likedDrinks[3], {rating: '3'}, read);
+
+txn.relate(user2, 'likes', likedDrinks[1], {rating: '2'}, read);
+txn.relate(user2, 'likes', likedDrinks[2], {rating: '5'}, read);
+txn.relate(user2, 'likes', likedDrinks[0], {rating: '3'}, read);
+txn.relate(user2, 'likes', likedDrinks[3], {rating: '4'}, read);
+
+txn.relate(user3, 'likes', likedDrinks[1], {rating: '5'}, read);
+txn.relate(user3, 'likes', likedDrinks[2], {rating: '4'}, read);
+txn.relate(user3, 'likes', likedDrinks[0], {rating: '1'}, read);
+txn.relate(user3, 'likes', likedDrinks[3], {rating: '2'}, read);
+
+txn.relate(user4, 'likes', likedDrinks[1], {rating: '3'}, read);
+txn.relate(user4, 'likes', likedDrinks[2], {rating: '3'}, read);
+txn.relate(user4, 'likes', likedDrinks[0], {rating: '3'}, read);
+txn.relate(user4, 'likes', likedDrinks[3], {rating: '1'}, write);
+},
+function(err, results) {
+  console.log(results);
+  console.log(array);
+  console.log('user drink likes committed');
+  console.log('matrix');
+  console.log(listToMatrix(array, 4));
 });
+
+
+
+
+
+
+
+// MIGRATION
+// var neo4jUrl = ("http://localhost:7474") + "/db/data/transaction/commit";
+
+// function cypher(query,params,cb) {
+//   request.post({uri:neo4jUrl,
+//           json:{statements:[{statement:query,parameters:params}]}},
+//     function(err,res) { 
+//       console.log('error in post');
+//       cb(err,res.body);
+//   });
+// }
+
+// var query="WITH {json} AS document UNWIND document.categories AS category MERGE (:CrimeCategory {name: category.name}) "; //to be changed
+
+// var apiUrl = "https://addb.absolutdrinks.com/drinks/?apiKey=0f80b9b651e546ceb4fbe3ef9360c14a";
+
+// request.get({url:apiUrl,json:true,gzip:true}, function(err,res,json) {
+//   cypher(query,{json:json},function(err, result) { 
+//     console.log('error in get');
+//     console.log(err, JSON.stringify(result));});
+// });
 
 /************************* end neo4j***********************/
 
