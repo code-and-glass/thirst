@@ -1,10 +1,18 @@
 language: node_js
 node_js:
-  - "4.1"
-  - "4.0"
-  - "0.12"
-  - "0.11"
-  - "0.10"
-  - "0.8"
-  - "0.6"
-  - "iojs"
+- '4.1'
+- '4.0'
+- '0.12'
+- '0.11'
+- '0.10'
+# - '0.8' These 2 versions are having trouble with npm install of ne4j
+# - '0.6'
+- iojs
+deploy:
+  provider: heroku
+  api_key:
+    secure: u71dg7Gkmc4895j/JeYU0fHvUGTg/EaUO2QpNhvzOrhywXbc0GimaHMYDadUYyRPnDCHUCqXr2HwNae3iYdDkFQGVe7BMHRDyk0Owtg9kB3U3cFsjx7QJAYCDXyUBQEw2xiYfvX272FOw1hxCzrG9P/78wOIiqebTvdjwPxlHBctBLjORjyT+KPrWFDKSx3rVpmbuQ8wQRhCUQxsgHqIc3zD0dhe+JHtQj5c9L/SrTXdivvKhpdEtnQ3AgPkDWSiqvAebiD3Ih6BH+prIgpW0r0T4dprlUw9w8lzCsIQZmRtIkJdj3MJfgSlk8zmXYzdGplVqWJ3eEvJFszkwvSytRSaJT7AqKf2a/hv7jDhWMaygm9Fj7+6o4NEXBL2HeQHtz/a2KdYm2ENktRLB6Qhxtl+r8GqBxpvxdNIcICLuMQBiHmaF0AhXozLTSiOQVVUtNh4X9shYX6LT11S+i/lLtVhOsE0yggP1CkUb6qeAFUL1VAvXL+I+vflRjI7H8yRhD5YpQpiX78ZB6JUQnpzYjI/cc3M58AqjJDUJZQSuO4M2WPo3qfOcQ8EZm8d5kzHBMWI4Vtmy1FzO7s5PfGQAVEa6YXMxnYxksbvhhJxT0Q0bTthpkIXdLM6ESw0eGwxnzigHGlmVsZXKt2uX9/ZhYumbvtzDVKSFM5tfH2TAq8=
+  app: thirst
+  on:
+    repo: code-and-glass/thirst
+    branch: staging
