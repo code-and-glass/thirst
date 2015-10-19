@@ -27,6 +27,9 @@ module.exports = function(grunt) {
       dev: {
         // script: 'server.js'
       }
+    },
+    cssmin: {
+
     }
   });
 
@@ -34,6 +37,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 
   //Need to add testing framework
@@ -55,9 +59,6 @@ module.exports = function(grunt) {
      grunt.task.run([ 'watch' ]);
    });
 
-
-
-
   grunt.registerTask('upload', function(n) {
       if(grunt.option('prod')) {
 
@@ -70,3 +71,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['test', 'build', 'upload']);
 
 };
+
+
