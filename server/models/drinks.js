@@ -2,13 +2,22 @@ var Drink = function(name) { //additional parameters and object properties as ne
   //create drink node
   return {
     drinkName: name,
+    //etc
   };
 };
 
 module.exports = {
 
-  saveDrink:function(drinkName) {
-    //save drink to db
+  saveDrink:function(drink) {
+    db.save(drink, function(err, drink){
+      db.label(drink, 'Drink', function(err) {
+        if (err) {
+          throw err;
+        } else {
+        console.log(drink.drinkName + ' saved to database and labeled.');
+        }
+      });
+    });
   },
   
   getDrink: function(drinkName) {
@@ -26,14 +35,21 @@ module.exports = {
   },
 
   getAllDrinks: function() {
-    //return all drinks in db
+    //return array of all drinks in database.
+    return db.nodesWithLabel('Drink', function(err, results) {
+      return results;
+    });
   },
 
-  getRatedUsers: function(drinkName) {
-    //return users who rated this drink, in order of rating
+  getRatedUsers: function(drink) {
+    //return users who rated this drink
+    //drink is a node
+    return db.relationship(drink, 'in', 'likes', function(err, relationships) {
+      if (err) {
+        throw err;
+      } else {
+        return relationships;
+      }
+    });
   }
-
-
-
-  
 };
