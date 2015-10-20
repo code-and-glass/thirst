@@ -1,6 +1,7 @@
 var recommend = require('./recommender.js');
 
 var db;
+var Users = require('./models/user.js');
 
 //Checks if deployed or local
 if (process.env.GRAPHENEDB_URL){
@@ -65,12 +66,19 @@ var listToMatrix = function(list, elementsPerSubArray) {
   return matrix;
 };
 
-
+  var artem ={userName: 'Artem'};
+  db.save({name: 'Artem'}, function(err, user) {
+    if (err) {throw err;}
+    console.log('Artem saved to neo4j with db.save');
+  });
+  console.log('--------------');
+  Users.saveUser(artem);
+  console.log('--------------');
 
   db.batch(function(txn) {
     console.log('batch start');
   
-  var user1 = txn.save({name: 'Artem'});
+  var user1 = txn.save({name: 'Am'});
   var user2 = txn.save({name: 'Ben'});
   var user3 = txn.save({name: 'Victoria'});
   var user4 = txn.save({name: 'Igor'});
@@ -118,12 +126,12 @@ var listToMatrix = function(list, elementsPerSubArray) {
     });
     var resultsMatrix = listToMatrix(array, 4);
     results = resultsMatrix;
-    console.log('batching committed');
-    console.log(results);
+    // console.log('batching committed');
+    // console.log(results);
     var rowLabels = ['Artem', 'Ben', 'Victoria', 'Igor'];
     var colLabels = ['blood of my enemies', 'Dihydrogen Monoxide', 'maple syrup', 'liquid cocaine'];
     var model = recommend.model(results, rowLabels, colLabels);
-    console.log(model.rankAllItems('Victoria'));
+    // console.log(model.rankAllItems('Victoria'));
     return results;
   
 });

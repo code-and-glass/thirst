@@ -1,13 +1,6 @@
 
 var Recommender = require('likely');
 
-// var inputMatrix = [ [ 5, 5, 5, 5 ], //
-//                     [ 5, 5, 5, 5 ],
-//                     [ 5, 5, 5, 5 ]
-//                   ];
-
-// var rowLabels = ['John', 'Sue', 'Joe', 'suss']; //users
-// var colLabels = ['vodka', 'water', 'absinthe', 'maple syrup']; //items
 
 module.exports.model = function(matrix, rowLabels, colLabels) {
    return Recommender.buildModel(matrix, rowLabels, colLabels);

@@ -1,4 +1,23 @@
-var db = require('seraph');
+var db;
+
+//Checks if deployed or local
+if(process.env.GRAPHENEDB_URL){
+
+  var url = require('url').parse(process.env.GRAPHENEDB_URL);
+
+  db = require("seraph")({
+    server: url.protocol + '//' + url.host,
+    user: url.auth.split(':')[0],
+    pass: url.auth.split(':')[1]
+  });
+} else {
+  var config = require('../../config.js');
+  db = require("seraph")({
+    server: "http://localhost:7474",
+    user: config.neo4jAuth.user,
+    pass: config.neo4jAuth.password //your password here
+  });  
+}
 
 //NEEDS TESTS
 
@@ -15,27 +34,42 @@ var User = function(name, password, email) {
 
 module.exports = {
   saveUser: function(user) {
+    //var db = require('seraph');
     //save user node to db
-    db.save(user, function(err, user){
-      if (err) {
-        throw err;
-      } else {
-      console.log(user.userName + ' saved to database.');
-      }
+    console.log('saveUser triggered');
+     db.save(user, function(err, user){
+      console.log('db.save triggered');
+      db.label(user, 'User', function(err) {
+        if (err) {
+          throw err;
+        } else {
+        console.log(user.userName + ' saved to database and labeled.');
+
+        }
+      });
     });
   },
 
   getUser: function(name) {
     //get user node by name
-    var predicate = {username: name};
-    return db.find(predicate, function(err, result) { 
+    console.log('getUser triggered');
+    var predicate = {userName: name};
+    db.find(predicate, function(err, result) { 
     //may need to account for result being array of 1
+    console.log('db.find triggered');
       if (err) {
         throw err;
       } else {
-        //may return undefined or similar if no user
+        //console.log(result);//may return undefined or similar if no user
         return result; 
       }
+    });
+  },
+
+  getAllUsers: function() {
+    //return array of all drinks in database.
+    return db.nodesWithLabel('User', function(err, results) {
+      return results;
     });
   },
 
@@ -60,5 +94,4 @@ module.exports = {
       return drink.rating > rating;
     });
   }
-
 };

@@ -29,6 +29,7 @@ module.exports = {
     //may need to account for result being array of 1
       if (err) {
         throw err;
+        
       } else {
         //may return undefined or similar if no user
         return result; 
