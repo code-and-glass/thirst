@@ -1,10 +1,10 @@
 const React = require('react');
 
-
 //server data placeholder
 var drinksData = { drinks: ["absolut-cosmopolitan", "drink2", "drink3"]};
 
 
+// TESTING COMPONENT
 const Main = React.createClass({
   render() {
 
@@ -23,12 +23,119 @@ const Main = React.createClass({
       </div>
     );
   },
-
   _handleTouchTap() {
   },
-
 });
 
+// RATE DRINK VIEW
+const Rate = React.createClass({
+  render() {
+
+    let containerStyle = {
+      position: 'relative',
+      width: '80%',
+      left: '10%',
+      top: '100px',
+    };
+
+    return (
+      <div>
+        <Nav/>
+        <BigCard/>
+      </div>
+    );
+  },
+  _handleTouchTap() {
+  },
+});
+
+// LIST VIEW FOR RECOMMENDATIONS OR PAST RATINGS
+const Recommendations = React.createClass({
+  render() {
+
+    let containerStyle = {
+      position: 'relative',
+      width: '80%',
+      left: '10%',
+      top: '100px',
+    };
+
+    return (
+      <div>
+        <Nav/>
+
+      </div>
+    );
+  },
+  _handleTouchTap() {
+  },
+});
+
+
+// LOGIN VIEW, INCLUDING SPLASH SCREEN - DISPLAY IF NOT LOGGED IN
+const Login = React.createClass({
+  render() {
+
+    let containerStyle = {
+      position: 'relative',
+      width: '100%',
+      height: '700px',
+      backgroundColor: 'lightblue',
+    };
+
+    let titleStyle = {
+      textAlign: 'center',
+      width: '100%',
+      height: '100px',
+    };
+
+    let buttonStyle = {
+      position: 'relative',
+      textAlign: 'center',
+      width: '50px',
+      left: '50%',
+      top: '200px',
+    };
+
+    return (
+      <div style={containerStyle}>
+        <h1 style={titleStyle}>Thirst</h1>
+        <div style={buttonStyle}>
+          <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+        </div>
+      </div>
+    );
+  },
+  _handleTouchTap() {
+  },
+});
+
+/*
+CODE TO BE USED WHEN SIGNING PEOPLE IN
+// https://developers.google.com/identity/sign-in/web/sign-in
+// https://developers.google.com/identity/sign-in/web/backend-auth
+<script>
+ function onSignIn(googleUser) {
+   // Useful data for your client-side scripts:
+   var profile = googleUser.getBasicProfile();
+   console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+   console.log("Name: " + profile.getName());
+   console.log("Image URL: " + profile.getImageUrl());
+   console.log("Email: " + profile.getEmail());
+
+   // The ID token you need to pass to your backend:
+   var id_token = googleUser.getAuthResponse().id_token;
+   console.log("ID Token: " + id_token);
+ };
+</script>
+*/
+
+
+
+
+
+// SUB-COMPONENTS, FOR BUILDING THE ABOVE
+//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 const LoginButton = React.createClass({
   render() {
@@ -51,6 +158,7 @@ const LoginButton = React.createClass({
 
 });
 
+// NAVIGATION BAR
 const Nav = React.createClass({    // Needs to collapse better for mobile
   render() {
 
@@ -75,14 +183,13 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
       </nav>
     );
   },
-
   _handleTouchTap() {
   },
-
 });
 
 
 const RatingsPage = React.createClass({
+// const BigCard = React.createClass({
   render() {
 
     let containerStyle = {
@@ -102,16 +209,13 @@ const RatingsPage = React.createClass({
       </div>
     );
   },
-
   _handleTouchTap() {
   },
-
 });
 
 //TODO: Fill with actual data
 const RatingPanel = React.createClass({
   render: function() {
-
     //TODO: adjust size
     //wire up buttons
     var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/" + this.props.drinkName + ".png"
@@ -137,8 +241,6 @@ const RatingPanel = React.createClass({
     )
   }
 });
-
-
 
 
 module.exports = Main;
