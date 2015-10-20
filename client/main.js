@@ -3,17 +3,13 @@
 
 //From the command line type: "grunt watch:react"
 
-
 //It would be a good idea to split up into more
-
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var component = require('../component.js');
-
-console.log(component.testValue);
+var Main = require('../babelified/components.js');
 
 ReactDOM.render(
-  <h1>Hello, world!</h1>,
+  <Main/>,
   document.getElementById('app')
 );

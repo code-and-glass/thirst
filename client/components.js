@@ -1,10 +1,7 @@
-module.exports = {
-  testValue: "This is from the component file"
-}
+// module.exports = {
+//   testValue: "This is from the component file"
+// }
 
-
-
-/*
 
 const React = require('react');
 
@@ -21,12 +18,12 @@ const Main = React.createClass({
 
     return (
       <div>
-      <Nav/>
-      <LoginButton/>
-      <BigCard/>
+        <Nav/>
+        <BigCard/>
       </div>
     );
   },
+
 
   _handleTouchTap() {
   },
@@ -103,21 +100,20 @@ const BigCard = React.createClass({
 });
 
 
-
+/*
 const LoginButton = React.createClass({
   render() {
 
     let containerStyle = {
       position: 'relative',
-      width: '200px',
+      // width: '200px',
       left: '40%',
       top: '300px',
     };
 
     return (
-      <div style={containerStyle}>
-        <a className="waves-effect waves-light btn-large">Login with Google</a>
-      </div>
+      <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark" style={containerStyle}></div>
+
     );
   },
 
@@ -126,9 +122,9 @@ const LoginButton = React.createClass({
 
 });
 
+*/
 
-
-
+module.exports = Main;
 
 
 
@@ -167,20 +163,9 @@ const LoginButton = React.createClass({
 //     }
 // });
 
-// var PRODUCTS = [
-//   {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
-//   {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
-//   {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
-//   {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
-//   {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
-//   {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
-// ];
-
 // ReactDOM.render(
 //     <FilterableProductTable products={PRODUCTS} />,
 //     document.getElementById('container')
 // );
 
-module.exports = Main;
 
-*/
