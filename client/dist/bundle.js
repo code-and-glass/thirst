@@ -1,9 +1,250 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = {
-  testValue: "This is from the component file"
-}
+'use strict';
 
-},{}],2:[function(require,module,exports){
+var React = require('react');
+
+var Main = React.createClass({
+  displayName: 'Main',
+
+  render: function render() {
+
+    var containerStyle = {
+      position: 'relative',
+      width: '80%',
+      left: '10%',
+      top: '100px'
+    };
+
+    return React.createElement(
+      'div',
+      null,
+      React.createElement(Nav, null),
+      React.createElement(LoginButton, null),
+      React.createElement(BigCard, null)
+    );
+  },
+
+  _handleTouchTap: function _handleTouchTap() {}
+
+});
+
+var Nav = React.createClass({
+  displayName: 'Nav',
+  // Needs to collapse better for mobile
+  render: function render() {
+
+    var containerStyle = {
+      position: 'absolute',
+      width: '94%',
+      left: '3%',
+      top: '20px',
+      paddingLeft: '10px'
+    };
+
+    return React.createElement(
+      'nav',
+      { style: containerStyle },
+      React.createElement(
+        'div',
+        { className: 'nav-wrapper' },
+        React.createElement(
+          'a',
+          { href: '#', className: 'brand-logo' },
+          'Thirst'
+        ),
+        React.createElement(
+          'ul',
+          { id: 'nav-mobile', className: 'right hide-on-med-and-down' },
+          React.createElement(
+            'li',
+            null,
+            React.createElement(
+              'a',
+              { href: '' },
+              'Recommendations'
+            )
+          ),
+          React.createElement(
+            'li',
+            null,
+            React.createElement(
+              'a',
+              { href: '' },
+              'Rate Drinks'
+            )
+          ),
+          React.createElement(
+            'li',
+            null,
+            React.createElement(
+              'a',
+              { href: '' },
+              'Drinks I\'ve Had'
+            )
+          )
+        )
+      )
+    );
+  },
+
+  _handleTouchTap: function _handleTouchTap() {}
+
+});
+
+var BigCard = React.createClass({
+  displayName: 'BigCard',
+
+  render: function render() {
+
+    var containerStyle = {
+      position: 'relative',
+      width: '80%',
+      left: '10%',
+      top: '100px'
+    };
+
+    return React.createElement(
+      'div',
+      { className: 'card', style: containerStyle },
+      React.createElement(
+        'div',
+        { className: 'card-image' },
+        React.createElement('img', { src: 'http://cdn1.matadornetwork.com/blogs/1/2015/04/lion-photo.jpg' }),
+        React.createElement(
+          'span',
+          { className: 'card-title' },
+          'Lion Drink'
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'card-content' },
+        React.createElement(
+          'p',
+          null,
+          'Here is a description of the drink itself'
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'card-action' },
+        React.createElement(
+          'a',
+          { href: '#' },
+          '1'
+        ),
+        React.createElement(
+          'a',
+          { href: '#' },
+          '2'
+        ),
+        React.createElement(
+          'a',
+          { href: '#' },
+          '3'
+        ),
+        React.createElement(
+          'a',
+          { href: '#' },
+          '4'
+        ),
+        React.createElement(
+          'a',
+          { href: '#' },
+          '5'
+        ),
+        React.createElement(
+          'a',
+          { href: '#', className: 'waves-effect waves-light btn' },
+          'Next Drink'
+        )
+      )
+    );
+  },
+
+  _handleTouchTap: function _handleTouchTap() {}
+
+});
+
+var LoginButton = React.createClass({
+  displayName: 'LoginButton',
+
+  render: function render() {
+
+    var containerStyle = {
+      position: 'relative',
+      // width: '200px',
+      left: '40%',
+      top: '300px'
+    };
+
+    return React.createElement('div', { className: 'g-signin2', 'data-onsuccess': 'onSignIn', 'data-theme': 'dark' });
+  },
+
+  _handleTouchTap: function _handleTouchTap() {}
+
+});
+
+/*
+// https://developers.google.com/identity/sign-in/web/sign-in
+<script>
+ function onSignIn(googleUser) {
+   // Useful data for your client-side scripts:
+   var profile = googleUser.getBasicProfile();
+   console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+   console.log("Name: " + profile.getName());
+   console.log("Image URL: " + profile.getImageUrl());
+   console.log("Email: " + profile.getEmail());
+
+   // The ID token you need to pass to your backend:
+   var id_token = googleUser.getAuthResponse().id_token;
+   console.log("ID Token: " + id_token);
+ };
+</script>
+*/
+
+module.exports = Main;
+
+// let DRINKS = [
+//   { drinkName: 'maple syrup'},
+//   { drinkName: 'blood of my enemies'},
+//   { drinkName: 'Dihydrogen Monoxide'},
+//   { drinkName: 'liquid cocaine'},
+// ];
+
+// EXAMPLE OF DYNAMICALLY GENERATING NESTED COMPONENTS
+// var ProductTable = React.createClass({
+//     render: function() {
+//         var rows = [];
+//         var lastCategory = null;
+//         this.props.products.forEach(function(product) {
+//             if (product.category !== lastCategory) {
+//                 rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
+//             }
+//             rows.push(<ProductRow product={product} key={product.name} />);
+//             lastCategory = product.category;
+//         });
+//         return (
+//             <table>
+//                 <thead>
+//                     <tr>
+//                         <th>Name</th>
+//                         <th>Price</th>
+//                     </tr>
+//                 </thead>
+//                 <tbody>{rows}</tbody>
+//             </table>
+//         );
+//     }
+// });
+
+// ReactDOM.render(
+//     <FilterableProductTable products={PRODUCTS} />,
+//     document.getElementById('container')
+// );
+
+
+},{"react":159}],2:[function(require,module,exports){
 //Main javascript file for react
 //Babel will translate jsx syntax and Browserify will pull in the correct dependencies for require statements
 
@@ -15,18 +256,12 @@ module.exports = {
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var component = require('../component.js');
+var Main = require('../babelified/components.js');
 
-console.log(component.testValue);
-
-ReactDOM.render(React.createElement(
-  'h1',
-  null,
-  'Hello, world!'
-), document.getElementById('app'));
+ReactDOM.render(React.createElement(Main, null), document.getElementById('app'));
 
 
-},{"../component.js":1,"react":159,"react-dom":4}],3:[function(require,module,exports){
+},{"../babelified/components.js":1,"react":159,"react-dom":4}],3:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -19007,4 +19242,4 @@ module.exports = warning;
 
 module.exports = require('./lib/React');
 
-},{"./lib/React":28}]},{},[2]);
+},{"./lib/React":28}]},{},[1,2]);
