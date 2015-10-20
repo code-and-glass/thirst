@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 
     watch: {
       react: {
-        files: ['client/main.js'],
+        files: ['client/main.js'],  // also watch component and others?
         tasks: ['build']
       },
       server: {
@@ -50,14 +50,15 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          "client/dist/bundle.js" : ["client/main.js"]
+          "client/babelified/main.js" : ["client/main.js"],
+          "client/babelified/components.js" : ["client/components.js"]
         }
       }
     },
     browserify: {
       dist: {
         files: {
-          'client/dist/bundle.js' : ['client/dist/bundle.js']
+          'client/dist/bundle.js' : ['client/babelified/*.js']
         }
       }
     }
@@ -80,7 +81,7 @@ module.exports = function(grunt) {
      });
      nodemon.stdout.pipe(process.stdout);
      nodemon.stderr.pipe(process.stderr);
- 
+
      grunt.task.run([ 'watch:server' ]);
    });
 
