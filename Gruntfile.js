@@ -1,16 +1,29 @@
 module.exports = function(grunt) {
 
+  require("load-grunt-tasks")(grunt);
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-browserify');
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    //TODO: Add javascript files for linting (don't add react files)
     jshint: {
-      files: ['Gruntfile.js', 'app.js', 'routes/**/*.js', 'public/**/*.js']
+      files: ['Gruntfile.js', 'app.js', 'routes/**/*.js']
     },
 
     watch: {
-      scripts: {
-        files: [],
-        tasks: []
+      react: {
+        files: ['client/main.js'],
+        tasks: ['build']
+      },
+      server: {
+        files: ['Gruntfile.js', 'app.js', 'routes/**/*.js'],
+        tasks: ['jshint']
       }
     },
     shell: {
@@ -30,21 +43,33 @@ module.exports = function(grunt) {
     },
     cssmin: {
 
+    },
+    babel: {
+      options: {
+        sourceMap: true
+      },
+      dist: {
+        files: {
+          "client/dist/bundle.js" : ["client/main.js"]
+        }
+      }
+    },
+    browserify: {
+      dist: {
+        files: {
+          'client/dist/bundle.js' : ['client/dist/bundle.js']
+        }
+      }
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-nodemon');
-  grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
-
+  //Tasks
 
   //Need to add testing framework
   grunt.registerTask('test', ['jshint'] );
 
   //add more build tasks (concat, uglify, cssmin)
-  grunt.registerTask('build', []);
+  grunt.registerTask('build', ["babel", "browserify"]);
 
   grunt.registerTask('server-dev', function (target) {
      // Running nodejs in a different process and displaying output on the main console
@@ -56,7 +81,7 @@ module.exports = function(grunt) {
      nodemon.stdout.pipe(process.stdout);
      nodemon.stderr.pipe(process.stderr);
  
-     grunt.task.run([ 'watch' ]);
+     grunt.task.run([ 'watch:server' ]);
    });
 
   grunt.registerTask('upload', function(n) {
