@@ -18,7 +18,10 @@ module.exports = function(grunt) {
 
     watch: {
       react: {
-        files: ['client/main.js'],  // also watch component and others?
+        files: ['client/main.js',
+                'client/components.js',
+                'client/dist/index.html',
+                'client/dist/style.css'],
         tasks: ['build']
       },
       server: {

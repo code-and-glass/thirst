@@ -1,8 +1,3 @@
-// module.exports = {
-//   testValue: "This is from the component file"
-// }
-
-
 const React = require('react');
 
 
@@ -19,6 +14,7 @@ const Main = React.createClass({
     return (
       <div>
         <Nav/>
+        <LoginButton/>
         <BigCard/>
       </div>
     );
@@ -100,7 +96,7 @@ const BigCard = React.createClass({
 });
 
 
-/*
+
 const LoginButton = React.createClass({
   render() {
 
@@ -112,7 +108,7 @@ const LoginButton = React.createClass({
     };
 
     return (
-      <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark" style={containerStyle}></div>
+      <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
 
     );
   },
@@ -122,11 +118,27 @@ const LoginButton = React.createClass({
 
 });
 
+
+/*
+// https://developers.google.com/identity/sign-in/web/sign-in
+<script>
+ function onSignIn(googleUser) {
+   // Useful data for your client-side scripts:
+   var profile = googleUser.getBasicProfile();
+   console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+   console.log("Name: " + profile.getName());
+   console.log("Image URL: " + profile.getImageUrl());
+   console.log("Email: " + profile.getEmail());
+
+   // The ID token you need to pass to your backend:
+   var id_token = googleUser.getAuthResponse().id_token;
+   console.log("ID Token: " + id_token);
+ };
+</script>
 */
 
+
 module.exports = Main;
-
-
 
 
 
@@ -138,6 +150,8 @@ module.exports = Main;
 //   { drinkName: 'liquid cocaine'},
 // ];
 
+
+// EXAMPLE OF DYNAMICALLY GENERATING NESTED COMPONENTS
 // var ProductTable = React.createClass({
 //     render: function() {
 //         var rows = [];
@@ -167,5 +181,3 @@ module.exports = Main;
 //     <FilterableProductTable products={PRODUCTS} />,
 //     document.getElementById('container')
 // );
-
-
