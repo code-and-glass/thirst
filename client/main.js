@@ -4,7 +4,7 @@
 //From the command line type: "grunt watch:react"
 
 
-//It would be a good idea to split up into more 
+//It would be a good idea to split up into more
 
 
 var React = require('react');
@@ -15,5 +15,5 @@ console.log(component.testValue);
 
 ReactDOM.render(
   <h1>Hello, world!</h1>,
-  document.getElementById('example')
+  document.getElementById('app')
 );
