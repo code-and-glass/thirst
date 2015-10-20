@@ -1,8 +1,9 @@
 var recommend = require('./recommender.js');
+
 var db;
 
 //Checks if deployed or local
-if(process.env.GRAPHENEDB_URL){
+if (process.env.GRAPHENEDB_URL){
 
   var url = require('url').parse(process.env.GRAPHENEDB_URL);
 
@@ -20,6 +21,7 @@ if(process.env.GRAPHENEDB_URL){
   });  
 }
 
+module.exports = db;
 
 
 
@@ -50,7 +52,7 @@ if(process.env.GRAPHENEDB_URL){
 
 //   });
 // };
-
+/*
 var listToMatrix = function(list, elementsPerSubArray) {
   var matrix = [], i, k;
   for (i = 0, k = -1; i < list.length; i++) {
@@ -126,6 +128,6 @@ var listToMatrix = function(list, elementsPerSubArray) {
   
 });
 
-
+*/
 
 
