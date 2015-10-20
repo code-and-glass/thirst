@@ -4,6 +4,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+// uncomment to run migrations.js
+// var migrations = require('./server/migrations/migrations.js');
 
 // routing 
 var routes = require('./routes/index');

@@ -1,3 +1,5 @@
+var db = require('../database.js');
+
 var Drink = function(name) { //additional parameters and object properties as needed
   //create drink node
   return {
@@ -10,7 +12,7 @@ module.exports = {
 
   saveDrink:function(drink) {
     db.save(drink, function(err, drink){
-      db.label(drink, 'Drink', function(err) {
+      db.label(drink.id, 'Drink', function(err) {
         if (err) {
           throw err;
         } else {
