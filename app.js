@@ -12,11 +12,11 @@ var bodyParser = require('body-parser');
 var request = require("request");
 //var assert = require('assert');
 var session = require('express-session');
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
