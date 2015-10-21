@@ -9,11 +9,9 @@ var bodyParser = require('body-parser');
 // var migrations = require('./server/migrations/migrations.js');
 
 // routing 
-
 var request = require("request");
 //var assert = require('assert');
 var session = require('express-session');
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -30,62 +28,15 @@ app.use('/users', users);
 
 module.exports = app;
 
-// The following needs to be reviewed and removed:
 
 
-/********************* start neo4j ***************************/
-
-/*
-var request = require("request");
-
-var assert = require('assert');
-
-var migrations = require('/server');
-
-var db;
-=======
 //********************* AUTH testing to be moved later ***************************
->>>>>>> back-end google auth. Needs test.
+
 
 var passport = require('passport');
 var util = require('util');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-<<<<<<< HEAD
-  var url = require('url').parse(process.env.GRAPHENEDB_URL);
-
-  db = require("seraph")({
-    server: url.protocol + '//' + url.host,
-    user: url.auth.split(':')[0],
-    pass: url.auth.split(':')[1]
-  });
-} else {
-
-  var config = require('./config.js');
-  db = require("seraph")({server: "http://localhost:7474",
-                            user: config.neo4jAuth.user,
-                            pass: config.neo4jAuth.password //your password here
-                          });
-}
-
-db.save({ name: "Artem"}, function(err, node) {
-  if (err) throw err;
-  console.log("new user Artem added to db");
-
-  // db.delete(node, function(err) {
-  //   if (err) throw err;
-  //   console.log("Test-Man away!");
-  // });
-});
-var array = [];
-var resultMatrix;
-var read = function(err, relationship) {
- db.rel.read(relationship.id, function(err, readRelationship) {
-    var rating = readRelationship.properties.rating;
-    console.log(rating);
-    array.push(rating);
-    console.log(array);
-=======
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -138,12 +89,7 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
->>>>>>> back-end google auth. Needs test.
   });
-
-
-*/
-/************************* end neo4j***********************/
 
 app.get('/logout', function(req, res){
   req.logout();
@@ -155,41 +101,3 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 //**************************************************
-
-
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
-app.listen(3000);
-
-module.exports = app;
-

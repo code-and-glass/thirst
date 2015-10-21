@@ -2,7 +2,7 @@
 
 // YOU ONLY NEED TO RUN LINE 35 - 38 TO SAVE DRINKS TO NEO4J
 
-var express = require('express');
+// var express = require('express');
 
 var saveDrink = require('../models/drinks.js').saveDrink;
 
@@ -17,7 +17,7 @@ var forEach = function (list, count) {
   count = count || 0;
   for (var i = 0; i < list.drinks.length; i++) {
     saveDrink(list.drinks[i]);
-    console.log("drink obj", list.drinks[i]);
+    // console.log("drink obj", list.drinks[i]);
   }
   count += list.drinks.length;
   if (list.next) {
@@ -26,9 +26,6 @@ var forEach = function (list, count) {
     console.log(count);
     return count;
   }
-};
-var save = function (item) {
-  returnsaveDrink(item);
 };
 
 /*********** save each drink to db *************/
@@ -39,6 +36,7 @@ var save = function (item) {
 
 
 /****************** api request to write data files ************************/
+// DON'T NEED TO RUN UNLESS 
 var request = require('request');
 var fs = require('fs');
 
