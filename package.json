@@ -14,11 +14,8 @@
     "express-session": "^1.11.3",
     "likely": "^0.2.0",
     "neo4j": "^1.1.1",
-
-
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
-
     "passport": "^0.3.0",
 
     "passport-google-oauth": "^0.2.0",
