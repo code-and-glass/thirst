@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'client/dist')));
 
 app.use('/', routes);
 app.use('/users', users);
-// app.listen(3000);
+
 module.exports = app;
 
 // The following needs to be reviewed and removed:
@@ -153,3 +153,4 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 //**************************************************
+*/
