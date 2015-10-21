@@ -1,4 +1,6 @@
 const React = require('react');
+import { Router, Route, Link } from 'react-router';
+import { render } from 'react-dom'
 
 //server data placeholder
 var drinksData = { drinks: ["absolut-cosmopolitan", "drink2", "drink3"]};
@@ -175,8 +177,9 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
         <div className="nav-wrapper">
           <a href="#" className="brand-logo">Thirst</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li><a href="">Recommendations</a></li>
-            <li><a href="">Rate Drinks</a></li>
+            <li><Link to="test">Login</Link></li>
+            <li><Link to="recommendations">Recommendations</Link></li>
+            <li><Link to="/">Rate Drinks</Link></li>
             <li><a href="">Drinks I've Had</a></li>
           </ul>
         </div>
@@ -241,6 +244,15 @@ const RatingPanel = React.createClass({
     )
   }
 });
+
+
+render((
+  <Router>
+    <Route path="/" component={Main} />
+    <Route path="test" component={Login} />
+    <Route path="recommendations" component={Recommendations} />
+  </Router>
+), document.body)
 
 
 module.exports = Main;
