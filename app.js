@@ -9,7 +9,6 @@ var bodyParser = require('body-parser');
 // var migrations = require('./server/migrations/migrations.js');
 
 // routing 
-
 var request = require("request");
 //var assert = require('assert');
 var session = require('express-session');
@@ -19,7 +18,6 @@ var users = require('./routes/users');
 
 var app = express();
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -27,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'client/dist')));
 
 app.use('/', routes);
 app.use('/users', users);
-
+// app.listen(3000);
 module.exports = app;
 
 // The following needs to be reviewed and removed:
@@ -43,15 +41,15 @@ var assert = require('assert');
 var migrations = require('/server');
 
 var db;
-=======
+
 //********************* AUTH testing to be moved later ***************************
->>>>>>> back-end google auth. Needs test.
+
 
 var passport = require('passport');
 var util = require('util');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-<<<<<<< HEAD
+
   var url = require('url').parse(process.env.GRAPHENEDB_URL);
 
   db = require("seraph")({
@@ -138,69 +136,12 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
->>>>>>> back-end google auth. Needs test.
   });
 
-<<<<<<< HEAD
   });
 };
 
-var listToMatrix= function(list, elementsPerSubArray) {
-  var matrix = [], i, k;
-  for (i = 0, k = -1; i < list.length; i++) {
-    if (i % elementsPerSubArray === 0) {
-      k++;
-      matrix[k] = [];
-    }
-    matrix[k].push(list[i]);
-  }
-  return matrix;
-};
 
-db.batch(function(txn) {
-
-var user1 = txn.save({name: 'Artem'});
-var user2 = txn.save({name: 'Ben'});
-var user3 = txn.save({name: 'Victoria'});
-var user4 = txn.save({name: 'Igor'});
-
-var likedDrinks = txn.save([
-  { drinkName: 'maple syrup'},
-  { drinkName: 'blood of my enemies'},
-  { drinkName: 'Dihydrogen Monoxide'},
-  { drinkName: 'liquid cocaine'}
-]);
-
-txn.relate(user1, 'likes', likedDrinks[1], {rating: '5'}, read);
-txn.relate(user1, 'likes', likedDrinks[2], {rating: '1'}, read);
-txn.relate(user1, 'likes', likedDrinks[0], {rating: '3'}, read);
-txn.relate(user1, 'likes', likedDrinks[3], {rating: '3'}, read);
-
-txn.relate(user2, 'likes', likedDrinks[1], {rating: '2'}, read);
-txn.relate(user2, 'likes', likedDrinks[2], {rating: '5'}, read);
-txn.relate(user2, 'likes', likedDrinks[0], {rating: '3'}, read);
-txn.relate(user2, 'likes', likedDrinks[3], {rating: '4'}, read);
-
-txn.relate(user3, 'likes', likedDrinks[1], {rating: '5'}, read);
-txn.relate(user3, 'likes', likedDrinks[2], {rating: '4'}, read);
-txn.relate(user3, 'likes', likedDrinks[0], {rating: '1'}, read);
-txn.relate(user3, 'likes', likedDrinks[3], {rating: '2'}, read);
-
-txn.relate(user4, 'likes', likedDrinks[1], {rating: '3'}, read);
-txn.relate(user4, 'likes', likedDrinks[2], {rating: '3'}, read);
-txn.relate(user4, 'likes', likedDrinks[0], {rating: '3'}, read);
-txn.relate(user4, 'likes', likedDrinks[3], {rating: '1'}, write);
-},
-function(err, results) {
-  console.log(results);
-  console.log(array);
-  console.log('user drink likes committed');
-  console.log('matrix');
-  console.log(listToMatrix(array, 4));
-});
-
-*/
-/************************* end neo4j***********************/
 
 app.get('/logout', function(req, res){
   req.logout();
@@ -212,41 +153,3 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 //**************************************************
-
-
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
-app.listen(3000);
-
-module.exports = app;
-
