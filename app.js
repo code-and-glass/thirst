@@ -4,10 +4,16 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
 // uncomment to run migrations.js
 // var migrations = require('./server/migrations/migrations.js');
 
 // routing 
+
+var request = require("request");
+//var assert = require('assert');
+var session = require('express-session');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -93,8 +99,8 @@ passport.deserializeUser(function(obj, done) {
 //   credentials (in this case, an accessToken, refreshToken, and Google
 //   profile), and invoke a callback with a user object.
 passport.use(new GoogleStrategy({
-    clientID: 267759284958-mv5iqfbu27f41i2ljhj5dktrt96rsmha.apps.googleusercontent.com,
-    clientSecret: GOOGLE_CLIENT_SECRET,
+    clientID: '267759284958-mv5iqfbu27f41i2ljhj5dktrt96rsmha.apps.googleusercontent.com',
+    clientSecret: '5by7bp6YDv6AOCCJwXufOEt7',
     callbackURL: "http://127.0.0.1:3000/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
@@ -112,7 +118,12 @@ passport.use(new GoogleStrategy({
 
 //to go in app.js 
 
-app.use(express.session({ secret: 'keyboard cat' }));
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
   // Initialize Passport!  Also use passport.session() middleware, to support
   // persistent login sessions (recommended).
   app.use(passport.initialize());
@@ -202,4 +213,40 @@ function ensureAuthenticated(req, res, next) {
 }
 //**************************************************
 
+
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
+app.listen(3000);
+
+module.exports = app;
 
