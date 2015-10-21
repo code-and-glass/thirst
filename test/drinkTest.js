@@ -1,5 +1,6 @@
 var assert = require('assert');
-
+var app = require('../server/middlewares/drinks.js');
+var request = require('supertest');
 describe('Array', function() {
   describe('#indexOf()', function () {
     it('should return -1 when the value is not present', function () {
@@ -9,3 +10,11 @@ describe('Array', function() {
   });
 });
 
+describe('GET /user', function(){
+  it('respond with json', function(done){
+   request(app)
+     .get('/drinks')
+     .expect('Content-Type', /json/)
+     .expect(200, done);
+  });
+});

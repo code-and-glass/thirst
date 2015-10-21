@@ -22,7 +22,7 @@ module.exports = {
     });
   },
   
-  getDrink: function(drinkName) {
+  getDrink: function(drinkName, callback) {
     //return drink node by drinkName property
     var predicate = {drinkName: drinkName};
     return db.find(predicate, function(err, result) { 
@@ -32,7 +32,7 @@ module.exports = {
         
       } else {
         //may return undefined or similar if no user
-        return result; 
+        callback(result); 
       }
     });
   },
@@ -41,6 +41,14 @@ module.exports = {
     //return array of all drinks in database.
     return db.nodesWithLabel('Drink', function(err, results) {
       //console.log('results from getAllDrinks callback', results);
+      callback(results);
+    });
+  },
+
+  getRandomDrinks: function(number, callback) {
+    return db.nodesWithLabel('Drink', function(err, results) {
+      //console.log('results from getAllDrinks callback', results);
+      
       callback(results);
     });
   },
