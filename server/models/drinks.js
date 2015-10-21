@@ -37,10 +37,11 @@ module.exports = {
     });
   },
 
-  getAllDrinks: function() {
+  getAllDrinks: function(callback) {
     //return array of all drinks in database.
     return db.nodesWithLabel('Drink', function(err, results) {
-      return results;
+      //console.log('results from getAllDrinks callback', results);
+      callback(results);
     });
   },
 

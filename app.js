@@ -141,63 +141,6 @@ app.get('/auth/google/callback',
 >>>>>>> back-end google auth. Needs test.
   });
 
-<<<<<<< HEAD
-  });
-};
-
-var listToMatrix= function(list, elementsPerSubArray) {
-  var matrix = [], i, k;
-  for (i = 0, k = -1; i < list.length; i++) {
-    if (i % elementsPerSubArray === 0) {
-      k++;
-      matrix[k] = [];
-    }
-    matrix[k].push(list[i]);
-  }
-  return matrix;
-};
-
-db.batch(function(txn) {
-
-var user1 = txn.save({name: 'Artem'});
-var user2 = txn.save({name: 'Ben'});
-var user3 = txn.save({name: 'Victoria'});
-var user4 = txn.save({name: 'Igor'});
-
-var likedDrinks = txn.save([
-  { drinkName: 'maple syrup'},
-  { drinkName: 'blood of my enemies'},
-  { drinkName: 'Dihydrogen Monoxide'},
-  { drinkName: 'liquid cocaine'}
-]);
-
-txn.relate(user1, 'likes', likedDrinks[1], {rating: '5'}, read);
-txn.relate(user1, 'likes', likedDrinks[2], {rating: '1'}, read);
-txn.relate(user1, 'likes', likedDrinks[0], {rating: '3'}, read);
-txn.relate(user1, 'likes', likedDrinks[3], {rating: '3'}, read);
-
-txn.relate(user2, 'likes', likedDrinks[1], {rating: '2'}, read);
-txn.relate(user2, 'likes', likedDrinks[2], {rating: '5'}, read);
-txn.relate(user2, 'likes', likedDrinks[0], {rating: '3'}, read);
-txn.relate(user2, 'likes', likedDrinks[3], {rating: '4'}, read);
-
-txn.relate(user3, 'likes', likedDrinks[1], {rating: '5'}, read);
-txn.relate(user3, 'likes', likedDrinks[2], {rating: '4'}, read);
-txn.relate(user3, 'likes', likedDrinks[0], {rating: '1'}, read);
-txn.relate(user3, 'likes', likedDrinks[3], {rating: '2'}, read);
-
-txn.relate(user4, 'likes', likedDrinks[1], {rating: '3'}, read);
-txn.relate(user4, 'likes', likedDrinks[2], {rating: '3'}, read);
-txn.relate(user4, 'likes', likedDrinks[0], {rating: '3'}, read);
-txn.relate(user4, 'likes', likedDrinks[3], {rating: '1'}, write);
-},
-function(err, results) {
-  console.log(results);
-  console.log(array);
-  console.log('user drink likes committed');
-  console.log('matrix');
-  console.log(listToMatrix(array, 4));
-});
 
 */
 /************************* end neo4j***********************/

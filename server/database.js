@@ -53,7 +53,7 @@ module.exports = db;
 
 //   });
 // };
-/*
+
 var listToMatrix = function(list, elementsPerSubArray) {
   var matrix = [], i, k;
   for (i = 0, k = -1; i < list.length; i++) {
@@ -66,14 +66,14 @@ var listToMatrix = function(list, elementsPerSubArray) {
   return matrix;
 };
 
-  var artem ={userName: 'Artem'};
-  db.save({name: 'Artem'}, function(err, user) {
-    if (err) {throw err;}
-    console.log('Artem saved to neo4j with db.save');
-  });
-  console.log('--------------');
-  Users.saveUser(artem);
-  console.log('--------------');
+  // var artem ={userName: 'Artem'};
+  // db.save({name: 'Artem'}, function(err, user) {
+  //   if (err) {throw err;}
+  //   console.log('Artem saved to neo4j with db.save');
+  // });
+  // console.log('--------------');
+  // Users.saveUser(artem);
+  // console.log('--------------');
 
   db.batch(function(txn) {
     console.log('batch start');
@@ -117,7 +117,7 @@ var listToMatrix = function(list, elementsPerSubArray) {
   
   function(err, results) {
     
-
+    console.log(results);
     var array = [];
     results.forEach(function(node) {
       if (node.type && node.type === 'likes') {
@@ -125,17 +125,18 @@ var listToMatrix = function(list, elementsPerSubArray) {
       }
     });
     var resultsMatrix = listToMatrix(array, 4);
-    results = resultsMatrix;
+    
     // console.log('batching committed');
-    // console.log(results);
+     
     var rowLabels = ['Artem', 'Ben', 'Victoria', 'Igor'];
     var colLabels = ['blood of my enemies', 'Dihydrogen Monoxide', 'maple syrup', 'liquid cocaine'];
-    var model = recommend.model(results, rowLabels, colLabels);
-    // console.log(model.rankAllItems('Victoria'));
+    var model = recommend.model(resultsMatrix, rowLabels, colLabels);
+     //console.log(resultsMatrix);
+     //console.log(model.rankAllItems('Victoria'));
     return results;
   
 });
 
-*/
+
 
 
