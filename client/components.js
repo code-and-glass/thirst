@@ -1,6 +1,10 @@
 const React = require('react');
 
 
+//server data placeholder
+var drinksData = { drinks: ["absolut-cosmopolitan", "drink2", "drink3"]};
+
+
 const Main = React.createClass({
   render() {
 
@@ -15,11 +19,10 @@ const Main = React.createClass({
       <div>
         <Nav/>
         <LoginButton/>
-        <BigCard/>
+        <RatingsPage/>
       </div>
     );
   },
-
 
   _handleTouchTap() {
   },
@@ -27,6 +30,26 @@ const Main = React.createClass({
 });
 
 
+const LoginButton = React.createClass({
+  render() {
+
+    let containerStyle = {
+      position: 'relative',
+      // width: '200px',
+      left: '40%',
+      top: '300px',
+    };
+
+    return (
+      <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+
+    );
+  },
+
+  _handleTouchTap() {
+  },
+
+});
 
 const Nav = React.createClass({    // Needs to collapse better for mobile
   render() {
@@ -59,7 +82,7 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
 });
 
 
-const BigCard = React.createClass({
+const RatingsPage = React.createClass({
   render() {
 
     let containerStyle = {
@@ -70,22 +93,12 @@ const BigCard = React.createClass({
     };
 
     return (
-      <div className="card" style={containerStyle}>
-        <div className="card-image">
-          <img src="http://cdn1.matadornetwork.com/blogs/1/2015/04/lion-photo.jpg"></img>
-          <span className="card-title">Lion Drink</span>
-        </div>
-        <div className="card-content">
-          <p>Here is a description of the drink itself</p>
-        </div>
-        <div className="card-action">
-          <a href="#">1</a>
-          <a href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a href="#" className="waves-effect waves-light btn">Next Drink</a>
-        </div>
+      <div className="rating-container" style={ containerStyle }>
+        {
+          drinksData.drinks.map(function(item){
+            return <RatingPanel drinkName={ item }></RatingPanel>
+          })
+        }
       </div>
     );
   },
@@ -95,89 +108,40 @@ const BigCard = React.createClass({
 
 });
 
+//TODO: Fill with actual data
+//Wire post stuff
+const RatingPanel = React.createClass({
+  render: function() {
 
-
-const LoginButton = React.createClass({
-  render() {
-
-    let containerStyle = {
-      position: 'relative',
-      // width: '200px',
-      left: '40%',
-      top: '300px',
-    };
+    //TODO: adjust size
+    //wire up buttons
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/" + this.props.drinkName + ".png"
 
     return (
-      <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-
-    );
-  },
-
-  _handleTouchTap() {
-  },
-
+    <div className="card">
+      <div className="card-image">
+        <img src={imageUrl}/>
+        <span className="card-title">{ this.props.drinkName }</span>
+      </div>
+      <div className="card-content">
+        <h5>Rate this drink:</h5>
+      </div>
+      <div className="card-action">
+        <i className="small material-icons">not_interested</i>
+        <i className="small material-icons">star_rate</i>
+        <i className="small material-icons">star_rate</i>
+        <i className="small material-icons">star_rate</i>
+        <i className="small material-icons">star_rate</i>
+        <i className="small material-icons">star_rate</i>
+      </div>
+    </div>
+    )
+  }
 });
 
 
-/*
-// https://developers.google.com/identity/sign-in/web/sign-in
-<script>
- function onSignIn(googleUser) {
-   // Useful data for your client-side scripts:
-   var profile = googleUser.getBasicProfile();
-   console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-   console.log("Name: " + profile.getName());
-   console.log("Image URL: " + profile.getImageUrl());
-   console.log("Email: " + profile.getEmail());
-
-   // The ID token you need to pass to your backend:
-   var id_token = googleUser.getAuthResponse().id_token;
-   console.log("ID Token: " + id_token);
- };
-</script>
-*/
 
 
 module.exports = Main;
 
 
-
-
-// let DRINKS = [
-//   { drinkName: 'maple syrup'},
-//   { drinkName: 'blood of my enemies'},
-//   { drinkName: 'Dihydrogen Monoxide'},
-//   { drinkName: 'liquid cocaine'},
-// ];
-
-
-// EXAMPLE OF DYNAMICALLY GENERATING NESTED COMPONENTS
-// var ProductTable = React.createClass({
-//     render: function() {
-//         var rows = [];
-//         var lastCategory = null;
-//         this.props.products.forEach(function(product) {
-//             if (product.category !== lastCategory) {
-//                 rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
-//             }
-//             rows.push(<ProductRow product={product} key={product.name} />);
-//             lastCategory = product.category;
-//         });
-//         return (
-//             <table>
-//                 <thead>
-//                     <tr>
-//                         <th>Name</th>
-//                         <th>Price</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>{rows}</tbody>
-//             </table>
-//         );
-//     }
-// });
-
-// ReactDOM.render(
-//     <FilterableProductTable products={PRODUCTS} />,
-//     document.getElementById('container')
-// );
