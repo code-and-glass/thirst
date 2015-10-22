@@ -23,8 +23,8 @@ const store = createStore()
 
 ReactDOM.render(
   // Provide our Redux store to our Root component as a prop so that Redux Provider can do its job.
-  // <Main/> was in here before
-  <Application store={store} />,
+  <Main/>,
+  // <Application store={store} />,
   document.getElementById('app')
 );
 

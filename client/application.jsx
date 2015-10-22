@@ -1,6 +1,3 @@
-application.jsx
-
-
 // Provider component from redux-react (https://github.com/gaearon/react-redux)
 // Provider is a React Component designed to be used as a wrapper of your application's root component.
 // Its purpose is to provide your redux instance to all of your application's components.
