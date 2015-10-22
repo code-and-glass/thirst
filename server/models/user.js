@@ -1,4 +1,5 @@
 var db;
+var Drink = require('./drinks.js');
 
 //Checks if deployed or local
 if(process.env.GRAPHENEDB_URL){
@@ -34,23 +35,28 @@ var User = function(name, password, email) {
 
 module.exports = {
   saveUser: function(user) {
-    //var db = require('seraph');
     //save user node to db
     console.log('saveUser triggered');
      db.save(user, function(err, user){
       console.log('db.save triggered');
       db.label(user, 'User', function(err) {
-        if (err) {
-          throw err;
-        } else {
+        if (err) throw err;
         console.log(user.userName + ' saved to database and labeled.');
+        //get all drinks and create relationship with 0 rating.
+        require('./drinks.js').getAllDrinks(function(results) {
+          results.forEach(function(drink) {
+          db.relate(user, 'likes', drink, {rating:0, user:user.userName, drink:drink.drinkName }, 
+            function(err, relationship) {
+              if (err) throw err;
+            });
+          });
+        });
+      }
+    );
+  });
+},
 
-        }
-      });
-    });
-  },
-
-  getUser: function(name) {
+  getUser: function(name, callback) {
     //get user node by name
     console.log('getUser triggered');
     var predicate = {userName: name};
@@ -61,28 +67,37 @@ module.exports = {
         throw err;
       } else {
         //console.log(result);//may return undefined or similar if no user
-        return result; 
+        callback(result); 
       }
     });
   },
 
-  getAllUsers: function() {
-    //return array of all drinks in database.
+  getAllUsers: function(callback) {
+    //return array of all users in database.
     return db.nodesWithLabel('User', function(err, results) {
-      return results;
+      
+      callback(results);
     });
   },
 
-  getAllUserLikes: function(user) { 
+  getAllUserLikes: function(user, callback) { 
     //user should be a node in db with id property
     //return a list of drink nodes that a user has rated
-    return db.relationship(user, 'out', 'likes', function(err, relationships) {
+    return db.relationships(user, 'out', 'likes', function(err, relationships) {
       if (err) {
         throw err;
       } else {
-        return relationships;
+        callback(relationships);
       }
     });
+
+    // var cypherQuery = "START a=node(*) "
+    //                 + "MATCH (a)-[:likes*]->(d) "
+    //                 + "RETURN distinct d";
+    // db.queryRaw(cypherQuery, user, function(err, result) {
+    //     if (err) console.log( err );
+    //     callback(result);
+    // });
   },
   
   getUserLikes: function(user, rating) {
@@ -91,7 +106,14 @@ module.exports = {
    //somehow filter all liked drinks by reading relationships
    allLikes.filter(
     function(drink) {
-      return drink.rating > rating;
+      return drink.rating >= rating;
+    });
+  },
+
+  rate: function(user, rating, drink, callback) {
+    db.relate(user, 'likes', drink, {rating:rating, user:user.userName, drink:drink.drinkName }, function(err, relationship) {
+      console.log('rate callback triggered');
+      callback(relationship);
     });
   }
 };

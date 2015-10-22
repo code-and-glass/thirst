@@ -12,6 +12,8 @@ app.get('/drinks', function(req, res, next) {
     console.log('results from router.get callback', results);
     //console.log(results);
      var testJSON = {'results':results};
+     console.log('THIS IS THE JSON');
+     console.log(testJSON);
      res.json(testJSON);
      //res.send({ message: 'hey' });
   });
@@ -26,7 +28,7 @@ request(app)
   .expect('Content-Type', /json/)
   .end(function(err, res){
     if (err) throw err;
-    //console.log(res);
+    console.log(res);
   });
 
 module.exports = app;
