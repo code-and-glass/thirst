@@ -42,6 +42,7 @@ module.exports = {
     return db.nodesWithLabel('Drink', function(err, results) {
       //console.log('results from getAllDrinks callback', results);
       callback(results);
+<<<<<<< HEAD
     });
   },
 
@@ -50,6 +51,8 @@ module.exports = {
       //console.log('results from getAllDrinks callback', results);
       
       callback(results);
+=======
+>>>>>>> Drinks middleware and supertest.
     });
   },
 
