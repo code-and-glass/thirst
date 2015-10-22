@@ -109,7 +109,6 @@ const RatingsPage = React.createClass({
 });
 
 //TODO: Fill with actual data
-//Wire post stuff
 const RatingPanel = React.createClass({
   render: function() {
 

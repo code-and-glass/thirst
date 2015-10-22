@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "mocha",
-    "start": "app.js"
+    "start": "bin/www"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

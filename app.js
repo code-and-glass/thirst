@@ -29,6 +29,7 @@ app.use('/users', users);
 module.exports = app;
 
 
+
 //********************* AUTH testing to be moved later ***************************
 
 
@@ -100,4 +101,3 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 //**************************************************
-
