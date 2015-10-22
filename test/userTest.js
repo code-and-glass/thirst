@@ -1,4 +1,4 @@
-var assert = require('Chai').assert;
+var assert = require('chai').assert;
 //var db = require('seraph');
 var Users = require('../server/models/user.js');
 var db;
