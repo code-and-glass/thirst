@@ -1,8 +1,4 @@
-// Tutorial 12 - Provider-and-connect.js
-
-// Our tutorial is almost over and the only missing piece to leave you with a good overview of Redux is:
 // How do we read from our store's state and how do we dispatch actions?
-
 // Both of these questions can be answered using a single react-redux's binding: @connect class decorator.
 
 // As we previously explained, when using the Provider component we allow all components of our app to
@@ -46,7 +42,7 @@ import { connect } from 'react-redux'
 // our reducers. If you haven't yet, go get a look at our action creator (./actions-creators.js).
 import * as actionCreators from './action-creators'
 
-// The "connect" decorator is designed to address all use-cases, from the most simple to the most 
+// The "connect" decorator is designed to address all use-cases, from the most simple to the most
 // complex ones. In the present example, we're not going to use the most complex form of 'connect' but
 // you can find all information about it in the complete 'connect' API documentation here:
 // https://github.com/rackt/react-redux/blob/v4.0.0/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
@@ -63,7 +59,7 @@ import * as actionCreators from './action-creators'
 // express what the function does: it maps (understand "extract some of") the state to few component props.
 // The props of the component are provided to handle common case like extracting a slice of your
 // state depending on a prop value (Ex: state.items[props.someID]).
-// The "selector"  function is expected to return the props that you wish to expose to your component (usually via 
+// The "selector"  function is expected to return the props that you wish to expose to your component (usually via
 // an object literal). It's up to you to eventually transform the state you're receiving before returning it.
 // You can have a look right at that simplest 'connect' usage below.
 

@@ -1,13 +1,9 @@
 application.jsx
 
-// Now is the time to meet the first binding that redux-react (https://github.com/gaearon/react-redux)
-// brings to us: the Provider component.
 
-// Provider is a React Component designed to be used as a wrapper of your application's root component. Its
-// purpose is to provide your redux instance to all of your application's components. How it does that does not
-// really matter to us but just to let you know, it's using React's context feature (it's undocumented so you
-// don't have to know about it, but if you're curious:
-// https://www.tildedave.com/2014/11/15/introduction-to-contexts-in-react-js.html).
+// Provider component from redux-react (https://github.com/gaearon/react-redux)
+// Provider is a React Component designed to be used as a wrapper of your application's root component.
+// Its purpose is to provide your redux instance to all of your application's components.
 
 import React from 'react'
 import Home from './home'
