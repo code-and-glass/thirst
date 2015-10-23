@@ -1,6 +1,23 @@
-const React = require('react');
+
+
+import React from 'react'
 import { Router, Route, Link, IndexRoute } from 'react-router';
+import { Router, Route, Link } from 'react-router'
 import { render } from 'react-dom'
+import { connect } from 'react-redux'
+import * as actionCreators from './action-creators'
+
+// @connect((state/*, props*/) => {
+//     // This is our select function that will extract from the state the data slice we want to expose
+//     // through props to our component.
+//     return {
+//       reduxState: state,
+//       // SOMETHING ABOUT DRINKS HERE, FOR EXAMPLE
+//     }
+// })
+
+// SEE EXAMPLE COMPONENT IN HOME.JSX FOR INTEGRATING COMPONENS WITH REDUX
+
 
 //server data placeholder
 var drinksData = { drinks: ["absolut-cosmopolitan", "Pennsylvania", "Kremlin-Colonel"]};

@@ -1,3 +1,66 @@
+
+// THIS IS AN EXAMPLE, WE WILL USE SIMILAR CODE IN COMPONENTS.JS
+
+import React from 'react'
+import { connect } from 'react-redux'
+// We use the same ES6 import trick to get all action creators and produce a hash like we did with
+// our reducers. If you haven't yet, go get a look at our action creator (./actions-creators.js).
+import * as actionCreators from './action-creators'
+
+@connect((state/*, props*/) => {
+    // This is our select function that will extract from the state the data slice we want to expose
+    // through props to our component.
+    return {
+      reduxState: state,
+      // SOMETHING ABOUT DRINKS HERE, FOR EXAMPLE
+    }
+})
+
+
+// EXAMPLE COMPONENT
+export default class Home extends React.Component {
+  onButtonClick () {
+    // This button handler will dispatch an action in response to a click event from a user.
+    // We use here the dispatch function "automatically" provided by @connect in a prop.
+    // There are alternatives way to call actionCreators that are already bound to dispatch and those
+    // imply to provide the second parameter to 'connect':
+    // https://github.com/rackt/react-redux/blob/v4.0.0/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
+    this.props.dispatch(actionCreators.getDrinks())  // FOR INSTANCE - GIVE USER AS ARGUMENT
+  }
+  render () {
+    // Thanks to our @connect decorator, we're able to get the data previously selected through the props.
+    var { frozen, time, reduxState } = this.props
+    var attrs = {}
+
+    // SOME EXAMPLE LOGIC
+    if (frozen) {
+        attrs = {
+          disabled: true
+        }
+    }
+
+    return (
+      <div>
+        <h1>Provider and @connect example</h1>
+        <span>
+          <b>What time is it?</b> { time ? `It is currently ${time}` : 'No idea yet...' }
+        </span>
+        <br />
+        {/* We register our button handler here and use the experimental ES7 function's binding operator "::"
+            to have our handler to be bound to the component's instance. */}
+        <button { ...attrs } onClick={::this.onTimeButtonClick}>Get time!</button>
+        <pre>
+          redux state = { JSON.stringify(reduxState, null, 2) } // PRE JUST DISPLAYS THIS INFO AS MONOSPACED/CODE
+        </pre>
+      </div>
+    )
+  }
+}
+
+
+
+// INFO ON USING CONNECT AND WHAT IT DOES
+
 // How do we read from our store's state and how do we dispatch actions?
 // Both of these questions can be answered using a single react-redux's binding: @connect class decorator.
 
@@ -36,12 +99,6 @@
   export default connect(mapStateToProps)(MyClass)
 */
 
-import React from 'react'
-import { connect } from 'react-redux'
-// We use the same ES6 import trick to get all action creators and produce a hash like we did with
-// our reducers. If you haven't yet, go get a look at our action creator (./actions-creators.js).
-import * as actionCreators from './action-creators'
-
 // The "connect" decorator is designed to address all use-cases, from the most simple to the most
 // complex ones. In the present example, we're not going to use the most complex form of 'connect' but
 // you can find all information about it in the complete 'connect' API documentation here:
@@ -61,54 +118,4 @@ import * as actionCreators from './action-creators'
 // state depending on a prop value (Ex: state.items[props.someID]).
 // The "selector"  function is expected to return the props that you wish to expose to your component (usually via
 // an object literal). It's up to you to eventually transform the state you're receiving before returning it.
-// You can have a look right at that simplest 'connect' usage below.
-
-@connect((state/*, props*/) => {
-    // This is our select function that will extract from the state the data slice we want to expose
-    // through props to our component.
-    return {
-      reduxState: state,
-      frozen: state._time.frozen,
-      time: state._time.time
-    }
-})
-export default class Home extends React.Component {
-  onTimeButtonClick () {
-    // This button handler will dispatch an action in response to a click event from a user.
-    // We use here the dispatch function "automatically" provided by @connect in a prop.
-    // There are alternatives way to call actionCreators that are already bound to dispatch and those
-    // imply to provide the second parameter to 'connect':
-    // https://github.com/rackt/react-redux/blob/v4.0.0/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
-    this.props.dispatch(actionCreators.getTime())
-  }
-  render () {
-
-    // Thanks to our @connect decorator, we're able to get the data previously selected through the props.
-    var { frozen, time, reduxState } = this.props
-    var attrs = {}
-
-    if (frozen) {
-        attrs = {
-          disabled: true
-        }
-    }
-
-    return (
-      <div>
-        <h1>Provider and @connect example</h1>
-        <span>
-          <b>What time is it?</b> { time ? `It is currently ${time}` : 'No idea yet...' }
-        </span>
-        <br />
-        {/* We register our button handler here and use the experimental ES7 function's binding operator "::"
-            to have our handler to be bound to the component's instance. */}
-        <button { ...attrs } onClick={::this.onTimeButtonClick}>Get time!</button>
-        <pre>
-          redux state = { JSON.stringify(reduxState, null, 2) }
-        </pre>
-      </div>
-    )
-  }
-}
-
-// Go to ./13_final-words.js for our last advice about what to do now...
+// You can have a look right at that simplest 'connect' usage above.

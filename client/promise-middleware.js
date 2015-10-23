@@ -1,3 +1,5 @@
+//REMOVE THIS FILE IF NOT USED
+
 export default function promiseMiddleware() {
   return (next) => (action) => {
     const { promise, types, ...rest } = action
