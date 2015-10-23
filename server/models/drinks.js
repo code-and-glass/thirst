@@ -1,4 +1,4 @@
-var db = require('../config.js');
+var db = require('../serverConfig.js');
 
 var Drink = function(name) { //additional parameters and object properties as needed
   //create drink node
