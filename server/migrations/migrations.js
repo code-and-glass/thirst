@@ -17,7 +17,7 @@ var forEach = function (list, count) {
   count = count || 0;
   for (var i = 0; i < list.drinks.length; i++) {
     saveDrink(list.drinks[i]);
-    // console.log("drink obj", list.drinks[i]);
+    console.log("drink obj", list.drinks[i]);
   }
   count += list.drinks.length;
   if (list.next) {
@@ -29,6 +29,7 @@ var forEach = function (list, count) {
 };
 
 /*********** save each drink to db *************/
+//uncomment and run one at a time
 // forEach(drinksTo1000.start);
 // forEach(drinksTo2000.start);
 // forEach(drinksTo3000.start);

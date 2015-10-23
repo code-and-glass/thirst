@@ -12,7 +12,7 @@ module.exports = {
 
   saveDrink:function(drink) {
     db.save(drink, function(err, drink){
-      db.label(drink.id, 'Drink', function(err) {
+      db.label(drink, 'Drink', function(err) {
         if (err) {
           throw err;
         } else {
@@ -40,11 +40,9 @@ module.exports = {
   getAllDrinks: function(callback) {
     //return array of ten drinks starting at random index
     return db.nodesWithLabel('Drink', function(err, results) {
-      var randomNum = Math.floor(Math.random() * (results.length - 10));
-      var randomList = results.slice(randomNum, randomNum+10);
       //console.log('results from getAllDrinks callback', results);
       //sends one random drink
-      callback(randomList[0]);
+      callback(results);
     });
   },
 

@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // uncomment to run migrations.js
-// var migrations = require('./server/migrations/migrations.js');
+var migrations = require('./server/migrations/migrations.js');
 
 // routing 
 var request = require("request");

@@ -6,11 +6,11 @@ var db = require('../server/database.js');
 
 describe('GET /drinks', function(){
   it('respond with json', function(done){
-   request(app)
-     .get('/drinks')
-     .set('Content-Type', 'application/json')
-     .expect(200)
-     .end(function(err, res){
+    request(app)
+      .get('/drinks')
+      .set('Content-Type', 'application/json')
+      .expect(200)
+      .end(function(err, res){
         if (err) return done(err);
         done();
       });
