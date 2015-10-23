@@ -3,6 +3,13 @@
 
 
 /*********COMMUNICATE WITH SERVER***********/
+export function login(user) {
+  return {
+    type: 'LOGIN',
+    user: user
+  }
+}
+
 export function getDrinks(user) {
   return {
     type: 'GET_DRINKS',
@@ -13,13 +20,6 @@ export function getDrinks(user) {
 export function getRecs(user) {
   return {
     type: 'GET_RECS',
-    user: user
-  }
-}
-
-export function login(user) {
-  return {
-    type: 'LOGIN',
     user: user
   }
 }
