@@ -1,78 +1,29 @@
 const React = require('react');
-import { Router, Route, Link } from 'react-router';
+import { Router, Route, Link, IndexRoute } from 'react-router';
 import { render } from 'react-dom'
 
 //server data placeholder
-var drinksData = { drinks: ["absolut-cosmopolitan", "drink2", "drink3"]};
+var drinksData = { drinks: ["absolut-cosmopolitan", "Pennsylvania", "Kremlin-Colonel"]};
+var recommendData = { drinks: ["Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]}
 
 
-// TESTING COMPONENT
 const Main = React.createClass({
   render() {
 
-    let containerStyle = {
-      position: 'relative',
-      width: '80%',
-      left: '10%',
-      top: '100px',
-    };
-
     return (
       <div>
         <Nav/>
-        <LoginButton/>
-        <RatingsPage/>
+          <div className="row">
+            <div className="col s8 offset-s2">
+              {this.props.children}
+            </div>
+          </div>
       </div>
     );
   },
   _handleTouchTap() {
   },
 });
-
-// RATE DRINK VIEW
-const Rate = React.createClass({
-  render() {
-
-    let containerStyle = {
-      position: 'relative',
-      width: '80%',
-      left: '10%',
-      top: '100px',
-    };
-
-    return (
-      <div>
-        <Nav/>
-        <BigCard/>
-      </div>
-    );
-  },
-  _handleTouchTap() {
-  },
-});
-
-// LIST VIEW FOR RECOMMENDATIONS OR PAST RATINGS
-const Recommendations = React.createClass({
-  render() {
-
-    let containerStyle = {
-      position: 'relative',
-      width: '80%',
-      left: '10%',
-      top: '100px',
-    };
-
-    return (
-      <div>
-        <Nav/>
-
-      </div>
-    );
-  },
-  _handleTouchTap() {
-  },
-});
-
 
 // LOGIN VIEW, INCLUDING SPLASH SCREEN - DISPLAY IF NOT LOGGED IN
 const Login = React.createClass({
@@ -115,14 +66,6 @@ const Login = React.createClass({
 // https://developers.google.com/identity/sign-in/web/backend-auth
 
 
-
-
-
-
-
-// SUB-COMPONENTS, FOR BUILDING THE ABOVE
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
 const LoginButton = React.createClass({
   render() {
 
@@ -144,39 +87,54 @@ const LoginButton = React.createClass({
 
 });
 
-// NAVIGATION BAR
-const Nav = React.createClass({    // Needs to collapse better for mobile
-  render() {
+//NAVIGATION BAR
+ const Nav = React.createClass({    // Needs to collapse better for mobile
+   render() {
 
-    let containerStyle = {
-      position: 'absolute',
-      width: '94%',
-      left: '3%',
-      top: '20px',
-      paddingLeft: '10px',
-    };
-
-    return (
-      <nav style={containerStyle}>
+     return (
+      <nav>
         <div className="nav-wrapper">
-          <a href="#" className="brand-logo">Thirst</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li><Link to="test">Login</Link></li>
-            <li><Link to="recommendations">Recommendations</Link></li>
-            <li><Link to="/">Rate Drinks</Link></li>
+            <li><Link to="login">Login</Link></li>
+            <li><Link to="recommend">Recommendations</Link></li>
+            <li><Link to="rate">Rate Drinks</Link></li>
             <li><a href="">Drinks I've Had</a></li>
           </ul>
         </div>
       </nav>
+     );
+   },
+   _handleTouchTap() {
+   },
+ });
+
+//Page for recommended drinks
+const Recommend = React.createClass({
+  render() {
+
+    let containerStyle = {
+      position: 'relative',
+      width: '80%',
+      left: '10%',
+      top: '50px',
+    };
+
+    return (
+      <div className="recommend-container" style={ containerStyle }>
+        {
+          recommendData.drinks.map(function(item){
+            return <RecommendPanel drinkName={item}/>
+          })
+        }
+      </div>
     );
   },
   _handleTouchTap() {
   },
 });
 
-
-const RatingsPage = React.createClass({
-// const BigCard = React.createClass({
+//Page for rating drinks
+const Rate = React.createClass({
   render() {
 
     let containerStyle = {
@@ -200,12 +158,35 @@ const RatingsPage = React.createClass({
   },
 });
 
-//TODO: Fill with actual data
 const RatingPanel = React.createClass({
   render: function() {
     //TODO: adjust size
     //wire up buttons
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/" + this.props.drinkName + ".png"
+
+    return (
+      <DrinkCard drinkName={this.props.drinkName}>
+        <RatingAction/>
+      </DrinkCard>
+    )
+  }
+});
+
+//TODO:Add expected rating or ranking
+const RecommendPanel = React.createClass({
+  render: function() {
+    return (
+      <DrinkCard drinkName={this.props.drinkName}>
+        <DrinkContent drinkName={this.props.drinkName}/>
+        <DrinkReveal drinkname={this.props.drinkName}/>
+      </DrinkCard>
+    )
+  }
+});
+
+//Materialize card that will hold the picture of the drink and other components
+const DrinkCard = React.createClass({
+  render: function() {
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/225x300/" + this.props.drinkName + ".png"
 
     return (
     <div className="card">
@@ -213,30 +194,59 @@ const RatingPanel = React.createClass({
         <img src={imageUrl}/>
         <span className="card-title">{ this.props.drinkName }</span>
       </div>
-      <div className="card-content">
-        <h5>Rate this drink:</h5>
-      </div>
+      { this.props.children }
+    </div>
+    )
+  }
+});
+
+//The UI for rating drinks. Will be used by DrinkCard
+const RatingAction = React.createClass({
+  render: function() {
+    return (
       <div className="card-action">
         <i className="small material-icons">not_interested</i>
         <i className="small material-icons">star_rate</i>
         <i className="small material-icons">star_rate</i>
         <i className="small material-icons">star_rate</i>
         <i className="small material-icons">star_rate</i>
-        <i className="small material-icons">star_rate</i>
       </div>
-    </div>
-    )
+      )
+  }
+});
+
+const DrinkReveal = React.createClass({
+  render: function() {
+    return (
+      <div className="card-reveal">
+        <span className="card-title grey-text text-darken-4">{this.props.drinkName}<i className="material-icons right">close</i></span>
+        <p>This will have more information about the drinks</p>
+      </div>
+      )
   }
 });
 
 
+const DrinkContent = React.createClass({
+  render: function() {
+    return (
+      <div className="card-content">
+        <span className="card-title activator grey-text text-darken-4">{this.props.drinkName}<i className="material-icons right">more_vert</i></span>
+      </div>
+    )
+  }
+});
+
+//Routes - need to figure out how login will work (server/client redirection)
 render((
   <Router>
-    <Route path="/" component={Main} />
-    <Route path="test" component={Login} />
-    <Route path="recommendations" component={Recommendations} />
+    <Route path="/" component={Main}>
+      <Route path="login" component={Login} />
+      <Route path="rate" component={Rate} />
+      <Route path="recommend" component={Recommend} />
+    </Route>
   </Router>
-), document.body)
+), document.body);
 
 
 module.exports = Main;
