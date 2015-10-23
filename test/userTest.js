@@ -1,31 +1,33 @@
-var assert = require('chai').assert;
-//var db = require('seraph');
-var Users = require('../server/models/user.js');
-var db;
-//Checks if deployed or local
-if(process.env.GRAPHENEDB_URL){
 
-  var url = require('url').parse(process.env.GRAPHENEDB_URL);
+// var assert = require('Chai').assert;
+// //var db = require('seraph');
+// var Users = require('../server/models/user.js');
+// var db;
+// //Checks if deployed or local
+// if(process.env.GRAPHENEDB_URL){
 
-  db = require("seraph")({
-    server: url.protocol + '//' + url.host,
-    user: url.auth.split(':')[0],
-    pass: url.auth.split(':')[1]
-  });
-} else {
-  var config = require('../config.js');
-  db = require("seraph")({
-    server: "http://localhost:7474",
-    user: config.neo4jAuth.user,
-    pass: config.neo4jAuth.password //your password here
-  });  
-}
 
-var user = {userName:'Jackie Chan'};
-Users.saveUser(user);
+//   var url = require('url').parse(process.env.GRAPHENEDB_URL);
 
-var userList = Users.getUser('Jackie Chan');
-console.log(userList);
+//   db = require("seraph")({
+//     server: url.protocol + '//' + url.host,
+//     user: url.auth.split(':')[0],
+//     pass: url.auth.split(':')[1]
+//   });
+// } else {
+//   var config = require('../config.js');
+//   db = require("seraph")({
+//     server: "http://localhost:7474",
+//     user: config.neo4jAuth.user,
+//     pass: config.neo4jAuth.password //your password here
+//   });  
+// }
+
+// var user = {userName:'Jackie Chan'};
+// Users.saveUser(user);
+
+// var userList = Users.getUser('Jackie Chan');
+// console.log(userList);
 
 // db.find(user, function(err, result) { 
 //     //may need to account for result being array of 1

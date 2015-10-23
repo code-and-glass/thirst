@@ -39,7 +39,6 @@
     "grunt-shell": "^1.1.2",
     "load-grunt-tasks": "^3.3.0",
     "mocha": "^2.3.3",
-    "supertest": "^1.1.0",
-    "mocha": "^2.3.3"
+    "supertest": "^1.1.0"
   }
 }

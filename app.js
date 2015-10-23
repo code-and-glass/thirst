@@ -91,6 +91,12 @@ app.get('/auth/google/callback',
     res.redirect('/');
   });
 
+
+
+
+
+
+
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');

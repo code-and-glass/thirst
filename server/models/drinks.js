@@ -1,4 +1,4 @@
-var db = require('../database.js');
+var db = require('../config.js');
 
 var Drink = function(name) { //additional parameters and object properties as needed
   //create drink node
@@ -42,7 +42,7 @@ module.exports = {
     return db.nodesWithLabel('Drink', function(err, results) {
       //console.log('results from getAllDrinks callback', results);
       callback(results);
-    });
+   });
   },
 
   getRandomDrinks: function(number, callback) {
