@@ -1,6 +1,6 @@
 var recommend = require('./recommender.js');
 var utils = require('./utilities/utils');
-var db = require('./config.js');
+var db = require('./serverConfig.js');
 
 // module.exports = function() {
   db.batch(function(txn) {
