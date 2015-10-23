@@ -38,18 +38,24 @@ module.exports = {
   },
 
   getAllDrinks: function(callback) {
-    //return array of all drinks in database.
+    //return array of ten drinks starting at random index
     return db.nodesWithLabel('Drink', function(err, results) {
+      var randomNum = Math.floor(Math.random() * (results.length - 10));
+      var randomList = results.slice(randomNum, randomNum+10);
       //console.log('results from getAllDrinks callback', results);
-      callback(results);
-   });
+      //sends one random drink
+      callback(randomList[0]);
+    });
   },
 
   getRandomDrinks: function(number, callback) {
+    // gets 10 drinks starting at random index
     return db.nodesWithLabel('Drink', function(err, results) {
       //console.log('results from getAllDrinks callback', results);
-      
-      callback(results);
+      var randomNum = Math.floor(Math.random() * (results.length - 10));
+      var randomList = results.slice(randomNum, randomNum+10);
+      // sends one random drink
+      callback(randomList[0]);
     });
   },
 
