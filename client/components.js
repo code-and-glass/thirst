@@ -41,14 +41,10 @@ const Main = React.createClass({
 
 //NAVIGATION BAR
 
- const Nav = React.createClass({    // Needs to collapse better for mobile
+const Nav = React.createClass({    // Needs to collapse better for mobile
+  render() {
 
-   recommend() {
-     this.props.dispatch(actionCreators.getRecommendations(reduxState.user));  // for example
-   },
-
-   render() {
-     return (
+    return (
       <nav>
         <div className="nav-wrapper">
           <ul id="nav-mobile" className="right hide-on-med-and-down">
