@@ -17,10 +17,10 @@ var users = require('./routes/users');
 
 var app = express();
 
-var drinks = require('./server/models/drinks.js');
-drinks.getAllDrinks(function (results) {
-  console.log('results from router.get callback', results);
-});
+// var drinks = require('./server/models/drinks.js');
+// drinks.getAllDrinks(function (results) {
+//   console.log('results from router.get callback', results);
+// });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

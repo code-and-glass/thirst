@@ -6,6 +6,6 @@ var array = Promise.promisifyAll([1,2,3,4,5,5]);
 var newarray = Promise.map(array, function(item) {
   return item +1;
 }) ;
-console.log(
-newarray
-);
+// console.log(
+// newarray
+// );
