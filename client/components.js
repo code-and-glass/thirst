@@ -1,5 +1,3 @@
-
-
 import React from 'react'
 import { Router, Route, Link, IndexRoute } from 'react-router';
 import { render } from 'react-dom'
@@ -42,14 +40,12 @@ const Main = React.createClass({
 
 
 //NAVIGATION BAR
- const Nav = React.createClass({    // Needs to collapse better for mobile
 
-   recommend() {
-     this.props.dispatch(actionCreators.getRecommendations(reduxState.user));  // for example
-   },
+const Nav = React.createClass({    // Needs to collapse better for mobile
+  render() {
 
-   render() {
-     return (
+    return (
+
       <nav>
         <div className="nav-wrapper">
           <ul id="nav-mobile" className="right hide-on-med-and-down">
@@ -60,11 +56,12 @@ const Main = React.createClass({
           </ul>
         </div>
       </nav>
-     );
-   },
-   _handleTouchTap() {
-   },
- });
+    );
+  },
+  
+  handleTouchTap() {
+  },
+});
 
 //Page for recommended drinks
 const Recommend = React.createClass({

@@ -80,7 +80,7 @@ passport.use(new GoogleStrategy({
         console.log("this is the error", err);
         return done(err, user);
       });
-    })
+    });
   }
 ));
 
