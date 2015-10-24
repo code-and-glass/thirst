@@ -1,5 +1,3 @@
-
-
 import React from 'react'
 import { Router, Route, Link, IndexRoute } from 'react-router';
 import { render } from 'react-dom'
@@ -104,10 +102,10 @@ const LoginButton = React.createClass({
 });
 
 //NAVIGATION BAR
- const Nav = React.createClass({    // Needs to collapse better for mobile
-   render() {
+const Nav = React.createClass({    // Needs to collapse better for mobile
+  render() {
 
-     return (
+    return (
       <nav>
         <div className="nav-wrapper">
           <ul id="nav-mobile" className="right hide-on-med-and-down">
@@ -118,11 +116,12 @@ const LoginButton = React.createClass({
           </ul>
         </div>
       </nav>
-     );
-   },
-   _handleTouchTap() {
-   },
- });
+    );
+  },
+  
+  handleTouchTap() {
+  },
+});
 
 //Page for recommended drinks
 const Recommend = React.createClass({
