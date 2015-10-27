@@ -40,63 +40,6 @@ const Main = React.createClass({
   },
 });
 
-// LOGIN VIEW, INCLUDING SPLASH SCREEN - DISPLAY IF NOT LOGGED IN
-const Login = React.createClass({
-
-  onSignIn(googleUser) {
-    // Useful data for your client-side scripts:
-    // var profile = googleUser.getBasicProfile();
-    // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-    // console.log("Name: " + profile.getName());
-    // console.log("Image URL: " + profile.getImageUrl());
-    // console.log("Email: " + profile.getEmail());
-
-    // The ID token you need to pass to your backend:
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log("ID Token: " + id_token);
-    this.props.dispatch(actionCreators.login(id_token));
-  },
-
-  testFn() {
-    alert('hahaha')
-  },
-
-  render() {
-
-    let containerStyle = {
-      position: 'relative',
-      width: '100%',
-      height: '700px'
-    };
-
-    let titleStyle = {
-      textAlign: 'center',
-      width: '100%',
-      height: '100px',
-    };
-
-    let buttonStyle = {
-      position: 'relative',
-      textAlign: 'center',
-      // height: '100px',
-      // width: '100px',
-      left: '50%',
-      top: '500px'
-    };
-
-    return (
-      <div style={containerStyle}>
-        <h1 style={titleStyle} onClick={this.onSignIn}>Thirst</h1>
-        <div className="g-signin2" data-onsuccess={this.onSignIn} data-theme="dark">Login</div>
-      </div>
-    );
-  },
-  _handleTouchTap() {
-  },
-});
-// https://developers.google.com/identity/sign-in/web/sign-in
-// https://developers.google.com/identity/sign-in/web/backend-auth
-
 
 //NAVIGATION BAR
  const Nav = React.createClass({    // Needs to collapse better for mobile
@@ -110,7 +53,7 @@ const Login = React.createClass({
       <nav>
         <div className="nav-wrapper">
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li><Link to="login">Login</Link></li>
+            <li>Logout</li>
             <li><Link to="recommend">Recommendations</Link></li>
             <li><Link to="rate">Rate Drinks</Link></li>
             <li><a href="">Drinks I've Had</a></li>
@@ -256,7 +199,6 @@ const DrinkContent = React.createClass({
 render((
   <Router>
     <Route path="/" component={Main}>
-      <Route path="login" component={Login} />
       <Route path="rate" component={Rate} />
       <Route path="recommend" component={Recommend} />
     </Route>

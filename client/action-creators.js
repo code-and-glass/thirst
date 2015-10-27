@@ -3,30 +3,29 @@
 // put .catch functions in as well to handle errors
 // https://github.com/github/fetch   POLYFILL - use ajax if can't work this
 
-export function login(userToken) {
+export function onLogin() {
   return function (dispatch, getState) {
     // We can dispatch both plain object actions and other thunks,
     // which lets us compose the asynchronous actions in a single flow.
     return dispatch(
-      fetch('/api/login', {
-	      method: 'get',
-        body: {user: userToken}
+      fetch('/api/login', { // fetch user info when redirected to client / on first load
+	      method: 'get'
       }).then(response =>
         dispatch({
-          type: 'LOGIN',
+          type: 'ON_LOGIN',
           data: response.data // or whatever format is
-        }) // how does app know to route away from login screen?
+        }) // what page do we show them on login?
       )
     )
   }
 }
 
-export function postRatedDrink(userToken, drink) {
+export function postRatedDrink(drink) {
   return function (dispatch, getState) {
     return dispatch(
       fetch('/api/rate', {
 	      method: 'post',
-        body: {user: userToken, drink: drink}
+        body: {drink: drink}
       }).then((response) =>
         dispatch({
           type: 'RATE_DRINK',
@@ -37,13 +36,11 @@ export function postRatedDrink(userToken, drink) {
   }
 }
 
-export function getDrinksToRate(userToken) {
+export function getDrinksToRate() {
   return function (dispatch, getState) {
     return dispatch(
-      fetch('/api/rate', {
-	      method: 'get',
-        body: {user: userToken}
-      }).then((response) =>
+      fetch('/api/rate', {method: 'get'})
+      .then((response) =>
         dispatch({
           type: 'GET_DRINKS',
           drinks: response.data.drinks // or whatever it is
@@ -53,13 +50,11 @@ export function getDrinksToRate(userToken) {
   }
 }
 
-export function getRecommendations(userToken) {
+export function getRecommendations() {
   return function (dispatch, getState) {
     return dispatch(
-      fetch('/api/recommend', {
-	      method: 'get',
-        body: {user: userToken}
-      }).then((response) =>
+      fetch('/api/recommend', {method: 'get'})
+      .then((response) =>
         dispatch({
           type: 'GET_RECS',
           recs: response.data.recommendations // or whatever
