@@ -23,10 +23,7 @@ const store = createStore()
 
 ReactDOM.render(
   // Provide our Redux store to our Root component as a prop so that Redux Provider can do its job.
-  <div>
-    <Main/>
-    <div className="g-signin2" data-theme="dark">Login</div>
-  </div>,
+  <Main/>,
   // <Application store={store} />,
   document.getElementById('app')
 );
