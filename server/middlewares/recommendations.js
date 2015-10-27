@@ -30,7 +30,7 @@ app.post('/rate', function(req, res, next) {
      res.json(testJSON);
   });
 });
-
+/*
 
 app.get('/recommend', function(req, res, next) {
   //get a list of all user and ratings 
@@ -74,22 +74,22 @@ app.get('/recommend', function(req, res, next) {
     //create matrix somehow and fetch recommendations
 
 });
-
+*/
 //test
-request(app)
-  .post('/rate')
-  .expect(200)
-  .expect('Content-Type', /json/)
-  .end(function(err, res){
-    if (err) throw err;
-    //console.log(res);
-  });
+// request(app)
+//   .post('/rate')
+//   .expect(200)
+//   .expect('Content-Type', /json/)
+//   .end(function(err, res){
+//     if (err) throw err;
+//     //console.log(res);
+//   });
 
-  request(app)
-  .get('/recommend')
-  .expect(200)
-  .expect('Content-Type', /json/)
-  .end(function(err, res){
-    if (err) console.log(err);
-    console.log(res);
-  });
+//   request(app)
+//   .get('/recommend')
+//   .expect(200)
+//   .expect('Content-Type', /json/)
+//   .end(function(err, res){
+//     if (err) console.log(err);
+//     console.log(res);
+//   });

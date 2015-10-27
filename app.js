@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // uncomment to run migrations.js
-var migrations = require('./server/migrations/migrations.js');
+// var migrations = require('./server/migrations/migrations.js');
 
 // routing 
 var request = require("request");
@@ -17,20 +17,87 @@ var users = require('./routes/users');
 
 var app = express();
 
-var drinks = require('./server/models/drinks.js');
-drinks.getAllDrinks(function (results) {
-  console.log('results from router.get callback', results);
-});
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client/dist')));
+app.use(session({
+  saveUninitialized: true,
+  resave: false,
+  secret: 'infinity divded by infinity'
+}));
 
 app.use('/', routes);
 app.use('/users', users);
 
 module.exports = app;
+
+/********************* goggle auth ***************************/
+
+var GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+// load up the user model
+var db = require('./server/serverConfig.js');
+// load the auth variables
+var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientID;
+var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// used to serialize the user for the session
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+// used to deserialize the user
+passport.deserializeUser(function(id, done) {
+  user.findById(id, function(err, user) {
+      done(err, user);
+  });
+});
+
+passport.use(new GoogleStrategy({
+    consumerKey: GOOGLE_CONSUMER_KEY,
+    consumerSecret: GOOGLE_CONSUMER_SECRET,
+    callbackURL: "http://127.0.0.1:3000/auth/google/callback"
+  },
+  function(token, tokenSecret, profile, done) {
+    req.session.oauth = accessToken;
+    req.session.uid = profile._json.login; // need to test profile res info
+    // create session info here if needed:
+    req.session.userRecord = {
+      name: profile._json.name,
+      googleLigin: profile._json.login
+    };
+    // associate the Google account with a user record in your database,
+    // and return that user instead.
+    db.save({ googleId: profile.id }, function (err, user) {
+      return done(err, user);
+    });
+  }
+));
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // if they aren't redirect them to the home/login page
+  res.redirect('/login');
+}
+
+/***************** End Auth ******************/
 
 // The following needs to be reviewed and removed:
 
