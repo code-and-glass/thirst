@@ -33,14 +33,13 @@ app.use('/users', users);
 module.exports = app;
 
 /********************* goggle auth ***************************/
-
+var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
 // load up the user model
 var db = require('./server/serverConfig.js');
 // load the auth variables
-var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientID;
+var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
 var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
-
 app.use(passport.initialize());
 app.use(passport.session());
 
