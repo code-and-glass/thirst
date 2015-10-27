@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // uncomment to run migrations.js
-var migrations = require('./server/migrations/migrations.js');
+// var migrations = require('./server/migrations/migrations.js');
 
 // routing 
 var request = require("request");
@@ -17,11 +17,6 @@ var users = require('./routes/users');
 
 var app = express();
 
-// var drinks = require('./server/models/drinks.js');
-// drinks.getAllDrinks(function (results) {
-//   console.log('results from router.get callback', results);
-// });
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -31,6 +26,36 @@ app.use('/', routes);
 app.use('/users', users);
 
 module.exports = app;
+
+/********************* goggle auth ***************************/
+var GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientID;
+var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientID;
+
+passport.use(new GoogleStrategy({
+    consumerKey: GOOGLE_CONSUMER_KEY,
+    consumerSecret: GOOGLE_CONSUMER_SECRET,
+    callbackURL: "http://127.0.0.1:3000/auth/google/callback"
+  },
+  function(token, tokenSecret, profile, done) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return done(err, user);
+    });
+  }
+));
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: 'https://www.google.com/m8/feeds' }));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
+
+/***************** End Auth ******************/
 
 // The following needs to be reviewed and removed:
 

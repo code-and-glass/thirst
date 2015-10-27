@@ -5,6 +5,18 @@ var router = express.Router();
 // var request = require('supertest');
 var app = express();
 
+// we want to respond to post request with a list of all rated drinks
+  // '/rateDrink'
+  // '/getRecommendations'
+
+/*
+{ 
+  user: token123124123123123122,
+  drinksNotRated : [x, y, z]
+  drinksRecommended: [x, y, z]
+  drinksRated: [x, y,z]
+}
+*/
 
 /* GET home page. */
 app.get('/drinks', function(req, res, next) {
@@ -30,7 +42,6 @@ app.get('/drinks', function(req, res, next) {
 //     if (err) throw err;
 //     console.log(res);
 //   });
-
 
 app.get('/randomDrinks', function(req, res, next) {
   //respond with data of all drinks in db
