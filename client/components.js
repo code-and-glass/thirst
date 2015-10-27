@@ -14,7 +14,6 @@ import * as actionCreators from './action-creators'
 //       // SOMETHING ABOUT DRINKS HERE, FOR EXAMPLE
 //     }
 // })
-
 // SEE EXAMPLE COMPONENT IN HOME.JSX FOR INTEGRATING COMPONENS WITH REDUX
 
 
@@ -41,77 +40,20 @@ const Main = React.createClass({
   },
 });
 
-// LOGIN VIEW, INCLUDING SPLASH SCREEN - DISPLAY IF NOT LOGGED IN
-const Login = React.createClass({
-  render() {
-
-    let containerStyle = {
-      position: 'relative',
-      width: '100%',
-      height: '700px',
-      backgroundColor: 'lightblue',
-    };
-
-    let titleStyle = {
-      textAlign: 'center',
-      width: '100%',
-      height: '100px',
-    };
-
-    let buttonStyle = {
-      position: 'relative',
-      textAlign: 'center',
-      width: '50px',
-      left: '50%',
-      top: '200px',
-    };
-
-    return (
-      <div style={containerStyle}>
-        <h1 style={titleStyle}>Thirst</h1>
-        <div style={buttonStyle}>
-          <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-        </div>
-      </div>
-    );
-  },
-  _handleTouchTap() {
-  },
-});
-// https://developers.google.com/identity/sign-in/web/sign-in
-// https://developers.google.com/identity/sign-in/web/backend-auth
-
-
-const LoginButton = React.createClass({
-  render() {
-
-    let containerStyle = {
-      position: 'relative',
-      // width: '200px',
-      left: '40%',
-      top: '300px',
-    };
-
-    return (
-      <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-
-    );
-  },
-
-  _handleTouchTap() {
-  },
-
-});
 
 //NAVIGATION BAR
  const Nav = React.createClass({    // Needs to collapse better for mobile
-   render() {
 
+   recommend() {
+     this.props.dispatch(actionCreators.getRecommendations(reduxState.user));  // for example
+   },
+
+   render() {
      return (
       <nav>
         <div className="nav-wrapper">
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li><Link to="login">Login</Link></li>
+            <li>Logout</li>
             <li><Link to="recommend">Recommendations</Link></li>
             <li><Link to="rate">Rate Drinks</Link></li>
             <li><a href="">Drinks I've Had</a></li>
@@ -257,7 +199,6 @@ const DrinkContent = React.createClass({
 render((
   <Router>
     <Route path="/" component={Main}>
-      <Route path="login" component={Login} />
       <Route path="rate" component={Rate} />
       <Route path="recommend" component={Recommend} />
     </Route>
@@ -266,5 +207,3 @@ render((
 
 
 module.exports = Main;
-
-

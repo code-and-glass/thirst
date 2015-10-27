@@ -19,5 +19,3 @@ export default class Application extends React.Component {
     )
   }
 }
-
-// Go to ./home.jsx to discover how you could read from state and dispatch an action from a React component.

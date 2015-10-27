@@ -28,5 +28,4 @@ ReactDOM.render(
   document.getElementById('app')
 );
 
-
 // THIS FILE IS INDEX.JSX IN TUTORIAL
