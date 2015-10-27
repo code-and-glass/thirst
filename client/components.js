@@ -14,7 +14,6 @@ import * as actionCreators from './action-creators'
 //       // SOMETHING ABOUT DRINKS HERE, FOR EXAMPLE
 //     }
 // })
-
 // SEE EXAMPLE COMPONENT IN HOME.JSX FOR INTEGRATING COMPONENS WITH REDUX
 
 
@@ -43,13 +42,31 @@ const Main = React.createClass({
 
 // LOGIN VIEW, INCLUDING SPLASH SCREEN - DISPLAY IF NOT LOGGED IN
 const Login = React.createClass({
+
+  onSignIn(googleUser) {
+    // Useful data for your client-side scripts:
+    // var profile = googleUser.getBasicProfile();
+    // console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    // console.log("Name: " + profile.getName());
+    // console.log("Image URL: " + profile.getImageUrl());
+    // console.log("Email: " + profile.getEmail());
+
+    // The ID token you need to pass to your backend:
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log("ID Token: " + id_token);
+    this.props.dispatch(actionCreators.login(id_token));
+  },
+
+  testFn() {
+    alert('hahaha')
+  },
+
   render() {
 
     let containerStyle = {
       position: 'relative',
       width: '100%',
-      height: '700px',
-      backgroundColor: 'lightblue',
+      height: '700px'
     };
 
     let titleStyle = {
@@ -61,17 +78,16 @@ const Login = React.createClass({
     let buttonStyle = {
       position: 'relative',
       textAlign: 'center',
-      width: '50px',
+      // height: '100px',
+      // width: '100px',
       left: '50%',
-      top: '200px',
+      top: '500px'
     };
 
     return (
       <div style={containerStyle}>
-        <h1 style={titleStyle}>Thirst</h1>
-        <div style={buttonStyle}>
-          <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-        </div>
+        <h1 style={titleStyle} onClick={this.onSignIn}>Thirst</h1>
+        <div className="g-signin2" data-onsuccess={this.onSignIn} data-theme="dark">Login</div>
       </div>
     );
   },
@@ -82,31 +98,14 @@ const Login = React.createClass({
 // https://developers.google.com/identity/sign-in/web/backend-auth
 
 
-const LoginButton = React.createClass({
-  render() {
-
-    let containerStyle = {
-      position: 'relative',
-      // width: '200px',
-      left: '40%',
-      top: '300px',
-    };
-
-    return (
-      <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-
-    );
-  },
-
-  _handleTouchTap() {
-  },
-
-});
-
 //NAVIGATION BAR
  const Nav = React.createClass({    // Needs to collapse better for mobile
-   render() {
 
+   recommend() {
+     this.props.dispatch(actionCreators.getRecommendations(reduxState.user));  // for example
+   },
+
+   render() {
      return (
       <nav>
         <div className="nav-wrapper">
@@ -266,5 +265,3 @@ render((
 
 
 module.exports = Main;
-
-
