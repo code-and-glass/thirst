@@ -5,6 +5,7 @@
 // var express = require('express');
 
 var saveDrink = require('../models/drinks.js').saveDrink;
+var saveUser = require('../models/user.js').saveUser;
 
 //drink files
 var drinksTo1000 = require('./drinks1-1000.js');
@@ -29,10 +30,11 @@ var forEach = function (list, count) {
 };
 
 /*********** save each drink to db *************/
-//uncomment and run one at a time
-// forEach(drinksTo1000.start);
-// forEach(drinksTo2000.start);
-// forEach(drinksTo3000.start);
+
+ //forEach(drinksTo1000.start);
+ // forEach(drinksTo2000.start);
+//forEach(drinksTo3000.start);
+
 // forEach(drinksTo3550.start);
 
 
