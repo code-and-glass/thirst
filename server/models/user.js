@@ -44,6 +44,9 @@ module.exports = {
         //get all drinks and create relationship with 0 rating.
         require('./drinks.js').getAllDrinks(function(results) {
           results.forEach(function(drink) {
+            // var skip = getRandomInt(1,10);
+            // if (skip%2 === 0) {}
+
             function getRandomInt(min, max) {
               return Math.floor(Math.random() * (max - min)) + min;}
             var rating = getRandomInt(1,5);
