@@ -1,56 +1,51 @@
-import React from 'react'
+import React  from 'react'
 import { Router, Route, Link, IndexRoute } from 'react-router';
 import { render } from 'react-dom'
-import { connect } from 'react-redux'
+import { connect, Provider } from 'react-redux'
 import * as actionCreators from './action-creators'
 
-// @connect((state/*, props*/) => {
-//     // This is our select function that will extract from the state the data slice we want to expose
-//     // through props to our component.
-//     return {
-//       reduxState: state,
-//       // SOMETHING ABOUT DRINKS HERE, FOR EXAMPLE
-//     }
-// })
-// SEE EXAMPLE COMPONENT IN HOME.JSX FOR INTEGRATING COMPONENS WITH REDUX
+
+import createStore from './create-store.js'
+
+//The redux store
+const store = createStore();
+
+function mapStateToProps(state){
+  return {
+    recommend: state._getThings.recommend,
+    rate: state._getThings.rate
+  };
+}
 
 
 //server data placeholder
 var drinksData = { drinks: ["absolut-cosmopolitan", "Pennsylvania", "Kremlin-Colonel"]};
 var recommendData = { drinks: ["Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]}
 
-
 const Main = React.createClass({
   render() {
-
     return (
       <div>
         <Nav/>
-          <div className="row">
-            <div className="col s8 offset-s2">
-              {this.props.children}
-            </div>
+        <div className="row">
+          <div className="col s8 offset-s2">
+            {this.props.children}
           </div>
+        </div>
       </div>
     );
   },
-  _handleTouchTap() {
-  },
 });
-
 
 //NAVIGATION BAR
 
- const Nav = React.createClass({    // Needs to collapse better for mobile
+const Nav = React.createClass({    // Needs to collapse better for mobile
+  render() {
 
-   recommend() {
-     this.props.dispatch(actionCreators.getRecommendations(reduxState.user));  // for example
-   },
-
-   render() {
-     return (
+    return (
       <nav>
         <div className="nav-wrapper">
+        <a href="#" className="brand-logo right">Thirst</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li>Logout</li>
             <li><Link to="recommend">Recommendations</Link></li>
@@ -66,8 +61,8 @@ const Main = React.createClass({
   },
 });
 
-//Page for recommended drinks
-const Recommend = React.createClass({
+@connect(mapStateToProps)
+class Recommend extends React.Component {
   render() {
 
     let containerStyle = {
@@ -77,22 +72,21 @@ const Recommend = React.createClass({
       top: '50px',
     };
 
+    console.log("Recommend Component Properties: ",this.props);
     return (
       <div className="recommend-container" style={ containerStyle }>
         {
-          recommendData.drinks.map(function(item){
-            return <RecommendPanel drinkName={item}/>
+          this.props.recommend.map(function(item){
+            return <RatingPanel drinkName={ item }></RatingPanel>
           })
         }
       </div>
     );
-  },
-  _handleTouchTap() {
-  },
-});
+  }
+}
 
-//Page for rating drinks
-const Rate = React.createClass({
+@connect(mapStateToProps)
+class Rate extends React.Component {
   render() {
 
     let containerStyle = {
@@ -105,16 +99,14 @@ const Rate = React.createClass({
     return (
       <div className="rating-container" style={ containerStyle }>
         {
-          drinksData.drinks.map(function(item){
+          this.props.rate.map(function(item){
             return <RatingPanel drinkName={ item }></RatingPanel>
           })
         }
       </div>
     );
-  },
-  _handleTouchTap() {
-  },
-});
+  }
+};
 
 const RatingPanel = React.createClass({
   render: function() {
@@ -195,15 +187,27 @@ const DrinkContent = React.createClass({
   }
 });
 
-//Routes - need to figure out how login will work (server/client redirection)
-render((
-  <Router>
-    <Route path="/" component={Main}>
-      <Route path="rate" component={Rate} />
-      <Route path="recommend" component={Recommend} />
-    </Route>
-  </Router>
-), document.body);
+
+const Application = React.createClass({
+
+  render: function() {
+    return (
+      <Provider store={ this.props.store }>
+        <Router>
+          <Route path="/" component={Main}>
+            <IndexRoute component={Rate}/>
+            <Route path="rate" component={Rate} />
+            <Route path="recommend" component={Recommend} />
+          </Route>
+        </Router>
+      </Provider>    
+    )
+  }
+})
 
 
-module.exports = Main;
+//TODO: Make a default splash for the main screen. Possibly make redirection.
+render( <Application store = {store} /> ,
+  document.getElementById('app')
+  );
+
