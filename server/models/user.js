@@ -41,21 +41,21 @@ module.exports = {
        db.label(user, 'User', function(err) {
         if (err) throw err;
         console.log(user.userName + ' saved to database and labeled.');
-        //get all drinks and create relationship with 0 rating.
-        require('./drinks.js').getAllDrinks(function(results) {
-          results.forEach(function(drink) {
-            // var skip = getRandomInt(1,10);
-            // if (skip%2 === 0) {}
+        //FOR TESTING: get all drinks and create relationship with 0 rating.
+        // require('./drinks.js').getAllDrinks(function(results) {
+        //   results.forEach(function(drink) {
+        //     // var skip = getRandomInt(1,10);
+        //     // if (skip%2 === 0) {}
 
-            function getRandomInt(min, max) {
-              return Math.floor(Math.random() * (max - min)) + min;}
-            var rating = getRandomInt(1,5);
-            db.relate(user, 'RATED', drink, {rating:rating}, 
-            function(err, relationship) {
-              if (err) console.log(err);
-            });
-          });
-        });
+        //     function getRandomInt(min, max) {
+        //       return Math.floor(Math.random() * (max - min)) + min;}
+        //     var rating = getRandomInt(1,5);
+        //     db.relate(user, 'RATED', drink, {rating:rating}, 
+        //     function(err, relationship) {
+        //       if (err) console.log(err);
+        //     });
+        //   });
+        // });
       }
     );
   });
