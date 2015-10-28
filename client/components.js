@@ -7,6 +7,7 @@ import * as actionCreators from './action-creators'
 
 import createStore from './create-store.js'
 
+//The redux store
 const store = createStore();
 
 function mapStateToProps(state){
