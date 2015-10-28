@@ -20,7 +20,9 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'client/dist')));
+app.use('/static', express.static(path.join(__dirname, 'client/dist')));
+app.use(express.static(path.join(__dirname, 'client/login')));
+// app.use(express.static(path.join(__dirname, 'client/dist')));
 app.use(session({
   saveUninitialized: true,
   resave: false,
@@ -34,12 +36,13 @@ module.exports = app;
 
 /********************* goggle auth ***************************/
 var passport = require('passport');
-var GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 // load up the user model
 var db = require('./server/serverConfig.js');
 // load the auth variables
 var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
 var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
+console.log(GOOGLE_CONSUMER_KEY, GOOGLE_CONSUMER_SECRET);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -50,41 +53,64 @@ passport.serializeUser(function(user, done) {
 
 // used to deserialize the user
 passport.deserializeUser(function(id, done) {
-  user.findById(id, function(err, user) {
-      done(err, user);
-  });
+  // db.findById(id, function(err, user) {
+  //   done(err, user);
+  // });
 });
 
 passport.use(new GoogleStrategy({
-    consumerKey: GOOGLE_CONSUMER_KEY,
-    consumerSecret: GOOGLE_CONSUMER_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/google/callback"
+    clientID: GOOGLE_CONSUMER_KEY,
+    clientSecret: GOOGLE_CONSUMER_SECRET,
+    callbackURL: "http://127.0.0.1:3000/auth/google/callback",
+    passReqToCallback   : true
   },
-  function(token, tokenSecret, profile, done) {
-    req.session.oauth = accessToken;
-    req.session.uid = profile._json.login; // need to test profile res info
-    // create session info here if needed:
-    req.session.userRecord = {
-      name: profile._json.name,
-      googleLigin: profile._json.login
-    };
-    // associate the Google account with a user record in your database,
-    // and return that user instead.
-    db.save({ googleId: profile.id }, function (err, user) {
-      return done(err, user);
-    });
+  function(req, token, tokenSecret, profile, done) {
+    // make the code asynchronous
+    process.nextTick(function() {
+      // console.log(profile); // response obj
+      // create session info here if needed:
+      req.session.userRecord = {
+        name: profile._json.displayName,
+        googleId: profile._json.id
+      };
+      // associate the Google account with a user record in your database,
+      // and return that user instead.
+      // console.log("session", req.session);
+      db.save({ googleId: profile.id }, function (err, user) {
+        console.log("this is the error", err);
+        return done(err, user);
+      });
+    })
   }
 ));
 
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
+// app.get('/auth/google', function () {
+//   console.log("auth/google");
+// });
 
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
+// app.get('/auth/google/callback', 
+//   passport.authenticate('google', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     console.log("[OAuth2:redirect:query]:", JSON.stringify(req.query));
+//     console.log("[OAuth2:redirect:body]:", JSON.stringify(req.body));
+//     console.log("Session", req.session);
+//     // Successful authentication, redirect home.
+
+//     res.send(path.join(__dirname, '/client/dist'));
+//     // app.use(express.static(path.join(__dirname, 'client/dist')));
+//   });
+
+app.get( '/auth/google/callback', 
+  passport.authenticate( 'google', { 
+    successRedirect: '/static',
+    failureRedirect: '/login'
+}));
+
+app.get('/', function (req, res) {
+
+})
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
