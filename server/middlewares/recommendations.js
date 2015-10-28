@@ -7,7 +7,7 @@ var router = express.Router();
 var request = require('supertest');
 var app = express();
 var utils = require('../utilities/utils.js');
-
+var recommend = require('../recommender.js');
 /* GET home page. */
 
 // var user = User.saveUser({userName:'ArtemB'});
@@ -30,7 +30,7 @@ app.post('/rate', function(req, res, next) {
      res.json(testJSON);
   });
 });
-
+/*
 
 app.get('/recommend', function(req, res, next) {
   //get a list of all user and ratings 
@@ -44,43 +44,52 @@ app.get('/recommend', function(req, res, next) {
    var drinkLabels = [];
    var matrix =[];
    var ratings = [];
-   result.forEach(function(user) {
-     
+   var count = 0;
+   
+   
+   result.forEach( function(user) {    
      User.getAllUserLikes(user, function(likedDrinks) {
        likedDrinks.forEach(function(item){
          userLabels.push(item.properties.user);
          drinkLabels.push(item.properties.drink);
          ratings.push(item.properties.rating);
-
        });
        matrix.push(ratings);
-       console.log(matrix);
-     });
-
+       count++;
+       if (count === result.length) {
+         //console.log(userLabels, drinkLabels);
+         //take the matrix, run recommend
+         var model = recommend.model(matrix, userLabels, drinkLabels);
+         var results = model.recommendations('JACKIECHAN');
+         //res.json {recommendations: []};
+         res.json({recommendations: results});
+         }
+      });
     });
   });
-  
+  //starts out at matrix 0 length,
+  //add a user , matrix 1
   // });
   //find user name from start property, dirnk name form end property, and rating
     //create matrix somehow and fetch recommendations
 
 });
-
+*/
 //test
-request(app)
-  .post('/rate')
-  .expect(200)
-  .expect('Content-Type', /json/)
-  .end(function(err, res){
-    if (err) throw err;
-    //console.log(res);
-  });
+// request(app)
+//   .post('/rate')
+//   .expect(200)
+//   .expect('Content-Type', /json/)
+//   .end(function(err, res){
+//     if (err) throw err;
+//     //console.log(res);
+//   });
 
-  request(app)
-  .get('/recommend')
-  .expect(200)
-  .expect('Content-Type', /json/)
-  .end(function(err, res){
-    if (err) console.log(err);
-    console.log(res);
-  });
+//   request(app)
+//   .get('/recommend')
+//   .expect(200)
+//   .expect('Content-Type', /json/)
+//   .end(function(err, res){
+//     if (err) console.log(err);
+//     console.log(res);
+//   });

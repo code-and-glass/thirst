@@ -1,9 +1,9 @@
-var db = require('../config.js');
+var db = require('../serverConfig.js');
 
 var Drink = function(name) { //additional parameters and object properties as needed
   //create drink node
   return {
-    drinkName: name,
+    drinkName: name
     //etc
   };
 };
@@ -16,7 +16,7 @@ module.exports = {
         if (err) {
           throw err;
         } else {
-        console.log(drink.drinkName + ' saved to database and labeled.');
+        console.log(drink.name + ' saved to database and labeled.');
         }
       });
     });
@@ -24,7 +24,7 @@ module.exports = {
   
   getDrink: function(drinkName, callback) {
     //return drink node by drinkName property
-    var predicate = {drinkName: drinkName};
+    var predicate = {drinkName: name};
     return db.find(predicate, function(err, result) { 
     //may need to account for result being array of 1
       if (err) {
@@ -38,18 +38,21 @@ module.exports = {
   },
 
   getAllDrinks: function(callback) {
-    //return array of all drinks in database.
+    //return array of ten drinks starting at random index
     return db.nodesWithLabel('Drink', function(err, results) {
       //console.log('results from getAllDrinks callback', results);
+      //sends one random drink
       callback(results);
-   });
+    });
   },
 
-  getRandomDrinks: function(number, callback) {
+  getRandomDrinks: function(callback) {
+    // gets 10 drinks starting at random index
     return db.nodesWithLabel('Drink', function(err, results) {
-      //console.log('results from getAllDrinks callback', results);
-      
-      callback(results);
+      var randomNum = Math.floor(Math.random() * (results.length - 10));
+      var randomList = results.slice(randomNum, randomNum+10);
+      // sends one random drink
+      callback(randomList[0]);
     });
   },
 
