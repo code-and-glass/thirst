@@ -21,12 +21,12 @@ app.post('/rate', function(req, res, next) {
    //req should have user, rating and drink properties
    
    //********may need to change based on req structure*******
-   // var user = req.user; 
-   // var rating = req.rating;
-   // var drink = req.drink;
+   var user = req.user; 
+   var rating = req.rating;
+   var drink = req.drink;
    //*********************************************************
 
-    User.rate(223, 4, 229, function(results) {
+    User.rate(user, rating, drink, function(results) {
     //console.log('results from app.get callback', results);
     //console.log(results);
      var testJSON = {'results':results};
@@ -77,8 +77,7 @@ app.get('/recommend', function(req, res, next) {
          //take the matrix, run recommend
          var model = recommend.model(matrix, userLabels, drinks);
          var results = model.recommendations('user2');
-         //res.json {recommendations: []};
-         console.log(results);
+         //console.log(results);
          res.json({recommendations: results});
          }
       });

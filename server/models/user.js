@@ -97,12 +97,20 @@ module.exports = {
   },
 
   rate: function(user, rating, drink, callback) {
-    db
-      .relate(user, 'likes', drink, {rating:rating, user:user.userName, drink:drink.name }, function(err, relationship) {
+    return db
+      .relate(user, 'RATED', drink, {rating:rating, user:user.userName, drink:drink.name }, function(err, relationship) {
       console.log('rate callback triggered');
       if (callback) {
         callback(relationship);
       }
+    });
+  },
+
+  query: function(cypher, user, callback) {
+    return db.query(cypher, user, function(err,results) {
+      if (err) {console.log(err);}
+
+      callback(results);
     });
   }
 };
