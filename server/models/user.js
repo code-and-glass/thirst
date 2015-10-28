@@ -42,19 +42,19 @@ module.exports = {
         if (err) throw err;
         console.log(user.userName + ' saved to database and labeled.');
         //get all drinks and create relationship with 0 rating.
-        // require('./drinks.js').getAllDrinks(function(results) {
-        //   results.forEach(function(drink) {
-        //     function getRandomInt(min, max) {
-        //       return Math.floor(Math.random() * (max - min)) + min;}
-        //     var rating = getRandomInt(1,5);
-        //     db.relate(user, 'likes', drink, {rating:rating, user:user.userName, drink:drink.name }, 
-            // function(err, relationship) {
-            //   if (err) console.log(err);
-            // });
-          // });
+        require('./drinks.js').getAllDrinks(function(results) {
+          results.forEach(function(drink) {
+            function getRandomInt(min, max) {
+              return Math.floor(Math.random() * (max - min)) + min;}
+            var rating = getRandomInt(1,5);
+            db.relate(user, 'RATED', drink, {rating:rating}, 
+            function(err, relationship) {
+              if (err) console.log(err);
+            });
+          });
         });
-    //   }
-    // );
+      }
+    );
   });
 },
 
@@ -108,9 +108,9 @@ module.exports = {
 
   query: function(cypher, user, callback) {
     return db.query(cypher, user, function(err,results) {
-      if (err) {console.log(err);}
+      if (err) console.log(err);
 
-      callback(results);
+      callback(results); 
     });
   }
 };

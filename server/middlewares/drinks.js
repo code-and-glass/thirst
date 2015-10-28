@@ -53,9 +53,8 @@ request(app)
   .expect('Content-Type', /json/)
   .end(function(err, res){
     if (err) throw err;
-    // console.log(res);
 
-  
-});
+     console.log(res);
+  });
 
 module.exports = app;
