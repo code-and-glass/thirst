@@ -1,32 +1,20 @@
-import React from 'react'
+import React  from 'react'
 import { Router, Route, Link, IndexRoute } from 'react-router';
 import { render } from 'react-dom'
 import { connect, Provider } from 'react-redux'
 import * as actionCreators from './action-creators'
 
-<<<<<<< HEAD
-// @connect((state/*, props*/) => {
-//     // This is our select function that will extract from the state the data slice we want to expose
-//     // through props to our component.
-//     return {
-//       reduxState: state,
-//       // SOMETHING ABOUT DRINKS HERE, FOR EXAMPLE
-//     }
-// })
-// SEE EXAMPLE COMPONENT IN HOME.JSX FOR INTEGRATING COMPONENS WITH REDUX
-=======
+
 import createStore from './create-store.js'
 
-const store = createStore({ rate: "Hello"});
+const store = createStore();
 
 function mapStateToProps(state){
   return {
-    rate: state.rate,
-    rec: state.recommend
-  }
+    recommend: state._getThings.recommend,
+    rate: state._getThings.rate
+  };
 }
-
->>>>>>> changes for adding redux state to components
 
 
 //server data placeholder
@@ -42,22 +30,11 @@ const Main = React.createClass({
           <div className="col s8 offset-s2">
             {this.props.children}
           </div>
-<<<<<<< HEAD
-=======
         </div>
->>>>>>> changes for adding redux state to components
       </div>
     );
   },
-  _handleTouchTap() {
-<<<<<<< HEAD
-  },
 });
-
-=======
-  }, 
-});
->>>>>>> changes for adding redux state to components
 
 //NAVIGATION BAR
 
@@ -69,10 +46,7 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
         <div className="nav-wrapper">
         <a href="#" className="brand-logo right">Thirst</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-<<<<<<< HEAD
             <li>Logout</li>
-=======
->>>>>>> changes for adding redux state to components
             <li><Link to="recommend">Recommendations</Link></li>
             <li><Link to="rate">Rate Drinks</Link></li>
             <li><a href="">Drinks I've Had</a></li>
@@ -86,10 +60,8 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
   },
 });
 
-
-
-//Page for recommended drinks
-const Recommend = connect(mapStateToProps)(React.createClass({
+@connect(mapStateToProps)
+class Recommend extends React.Component {
   render() {
 
     let containerStyle = {
@@ -98,19 +70,22 @@ const Recommend = connect(mapStateToProps)(React.createClass({
       left: '10%',
       top: '50px',
     };
+
     console.log("Recommend Component Properties: ",this.props);
     return (
       <div className="recommend-container" style={ containerStyle }>
-      
+        {
+          this.props.recommend.map(function(item){
+            return <RatingPanel drinkName={ item }></RatingPanel>
+          })
+        }
       </div>
     );
-  },
-  _handleTouchTap() {
-  },
-}));
+  }
+}
 
-//Page for rating drinks
-const Rate = connect(mapStateToProps)(React.createClass({
+@connect(mapStateToProps)
+class Rate extends React.Component {
   render() {
 
     let containerStyle = {
@@ -123,16 +98,14 @@ const Rate = connect(mapStateToProps)(React.createClass({
     return (
       <div className="rating-container" style={ containerStyle }>
         {
-          drinksData.drinks.map(function(item){
+          this.props.rate.map(function(item){
             return <RatingPanel drinkName={ item }></RatingPanel>
           })
         }
       </div>
     );
-  },
-  _handleTouchTap() {
-  },
-}));
+  }
+};
 
 const RatingPanel = React.createClass({
   render: function() {
