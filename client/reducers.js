@@ -1,29 +1,28 @@
 
 // REDUCERS PROCESS DISPATCHED ACTIONS AND UPDATE THE STATE
+const initialState = { 
+  rate: ["absolut-cosmopolitan", "Kremlin-Colonel"],
+  recommend: ["Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]  
+}
 
-export function _getThings(state = {}, action) {
+export function _getThings(state, action) {
+  state = state || initialState;
   switch (action.type) {
     case 'GET_DRINKS':
       return {
         ...state,
-        something: 'something-else'
+        rate: action.value
       }
     case 'GET_RECS':
       return {
         ...state,
-        something: 'something'
-      }
-    case 'LOGIN':
-      // we could add an error message here, to be printed somewhere in our application
-      return {
-        ...state,
-        user: 'userstuff'
+        recommended: action.value
+        //value should be the list of recommended drinks
       }
     default:
       return state
   }
 }
-
 
 
 

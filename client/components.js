@@ -1,9 +1,10 @@
 import React from 'react'
 import { Router, Route, Link, IndexRoute } from 'react-router';
 import { render } from 'react-dom'
-import { connect } from 'react-redux'
+import { connect, Provider } from 'react-redux'
 import * as actionCreators from './action-creators'
 
+<<<<<<< HEAD
 // @connect((state/*, props*/) => {
 //     // This is our select function that will extract from the state the data slice we want to expose
 //     // through props to our component.
@@ -13,31 +14,50 @@ import * as actionCreators from './action-creators'
 //     }
 // })
 // SEE EXAMPLE COMPONENT IN HOME.JSX FOR INTEGRATING COMPONENS WITH REDUX
+=======
+import createStore from './create-store.js'
+
+const store = createStore({ rate: "Hello"});
+
+function mapStateToProps(state){
+  return {
+    rate: state.rate,
+    rec: state.recommend
+  }
+}
+
+>>>>>>> changes for adding redux state to components
 
 
 //server data placeholder
 var drinksData = { drinks: ["absolut-cosmopolitan", "Pennsylvania", "Kremlin-Colonel"]};
 var recommendData = { drinks: ["Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]}
 
-
 const Main = React.createClass({
   render() {
-
     return (
       <div>
         <Nav/>
-          <div className="row">
-            <div className="col s8 offset-s2">
-              {this.props.children}
-            </div>
+        <div className="row">
+          <div className="col s8 offset-s2">
+            {this.props.children}
           </div>
+<<<<<<< HEAD
+=======
+        </div>
+>>>>>>> changes for adding redux state to components
       </div>
     );
   },
   _handleTouchTap() {
+<<<<<<< HEAD
   },
 });
 
+=======
+  }, 
+});
+>>>>>>> changes for adding redux state to components
 
 //NAVIGATION BAR
 
@@ -47,8 +67,12 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
     return (
       <nav>
         <div className="nav-wrapper">
+        <a href="#" className="brand-logo right">Thirst</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
+<<<<<<< HEAD
             <li>Logout</li>
+=======
+>>>>>>> changes for adding redux state to components
             <li><Link to="recommend">Recommendations</Link></li>
             <li><Link to="rate">Rate Drinks</Link></li>
             <li><a href="">Drinks I've Had</a></li>
@@ -62,8 +86,10 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
   },
 });
 
+
+
 //Page for recommended drinks
-const Recommend = React.createClass({
+const Recommend = connect(mapStateToProps)(React.createClass({
   render() {
 
     let containerStyle = {
@@ -72,23 +98,19 @@ const Recommend = React.createClass({
       left: '10%',
       top: '50px',
     };
-
+    console.log("Recommend Component Properties: ",this.props);
     return (
       <div className="recommend-container" style={ containerStyle }>
-        {
-          recommendData.drinks.map(function(item){
-            return <RecommendPanel drinkName={item}/>
-          })
-        }
+      
       </div>
     );
   },
   _handleTouchTap() {
   },
-});
+}));
 
 //Page for rating drinks
-const Rate = React.createClass({
+const Rate = connect(mapStateToProps)(React.createClass({
   render() {
 
     let containerStyle = {
@@ -110,7 +132,7 @@ const Rate = React.createClass({
   },
   _handleTouchTap() {
   },
-});
+}));
 
 const RatingPanel = React.createClass({
   render: function() {
@@ -191,15 +213,27 @@ const DrinkContent = React.createClass({
   }
 });
 
-//Routes - need to figure out how login will work (server/client redirection)
-render((
-  <Router>
-    <Route path="/" component={Main}>
-      <Route path="rate" component={Rate} />
-      <Route path="recommend" component={Recommend} />
-    </Route>
-  </Router>
-), document.body);
+
+const Application = React.createClass({
+
+  render: function() {
+    return (
+      <Provider store={ this.props.store }>
+        <Router>
+          <Route path="/" component={Main}>
+            <IndexRoute component={Rate}/>
+            <Route path="rate" component={Rate} />
+            <Route path="recommend" component={Recommend} />
+          </Route>
+        </Router>
+      </Provider>    
+    )
+  }
+})
 
 
-module.exports = Main;
+//TODO: Make a default splash for the main screen. Possibly make redirection.
+render( <Application store = {store} /> ,
+  document.getElementById('app')
+  );
+
