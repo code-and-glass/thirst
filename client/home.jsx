@@ -1,11 +1,11 @@
 
 // THIS IS AN EXAMPLE, WE WILL USE SIMILAR CODE IN COMPONENTS.JS
 
-import React from 'react'
-import { connect } from 'react-redux'
-// We use the same ES6 import trick to get all action creators and produce a hash like we did with
-// our reducers. If you haven't yet, go get a look at our action creator (./actions-creators.js).
-import * as actionCreators from './action-creators'
+// import React from 'react'
+// import { connect } from 'react-redux'
+// // We use the same ES6 import trick to get all action creators and produce a hash like we did with
+// // our reducers. If you haven't yet, go get a look at our action creator (./actions-creators.js).
+// import * as actionCreators from './action-creators'
 
 // @connect((state/*, props*/) => {
 //     // This is our select function that will extract from the state the data slice we want to expose
