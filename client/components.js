@@ -28,7 +28,7 @@ const Main = React.createClass({
       <div>
         <Nav/>
         <div className="row">
-          <div className="col s8 offset-s2">
+          <div className="col s6 offset-s3">
             {this.props.children}
           </div>
         </div>
@@ -137,14 +137,24 @@ const RecommendPanel = React.createClass({
 
 //Materialize card that will hold the picture of the drink and other components
 const DrinkCard = React.createClass({
+
+
+
   render: function() {
+    
+    let imageStyles = {
+      width: "inherit",
+      height: "100%",
+      "marginLeft": "450px"
+    }
+
     var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/225x300/" + this.props.drinkName + ".png"
 
     return (
-    <div className="card">
+    <div className="card medium">
       <div className="card-image">
-        <img src={imageUrl}/>
-        <span className="card-title">{ this.props.drinkName }</span>
+        <img src={imageUrl} style= { imageStyles }/>
+        <span className="card-title black-text">{ this.props.drinkName }</span>
       </div>
       { this.props.children }
     </div>
@@ -154,14 +164,20 @@ const DrinkCard = React.createClass({
 
 //The UI for rating drinks. Will be used by DrinkCard
 const RatingAction = React.createClass({
+
   render: function() {
+
+    let firstStarStyle = {
+      "marginRight": "60px"
+    }
     return (
       <div className="card-action">
-        <i className="small material-icons">not_interested</i>
-        <i className="small material-icons">star_rate</i>
-        <i className="small material-icons">star_rate</i>
-        <i className="small material-icons">star_rate</i>
-        <i className="small material-icons">star_rate</i>
+        <i className="material-icons" style={firstStarStyle}>not_interested</i>
+        <i className="material-icons">star_rate</i>
+        <i className="material-icons">star_rate</i>
+        <i className="material-icons">star_rate</i>
+        <i className="material-icons">star_rate</i>
+        <i className="material-icons">star_rate</i>
       </div>
       )
   }
@@ -171,7 +187,7 @@ const DrinkReveal = React.createClass({
   render: function() {
     return (
       <div className="card-reveal">
-        <span className="card-title grey-text text-darken-4">{this.props.drinkName}<i className="material-icons right">close</i></span>
+        <span className="card-title black-text text-darken-4">{this.props.drinkName}<i className="material-icons right">close</i></span>
         <p>This will have more information about the drinks</p>
       </div>
       )
@@ -183,7 +199,7 @@ const DrinkContent = React.createClass({
   render: function() {
     return (
       <div className="card-content">
-        <span className="card-title activator grey-text text-darken-4">{this.props.drinkName}<i className="material-icons right">more_vert</i></span>
+        <span className="card-title activator black-text">{this.props.drinkName}<i className="material-icons right">more_vert</i></span>
       </div>
     )
   }
