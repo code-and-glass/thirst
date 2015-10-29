@@ -49,13 +49,20 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
       </nav>
     );
   },
-  
+
   handleTouchTap() {
   },
 });
 
 @connect(mapStateToProps)
 class Recommend extends React.Component {
+
+  componentWillMount() {
+    console.log('this', this)
+    console.log(store)
+    this.props.dispatch(actionCreators.test())
+  }
+
   render() {
 
     let containerStyle = {
@@ -261,7 +268,7 @@ const Application = React.createClass({
             <Route path="recommend" component={Recommend} />
           </Route>
         </Router>
-      </Provider>    
+      </Provider>
     )
   }
 })
@@ -272,4 +279,3 @@ render(
   <Application store = {store} />,
   document.getElementById('app')
   );
-
