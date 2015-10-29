@@ -23,23 +23,27 @@ if (process.env.GRAPHENEDB_URL){
 
 //NEEDS TESTS
 
-var User = function(name, password, email) {
+var User = function(name, email, password) {
   //create user node
   return {
     userName: name,
     email: email,
-    password: password
+    googleId: password
   };
 };
 
 //example usage: db.save(user('fred', 'secret'));
 
 module.exports = {
-  saveUser: function(user) {
-    
-     db.save(user, function(err, user){
-       db.label(user, 'User', function(err) {
+
+  saveUser: function(user, cb) {
+    //save user node to db
+    console.log('saveUser triggered');
+    db.save(user, function(err, user){
+      db.label(user, 'User', function(err) {
         if (err) throw err;
+        console.log(err);
+        cb(err, user);
         console.log(user.userName + ' saved to database and labeled.');
         //FOR TESTING: get all drinks and create relationship with 0 rating.
         // require('./drinks.js').getAllDrinks(function(results) {
@@ -56,17 +60,15 @@ module.exports = {
         //     });
         //   });
         // });
-      }
-    );
-  });
-},
+      });
+    });
+  },
 
   getUser: function(name, callback) {
     //get user node by name
-   
     var predicate = {userName: name};
     db.find(predicate, function(err, result) { 
-    //may need to account for result being array of 1
+      //may need to account for result being array of 1
       if (err) throw err;
       callback(result); 
     });

@@ -13,7 +13,6 @@ var request = require("request");
 //var assert = require('assert');
 var session = require('express-session');
 var routes = require('./routes/index');
-var users = require('./routes/users');
 
 var app = express();
 
@@ -21,8 +20,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'client/dist')));
-app.use(express.static(path.join(__dirname, 'client/login')));
-// app.use(express.static(path.join(__dirname, 'client/dist')));
+app.use('/login', express.static(path.join(__dirname, 'client/login')));
+// app.use(express.static(path.join(__dirname, 'client/login')));
 app.use(session({
   saveUninitialized: true,
   resave: false,
@@ -30,7 +29,19 @@ app.use(session({
 }));
 
 app.use('/', routes);
-app.use('/users', users);
+// app.use('/users', users);
+
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // if they aren't redirect them to the home/login page
+  res.redirect('/login');
+}
+
+app.all('*', isLoggedIn);
 
 module.exports = app;
 
@@ -38,24 +49,25 @@ module.exports = app;
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 // load up the user model
-var db = require('./server/serverConfig.js');
+var user = require('./server/models/user.js');
+
 // load the auth variables
 var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
 var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
-console.log(GOOGLE_CONSUMER_KEY, GOOGLE_CONSUMER_SECRET);
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  console.log("inside serialize user", user, done);
+  done(null, user);
 });
 
 // used to deserialize the user
-passport.deserializeUser(function(id, done) {
-  // db.findById(id, function(err, user) {
-  //   done(err, user);
-  // });
+passport.deserializeUser(function(obj, done) {
+  console.log("inside deserializeUser", obj, done);
+  user.getUser(obj.userName, function(err, user) {
+    done(err, user);
+  });
 });
 
 passport.use(new GoogleStrategy({
@@ -69,58 +81,37 @@ passport.use(new GoogleStrategy({
     process.nextTick(function() {
       // console.log(profile); // response obj
       // create session info here if needed:
+      // console.log("email object is", profile._json.emails[0]);
       req.session.userRecord = {
-        name: profile._json.displayName,
+        userName: profile._json.displayName,
+        email: profile._json.emails[0].value,
         googleId: profile._json.id
       };
+      // console.log("user record in strategy", req.session.userRecord);
       // associate the Google account with a user record in your database,
       // and return that user instead.
-      // console.log("session", req.session);
-      db.save({ googleId: profile.id }, function (err, user) {
-        console.log("this is the error", err);
-        return done(err, user);
+      user.saveUser(req.session.userRecord, function (err, result) {
+        // console.log(result);
+        done(err, result);
       });
     })
   }
 ));
 
 app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
-// app.get('/auth/google', function () {
-//   console.log("auth/google");
-// });
+  passport.authenticate('google', { scope: ['profile', 'email'] }), 
+  function (res, res) {});
 
-// app.get('/auth/google/callback', 
-//   passport.authenticate('google', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     console.log("[OAuth2:redirect:query]:", JSON.stringify(req.query));
-//     console.log("[OAuth2:redirect:body]:", JSON.stringify(req.body));
-//     console.log("Session", req.session);
-//     // Successful authentication, redirect home.
 
-//     res.send(path.join(__dirname, '/client/dist'));
-//     // app.use(express.static(path.join(__dirname, 'client/dist')));
-//   });
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    console.log("[OAuth2:redirect:query]:", JSON.stringify(req.query));
+    console.log("Session", req.session);
+    // Successful authentication, redirect home.
+    res.redirect('/static');
+  });
 
-app.get( '/auth/google/callback', 
-  passport.authenticate( 'google', { 
-    successRedirect: '/static',
-    failureRedirect: '/login'
-}));
-
-app.get('/', function (req, res) {
-
-})
-
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  // if they aren't redirect them to the home/login page
-  res.redirect('/login');
-}
 
 /***************** End Auth ******************/
 
