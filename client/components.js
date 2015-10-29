@@ -60,9 +60,7 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
 class Recommend extends React.Component {
 
   componentWillMount() {
-    console.log('this', this)
-    console.log(store)
-    this.props.dispatch(actionCreators.test())
+    this.props.dispatch(actionCreators.getRecommendations())
   }
 
   render() {
@@ -90,6 +88,11 @@ class Recommend extends React.Component {
 
 @connect(mapStateToProps)
 class Rate extends React.Component {
+
+  componentWillMount() {
+    this.props.dispatch(actionCreators.getDrinks())
+  }
+
   render() {
 
     let containerStyle = {
@@ -112,6 +115,11 @@ class Rate extends React.Component {
 };
 
 const RatingPanel = React.createClass({
+  
+  rate(drink) {
+    this.props.dispatch(actionCreators.rateDrink(drink))
+  },
+
   render: function() {
     //TODO: adjust size
     //wire up buttons
