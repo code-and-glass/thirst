@@ -19,8 +19,8 @@ function mapStateToProps(state){
 
 
 //server data placeholder
-var drinksData = { drinks: ["absolut-cosmopolitan", "Pennsylvania", "Kremlin-Colonel"]};
-var recommendData = { drinks: ["Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]}
+// var drinksData = { drinks: ["absolut-cosmopolitan", "Pennsylvania", "Kremlin-Colonel"]};
+// var recommendData = { drinks: ["Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]}
 
 const Main = React.createClass({
   render() {
@@ -47,7 +47,7 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
 
       <nav>
         <div className="nav-wrapper">
-        <a href="#" className="brand-logo right">Thirst</a>
+        <a href="#" className="brand-logo left">Thirst</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li>Logout</li>
             <li><Link to="recommend">Recommendations</Link></li>
@@ -79,7 +79,7 @@ class Recommend extends React.Component {
       <div className="recommend-container" style={ containerStyle }>
         {
           this.props.recommend.map(function(item){
-            return <RatingPanel drinkName={ item }></RatingPanel>
+            return <RecommendPanel drinkName={ item }></RecommendPanel>
           })
         }
       </div>
@@ -126,11 +126,25 @@ const RatingPanel = React.createClass({
 //TODO:Add expected rating or ranking
 const RecommendPanel = React.createClass({
   render: function() {
+
+    let imageStyles = {
+      width: "inherit",
+      height: "100%",
+      "marginLeft": "450px"
+    }
+
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/225x300/" + this.props.drinkName + ".png"
     return (
-      <DrinkCard drinkName={this.props.drinkName}>
-        <DrinkContent drinkName={this.props.drinkName}/>
+      <div className="card medium">
+        <div className="card-image">
+          <img src={imageUrl} style= { imageStyles }/>
+          <span className="card-title black-text">{ this.props.drinkName }</span>
+        </div>
+        <div class="card-content">
+          <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
+        </div>
         <DrinkReveal drinkname={this.props.drinkName}/>
-      </DrinkCard>
+      </div>
     )
   }
 });
@@ -166,19 +180,48 @@ const DrinkCard = React.createClass({
 const RatingAction = React.createClass({
 
   render: function() {
+    //Style icons color: black
+    //Style hover to be yellow
 
-    let firstStarStyle = {
+
+    let firstLinkStyle = {
+      "marginRight" : "inherit",
+      "marginLeft" : "20px"
+    }
+    let firstIconStyle = {
       "marginRight": "60px"
     }
+    let blackStar = {
+      color: "black"
+    }
+
     return (
       <div className="card-action">
-        <i className="material-icons" style={firstStarStyle}>not_interested</i>
-        <i className="material-icons">star_rate</i>
-        <i className="material-icons">star_rate</i>
-        <i className="material-icons">star_rate</i>
-        <i className="material-icons">star_rate</i>
-        <i className="material-icons">star_rate</i>
+          <div className="container">
+            <a><i className="material-icons">not_interested</i></a>
+            <a><i className="material-icons">grade</i></a>
+
+
+            <a><i className="material-icons">grade</i></a>
+            <a><i className="material-icons">grade</i></a>
+
+
+            <a><i className="material-icons">grade</i></a>
+            <a><i className="material-icons" style={blackStar}>grade</i></a>
+          </div>
+
       </div>
+      )
+  }
+});
+
+const RatingStar = React.createClass({
+
+  render: function() {
+
+
+    return (
+      <a><i className="material-icons">star_rate</i></a>
       )
   }
 });
@@ -188,7 +231,15 @@ const DrinkReveal = React.createClass({
     return (
       <div className="card-reveal">
         <span className="card-title black-text text-darken-4">{this.props.drinkName}<i className="material-icons right">close</i></span>
-        <p>This will have more information about the drinks</p>
+        <h3>{this.props.drinkName}</h3>
+        <h4>Ingredients</h4>
+        <ul>
+          <li>2 Parts Absolut Citron</li>
+          <li>1 Part Lime Juice</li>
+          <li>1 Part Orange Liqueur</li>
+          <li>½ Part Cranberry Juice</li>
+          <li>1 Twist Orange</li>
+        </ul>
       </div>
       )
   }

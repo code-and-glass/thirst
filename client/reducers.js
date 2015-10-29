@@ -1,8 +1,8 @@
 
 // REDUCERS PROCESS DISPATCHED ACTIONS AND UPDATE THE STATE
 const initialState = { 
-  rate: ["absolut-cosmopolitan", "Kremlin-Colonel"],
-  recommend: ["Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]  
+  rate: ["Mimoza", "Mojito", "Kremlin-Colonel"],
+  recommend: ["absolut-cosmopolitan","Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]  
 }
 
 export function _getThings(state, action) {
