@@ -70,7 +70,7 @@ module.exports = {
     db.find(predicate, function(err, result) { 
       //may need to account for result being array of 1
       if (err) throw err;
-      callback(result); 
+      callback(err, result); 
     });
   },
 
