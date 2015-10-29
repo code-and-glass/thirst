@@ -36,9 +36,9 @@ router.get('/auth/google',
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    console.log("[OAuth2:redirect:query]:", JSON.stringify(req.query));
-    console.log("[OAuth2:redirect:body]:", JSON.stringify(req.body));
-    console.log("Session", req.session);
+    // console.log("[OAuth2:redirect:query]:", JSON.stringify(req.query));
+    // console.log("[OAuth2:redirect:body]:", JSON.stringify(req.body));
+    // console.log("Session", req.session);
     // Successful authentication, redirect home.
     res.redirect('/static');
   });

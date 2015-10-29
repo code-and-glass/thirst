@@ -58,13 +58,13 @@ var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
-  console.log("inside serialize user", user, done);
+  // console.log("inside serialize user", user, done);
   done(null, user);
 });
 
 // used to deserialize the user
 passport.deserializeUser(function(obj, done) {
-  console.log("inside deserializeUser", obj, done);
+  // console.log("inside deserializeUser", obj, done);
   user.getUser(obj.userName, function(err, user) {
     done(err, user);
   });
@@ -97,21 +97,6 @@ passport.use(new GoogleStrategy({
     });
   }
 ));
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }), 
-  function (res, res) {});
-
-
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    console.log("[OAuth2:redirect:query]:", JSON.stringify(req.query));
-    console.log("Session", req.session);
-    // Successful authentication, redirect home.
-    res.redirect('/static');
-  });
-
 
 /***************** End Auth ******************/
 
