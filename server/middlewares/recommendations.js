@@ -8,7 +8,10 @@ var request = require('supertest');
 var app = express();
 var utils = require('../utilities/utils.js');
 var recommend = require('../recommender.js');
+
+//var migrations = require('../migrations.js');
 /* GET home page. */
+
 
 // var user = User.saveUser({userName:'ArtemB'});
 // var rating = 4;
@@ -18,12 +21,12 @@ app.post('/rate', function(req, res, next) {
    //req should have user, rating and drink properties
    
    //********may need to change based on req structure*******
-   // var user = req.user; 
-   // var rating = req.rating;
-   // var drink = req.drink;
+   var user = req.user; 
+   var rating = req.rating;
+   var drink = req.drink;
    //*********************************************************
 
-    User.rate(223, 4, 229, function(results) {
+    User.rate(user, rating, drink, function(results) {
     //console.log('results from app.get callback', results);
     //console.log(results);
      var testJSON = {'results':results};
@@ -34,34 +37,47 @@ app.post('/rate', function(req, res, next) {
 
 app.get('/recommend', function(req, res, next) {
   //get a list of all user and ratings 
-  User.saveUser({userName: 'JACKIECHAN'});
+//   User.saveUser({userName: 'JACKIECHAN'});
+//   User.saveUser({userName: 'JIMMYCHAN'});
+    //
+   for (var i = 1; i < 1001; i++) {
+    var name = 'user' + i;
+    User.saveUser({userName: name});
+  }
+  //save all drinks
+  //save alot of users.
   User.getAllUsers(function(result) {
    
    //console.log(result);
   //read all relationships
    //set some relationships
    var userLabels = [];
-   var drinkLabels = [];
+   var drinkLabels = {};
    var matrix =[];
    var ratings = [];
    var count = 0;
    
    
    result.forEach( function(user) {    
+         //console.log(user);
+         userLabels.push(user.userName);
      User.getAllUserLikes(user, function(likedDrinks) {
+       //console.log(likedDrinks);
        likedDrinks.forEach(function(item){
-         userLabels.push(item.properties.user);
-         drinkLabels.push(item.properties.drink);
+         //console.log(likedDrinks);
+         //console.log(item.properties.drink);
+         drinkLabels[item.properties.drink] = item.properties.drink;
          ratings.push(item.properties.rating);
        });
        matrix.push(ratings);
        count++;
        if (count === result.length) {
-         //console.log(userLabels, drinkLabels);
+         console.log(userLabels);
+         drinks = Object.keys(drinkLabels);
          //take the matrix, run recommend
-         var model = recommend.model(matrix, userLabels, drinkLabels);
-         var results = model.recommendations('JACKIECHAN');
-         //res.json {recommendations: []};
+         var model = recommend.model(matrix, userLabels, drinks);
+         var results = model.recommendations('user2');
+         //console.log(results);
          res.json({recommendations: results});
          }
       });
@@ -85,6 +101,7 @@ app.get('/recommend', function(req, res, next) {
 //     //console.log(res);
 //   });
 
+<<<<<<< HEAD
 //   request(app)
 //   .get('/recommend')
 //   .expect(200)
@@ -93,3 +110,13 @@ app.get('/recommend', function(req, res, next) {
 //     if (err) console.log(err);
 //     console.log(res);
 //   });
+=======
+  request(app)
+  .get('/recommend')
+  .expect(200)
+  .expect('Content-Type', /json/)
+  .end(function(err, res){
+    if (err) console.log(err);
+    //console.log(res);
+  });
+>>>>>>> Begin recommendKNN.js file.
