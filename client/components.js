@@ -88,7 +88,7 @@ class Recommend extends React.Component {
 class Rate extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch(actionCreators.getDrinks())
+    this.props.dispatch(actionCreators.rate())
   }
 
   render() {

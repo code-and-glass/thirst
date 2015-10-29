@@ -21,17 +21,17 @@ export function test() {
 }
 
 
-export function rateDrink(drink) {
+export function rate(drink, rating) {
   return function (dispatch, getState) {
-    return fetch('/api/rate', {            // WHAT ROUTE?
+    return fetch('/rate', {
       method: 'post',
-      body: {drink: drink}                 // WHAT FORMAT?
+      body: {rating: rating, drink: drink}
     })
     .then(
       response =>
         dispatch({
           type: 'RATE_DRINK',
-          drinks: response.data.drinks     // WHAT FORMAT?
+          drinks: response.body.results
         }),
       error => console.log(error)
     )
@@ -40,12 +40,12 @@ export function rateDrink(drink) {
 
 export function getDrinks() {
   return function (dispatch, getState) {
-    return fetch('/randomDrinks', {method: 'get'})   // ROUTE?
+    return fetch('/randomDrinks', {method: 'get'})
     .then(
       response =>
         dispatch({
           type: 'GET_DRINKS',
-          drinks: response.data.drinks          // FORMAT?
+          drinks: response.body.results
         }),
       error => console.log(error)
     )
@@ -54,12 +54,12 @@ export function getDrinks() {
 
 export function getRecommendations() {
   return function (dispatch, getState) {
-    return fetch('/api/recommend', {method: 'get'})   // ROUTE?
+    return fetch('/recommendKNN', {method: 'get'})
     .then(
       response =>
         dispatch({
           type: 'GET_RECS',
-          recs: response.data.drinks          // FORMAT?
+          recs: response.body.results
         }),
       error => console.log(error)
     )
