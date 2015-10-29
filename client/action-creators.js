@@ -7,7 +7,7 @@ export function test() {
   return function (dispatch, getState) {
     // We can dispatch both plain object actions and other thunks,
     // which lets us compose the asynchronous actions in a single flow.
-    return fetch('/test', {method: 'get'})
+    return fetch('/drinks', {method: 'get'})
     .then(
       response =>
         console.log(response),
@@ -40,7 +40,7 @@ export function postRatedDrink(drink) {
 
 export function getDrinksToRate() {
   return function (dispatch, getState) {
-    return fetch('/api/rate', {method: 'get'})   // ROUTE?
+    return fetch('/randomDrinks', {method: 'get'})   // ROUTE?
     .then(
       response =>
         dispatch({
