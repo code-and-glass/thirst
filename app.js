@@ -41,7 +41,7 @@ function isLoggedIn(req, res, next) {
   res.redirect('/login');
 }
 
-app.all('*', isLoggedIn);
+// app.all('*', isLoggedIn);
 
 module.exports = app;
 

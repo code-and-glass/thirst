@@ -20,9 +20,7 @@ router.get('/', function(req, res, next) {
   res.redirect('/static');
 });
 
-// router.get('/static', function (req, res, next) {
-//   res.send()
-// })
+
 router.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
