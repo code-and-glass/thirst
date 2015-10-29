@@ -21,7 +21,7 @@ export function test() {
 }
 
 
-export function postRatedDrink(drink) {
+export function rateDrink(drink) {
   return function (dispatch, getState) {
     return fetch('/api/rate', {            // WHAT ROUTE?
       method: 'post',
@@ -38,7 +38,7 @@ export function postRatedDrink(drink) {
   }
 }
 
-export function getDrinksToRate() {
+export function getDrinks() {
   return function (dispatch, getState) {
     return fetch('/randomDrinks', {method: 'get'})   // ROUTE?
     .then(

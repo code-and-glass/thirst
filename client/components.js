@@ -39,7 +39,7 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
       <nav>
         <div className="nav-wrapper">
         <a href="#" className="brand-logo left">Thirst</a>
-          <ul id="nav-mobile" className="right hide-on-med-and-down">
+          <ul id="nav-mobile" className="right">
             <li><Link to="rate">Rate Drinks</Link></li>
             <li><Link to="recommend">Recommendations</Link></li>
             <li><a href="">Drinks I've Had</a></li>
@@ -74,7 +74,7 @@ class Recommend extends React.Component {
     return (
 
       <div className="recommend-container" style={ containerStyle }>
-        { 
+        {
           this.props.recommend.map(function(item){
             return <RecommendPanel drinkName={ item }></RecommendPanel>
           })
@@ -113,7 +113,7 @@ class Rate extends React.Component {
 };
 
 const RatingPanel = React.createClass({
-  
+
   rate(drink) {
     this.props.dispatch(actionCreators.rateDrink(drink))
   },
@@ -162,7 +162,7 @@ const DrinkCard = React.createClass({
 
 
   render: function() {
-    
+
     let imageStyles = {
       width: "inherit",
       height: "100%",
@@ -283,7 +283,7 @@ const Application = React.createClass({
 
 
 
-render( 
+render(
   <Application store = {store} />,
   document.getElementById('app')
   );
