@@ -13,6 +13,8 @@ var request = require("request");
 //var assert = require('assert');
 var session = require('express-session');
 var routes = require('./routes/index');
+var drinks = require('./server/middlewares/drinks.js');
+var recommend = require('./server/middlewares/recommendKNN.js');
 
 var app = express();
 
@@ -30,6 +32,11 @@ app.use(session({
 
 app.use('/', routes);
 // app.use('/users', users);
+
+//drinks routes
+app.use('/drinks', drinks );
+//recommend routes
+app.use('/recommend' , recommend);
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
@@ -94,6 +101,7 @@ passport.use(new GoogleStrategy({
         // console.log(result);
         done(err, result);
       });
+
     });
   }
 ));
@@ -182,48 +190,9 @@ passport.use(new GoogleStrategy({
       // to associate the Google account with a user record in your database,
       // and return that user instead.
       return done(null, profile);
+=======
+>>>>>>> add drinks and recommend routers to app.js.
     });
   }
 ));
 
-//to go in app.js 
-
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));
-  // Initialize Passport!  Also use passport.session() middleware, to support
-  // persistent login sessions (recommended).
-  app.use(passport.initialize());
-  app.use(passport.session());
-
-// GET /auth/google/callback
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
-
-  });
-};
-
-
-
-
-app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
-});
-
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login');
-}
-//**************************************************
-*/
