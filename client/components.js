@@ -1,14 +1,10 @@
 import React  from 'react'
 import { Router, Route, Link, IndexRoute } from 'react-router';
-import { render } from 'react-dom'
 import { connect, Provider } from 'react-redux'
 import * as actionCreators from './action-creators'
-
-
 import createStore from './create-store.js'
+import { render } from 'react-dom'
 
-//The redux store
-const store = createStore();
 
 function mapStateToProps(state){
   return {
@@ -16,11 +12,6 @@ function mapStateToProps(state){
     rate: state._getThings.rate
   };
 }
-
-
-//server data placeholder
-// var drinksData = { drinks: ["absolut-cosmopolitan", "Pennsylvania", "Kremlin-Colonel"]};
-// var recommendData = { drinks: ["Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]}
 
 const Main = React.createClass({
   render() {
@@ -37,7 +28,6 @@ const Main = React.createClass({
   },
 });
 
-//NAVIGATION BAR
 
 const Nav = React.createClass({    // Needs to collapse better for mobile
   render() {
@@ -272,9 +262,13 @@ const Application = React.createClass({
   }
 })
 
+const store = createStore();
+
 
 //TODO: Make a default splash for the main screen. Possibly make redirection.
-render( <Application store = {store} /> ,
+render( 
+  <Application store = {store} /> ,
   document.getElementById('app')
   );
 
+export default Application;
