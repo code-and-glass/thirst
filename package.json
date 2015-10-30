@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "grunt": "^0.4.5",
+    "postinstall": "grunt build",
     "test": "mocha",
     "start": "bin/www"
   },
