@@ -24,7 +24,8 @@
     "redux": "^3.0.3",
     "redux-thunk": "^1.0.0",
     "request": "^2.65.0",
-    "seraph": "^0.13.3"
+    "seraph": "^0.13.3",
+    "supertest": "^1.1.0"
   },
   "devDependencies": {
     "babelify": "^6.3.0",
@@ -39,7 +40,6 @@
     "grunt-nodemon": "^0.4.0",
     "grunt-shell": "^1.1.2",
     "load-grunt-tasks": "^3.3.0",
-    "mocha": "^2.3.3",
-    "supertest": "^1.1.0"
+    "mocha": "^2.3.3"
   }
 }
