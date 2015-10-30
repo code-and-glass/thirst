@@ -69,8 +69,8 @@ passport.serializeUser(function(user, done) {
 // used to deserialize the user
 passport.deserializeUser(function(obj, done) {
   user.getUser(obj.userName, function(err, user) {
-    console.log("inside deserializeUser", err, user);
-    done(err, user);
+    console.log("inside deserializeUser", err, user[0]);
+    done(err, user[0]);
   });
 });
 
