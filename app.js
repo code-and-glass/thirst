@@ -61,9 +61,12 @@ var user = require('./server/models/user.js');
 if (process.env.googleId) {
   var GOOGLE_CONSUMER_KEY = process.env.googleId;
   var GOOGLE_CONSUMER_SECRET = process.env.googleSecret;
+  var callbackURL = 'http://thirst.herokuapp.com/auth/google/callback';
 } else {
   var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
   var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
+    var callbackURL = 'http://127.0.0.1:3000/auth/google/callback';
+
 }
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
@@ -82,7 +85,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CONSUMER_KEY,
     clientSecret: GOOGLE_CONSUMER_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/google/callback",
+    "callbackURL": callbackURL,
     passReqToCallback   : true
   },
   function(req, token, tokenSecret, profile, done) {
