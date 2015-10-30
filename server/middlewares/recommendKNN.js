@@ -1,7 +1,7 @@
 var Drink = require('../models/drinks.js');
 var User = require('../models/user.js');
 var express = require('express');
-var router = express.Router();
+// var router = express.Router();
 var request = require('supertest');
 var app = express();
 var utils = require('../utilities/utils.js');
@@ -64,18 +64,15 @@ app.get('/recommendKNN', function(req, res, next) {
   // });
   
   User.query(recommendations, null, function(results) {
-     // if (err) throw err;
-    console.log(results);
+    // if (err) throw err;
+    // console.log(results);
     var recommended = {results:results};
     res.send(recommended);
   });
-
   //res.sendStatus(200);
 });
 
-
-
-
+module.exports = app;
 
 
 
