@@ -5,6 +5,8 @@ import * as actionCreators from './action-creators'
 import createStore from './create-store.js'
 import { render } from 'react-dom'
 
+const store = createStore();
+
 
 function mapStateToProps(state){
   return {
@@ -262,13 +264,10 @@ const Application = React.createClass({
   }
 })
 
-const store = createStore();
 
 
-//TODO: Make a default splash for the main screen. Possibly make redirection.
 render( 
-  <Application store = {store} /> ,
+  <Application store = {store} />,
   document.getElementById('app')
   );
 
-export default Application;
