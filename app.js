@@ -10,9 +10,8 @@ var bodyParser = require('body-parser');
 
 // routing 
 var request = require("request");
-//var assert = require('assert');
 var session = require('express-session');
-var routes = require('./routes/index');
+var routes = require('./server/middlewares/index.js');
 var drinks = require('./server/middlewares/drinks.js');
 var recommend = require('./server/middlewares/recommendKNN.js');
 
@@ -23,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'client/dist')));
 app.use('/login', express.static(path.join(__dirname, 'client/login')));
-// app.use(express.static(path.join(__dirname, 'client/login')));
+
 app.use(session({
   saveUninitialized: true,
   resave: false,
@@ -31,7 +30,6 @@ app.use(session({
 }));
 
 app.use('/', routes);
-// app.use('/users', users);
 
 //drinks routes
 app.use('/drinks', drinks );
