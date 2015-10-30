@@ -41,4 +41,5 @@ router.get('/auth/google/callback',
     res.redirect('/static');
   });
 
+
 module.exports = router;

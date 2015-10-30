@@ -2,7 +2,7 @@
 var drinks = require('../models/drinks.js');
 var express = require('express');
 var router = express.Router();
-// var request = require('supertest');
+var request = require('supertest');
 var app = express();
 
 // we want to respond to post request with a list of all rated drinks
@@ -21,6 +21,7 @@ var app = express();
 /* GET home page. */
 app.get('/drinks', function(req, res, next) {
   //respond with data of all drinks in db
+   console.log(req.body);
    drinks.getAllDrinks(function(results) {
 
     // console.log('results from router.get callback', results);
@@ -43,9 +44,11 @@ app.get('/randomDrinks', function(req, res, next) {
   //respond with data of all drinks in db
    drinks.getRandomDrinks(function(results) {
     // console.log('results length from router.get callback', results);
+    
     res.send(results);
+
   });
- });
+});
 
 request(app)
   .get('/drinks')
@@ -54,7 +57,7 @@ request(app)
   .end(function(err, res){
     if (err) throw err;
 
-     console.log(res);
+     console.log(res.body.results);
   });
 
 module.exports = app;

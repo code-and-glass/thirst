@@ -48,8 +48,8 @@ app.get('/recommendKNN', function(req, res, next) {
 
   //get movie recommendation for a user
   var recommendations = 
-            "MATCH    (b:User)-[r:RATED]->(m:Drink), (b)-[s:SIMILARITY]-(a:User {id:{user}.id})\n" +
-            "WHERE    NOT ((a)-[:RATED]->(m))\n" +
+            "MATCH    (b:User)-[r:RATED]->(m:Drink), (b)-[s:SIMILARITY]-(a:User {userName: 'user6'})\n" +
+            "WHERE     ((a)-[:RATED]->(m))\n" +
             "WITH     m, s.similarity AS similarity, r.rating AS rating\n" +
             "ORDER BY m.drinkName, similarity DESC\n" +
             "WITH     m.drinkName AS drink, COLLECT(rating)[0..3] AS ratings\n" +
@@ -63,13 +63,14 @@ app.get('/recommendKNN', function(req, res, next) {
   //   console.log('Graph cosine similarities updated');
   // });
   
-  User.query(recommendations, user, function(results) {
+  User.query(recommendations, null, function(results) {
      // if (err) throw err;
     console.log(results);
-    //res.JSON(results);
+    var recommended = {results:results};
+    res.send(recommended);
   });
 
-  res.sendStatus(200);
+  //res.sendStatus(200);
 });
 
 
@@ -87,5 +88,5 @@ request(app)
   .end(function(err, res){
     //if (err) throw err;
     
-    //console.log(res);
+    console.log(res.body.results);
   });
