@@ -31,10 +31,9 @@ var forEach = function (list, count) {
 
 /*********** save each drink to db *************/
 
- //forEach(drinksTo1000.start);
- // forEach(drinksTo2000.start);
-//forEach(drinksTo3000.start);
-
+// forEach(drinksTo1000.start);
+// forEach(drinksTo2000.start);
+// forEach(drinksTo3000.start);
 // forEach(drinksTo3550.start);
 
 
