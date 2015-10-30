@@ -60,7 +60,6 @@ var user = require('./server/models/user.js');
 var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
 var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
 
-
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
   // console.log("inside serialize user", user, done);
@@ -69,8 +68,8 @@ passport.serializeUser(function(user, done) {
 
 // used to deserialize the user
 passport.deserializeUser(function(obj, done) {
-  // console.log("inside deserializeUser", obj, done);
   user.getUser(obj.userName, function(err, user) {
+    console.log("inside deserializeUser", err, user);
     done(err, user);
   });
 });
@@ -95,9 +94,19 @@ passport.use(new GoogleStrategy({
       // console.log("user record in strategy", req.session.userRecord);
       // associate the Google account with a user record in your database,
       // and return that user instead.
-      user.saveUser(req.session.userRecord, function (err, result) {
-        // console.log(result);
-        done(err, result);
+      var userData = req.session.userRecord;
+      var name = req.session.userRecord.userName;
+      // var hasUser = true;
+      user.getUser(name, function (err, nodes) {
+        console.log("inside getUser callback", err, nodes);
+        if (err === null && nodes.length === 0) {
+          user.saveUser(req.session.userRecord, function (err, result) {
+            if (err) throw new Error(err);
+            done(err, result);
+          });
+        } else {
+          done(err, nodes[0]);
+        }
       });
     });
   }
