@@ -85,7 +85,6 @@ passport.use(new GoogleStrategy({
     process.nextTick(function() {
       // console.log(profile); // response obj
       // create session info here if needed:
-      // console.log("email object is", profile._json.emails[0]);
       req.session.userRecord = {
         userName: profile._json.displayName,
         email: profile._json.emails[0].value,
@@ -94,11 +93,8 @@ passport.use(new GoogleStrategy({
       // console.log("user record in strategy", req.session.userRecord);
       // associate the Google account with a user record in your database,
       // and return that user instead.
-      var userData = req.session.userRecord;
       var name = req.session.userRecord.userName;
-      // var hasUser = true;
       user.getUser(name, function (err, nodes) {
-        console.log("inside getUser callback", err, nodes);
         if (err === null && nodes.length === 0) {
           user.saveUser(req.session.userRecord, function (err, result) {
             if (err) throw new Error(err);
