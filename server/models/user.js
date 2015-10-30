@@ -18,11 +18,6 @@ if (process.env.GRAPHENEDB_URL){
   });  
 }
 
-//Checks if deployed or local
-
-
-//NEEDS TESTS
-
 var User = function(name, email, password) {
   //create user node
   return {
@@ -38,11 +33,9 @@ module.exports = {
 
   saveUser: function(user, cb) {
     //save user node to db
-    console.log('saveUser triggered');
     db.save(user, function(err, user){
       db.label(user, 'User', function(err) {
         if (err) throw err;
-        console.log(err);
         cb(err, user);
         console.log(user.userName + ' saved to database and labeled.');
         //FOR TESTING: get all drinks and create relationship with 0 rating.
@@ -114,7 +107,6 @@ module.exports = {
   query: function(cypher, user, callback) {
     return db.query(cypher, user, function(err,results) {
       if (err) console.log(err);
-
       callback(results); 
     });
   }
