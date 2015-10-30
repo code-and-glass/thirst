@@ -1,14 +1,12 @@
 import React  from 'react'
 import { Router, Route, Link, IndexRoute } from 'react-router';
-import { render } from 'react-dom'
 import { connect, Provider } from 'react-redux'
 import * as actionCreators from './action-creators'
-
-
 import createStore from './create-store.js'
+import { render } from 'react-dom'
 
-//The redux store
 const store = createStore();
+
 
 function mapStateToProps(state){
   return {
@@ -17,18 +15,14 @@ function mapStateToProps(state){
   };
 }
 
-
-//server data placeholder
-var drinksData = { drinks: ["absolut-cosmopolitan", "Pennsylvania", "Kremlin-Colonel"]};
-var recommendData = { drinks: ["Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]}
-
 const Main = React.createClass({
   render() {
+    console.log(this.props.children);
     return (
       <div>
         <Nav/>
         <div className="row">
-          <div className="col s8 offset-s2">
+          <div className="col s6 offset-s3">
             {this.props.children}
           </div>
         </div>
@@ -37,7 +31,6 @@ const Main = React.createClass({
   },
 });
 
-//NAVIGATION BAR
 
 const Nav = React.createClass({    // Needs to collapse better for mobile
   render() {
@@ -45,12 +38,12 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
     return (
       <nav>
         <div className="nav-wrapper">
-        <a href="#" className="brand-logo right">Thirst</a>
+        <a href="#" className="brand-logo left">Thirst</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li>Logout</li>
-            <li><Link to="recommend">Recommendations</Link></li>
             <li><Link to="rate">Rate Drinks</Link></li>
+            <li><Link to="recommend">Recommendations</Link></li>
             <li><a href="">Drinks I've Had</a></li>
+            <li><a href="/logout">Logout</a></li>
           </ul>
         </div>
       </nav>
@@ -74,10 +67,11 @@ class Recommend extends React.Component {
 
     console.log("Recommend Component Properties: ",this.props);
     return (
+
       <div className="recommend-container" style={ containerStyle }>
-        {
+        { 
           this.props.recommend.map(function(item){
-            return <RatingPanel drinkName={ item }></RatingPanel>
+            return <RecommendPanel drinkName={ item }></RecommendPanel>
           })
         }
       </div>
@@ -124,25 +118,49 @@ const RatingPanel = React.createClass({
 //TODO:Add expected rating or ranking
 const RecommendPanel = React.createClass({
   render: function() {
+
+    let imageStyles = {
+      width: "inherit",
+      height: "100%",
+      "marginLeft": "450px"
+    }
+
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/225x300/" + this.props.drinkName + ".png"
     return (
-      <DrinkCard drinkName={this.props.drinkName}>
-        <DrinkContent drinkName={this.props.drinkName}/>
+      <div className="card medium">
+        <div className="card-image">
+          <img src={imageUrl} style= { imageStyles }/>
+          <span className="card-title black-text">{ this.props.drinkName }</span>
+        </div>
+        <div class="card-content">
+          <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
+        </div>
         <DrinkReveal drinkname={this.props.drinkName}/>
-      </DrinkCard>
+      </div>
     )
   }
 });
 
 //Materialize card that will hold the picture of the drink and other components
 const DrinkCard = React.createClass({
+
+
+
   render: function() {
+    
+    let imageStyles = {
+      width: "inherit",
+      height: "100%",
+      "marginLeft": "450px"
+    }
+
     var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/225x300/" + this.props.drinkName + ".png"
 
     return (
-    <div className="card">
+    <div className="card medium">
       <div className="card-image">
-        <img src={imageUrl}/>
-        <span className="card-title">{ this.props.drinkName }</span>
+        <img src={imageUrl} style= { imageStyles }/>
+        <span className="card-title black-text">{ this.props.drinkName }</span>
       </div>
       { this.props.children }
     </div>
@@ -152,15 +170,50 @@ const DrinkCard = React.createClass({
 
 //The UI for rating drinks. Will be used by DrinkCard
 const RatingAction = React.createClass({
+
   render: function() {
+    //Style icons color: black
+    //Style hover to be yellow
+
+
+    let firstLinkStyle = {
+      "marginRight" : "inherit",
+      "marginLeft" : "20px"
+    }
+    let firstIconStyle = {
+      "marginRight": "60px"
+    }
+    let blackStar = {
+      color: "black"
+    }
+
     return (
       <div className="card-action">
-        <i className="small material-icons">not_interested</i>
-        <i className="small material-icons">star_rate</i>
-        <i className="small material-icons">star_rate</i>
-        <i className="small material-icons">star_rate</i>
-        <i className="small material-icons">star_rate</i>
+          <div className="container">
+            <a><i className="material-icons">not_interested</i></a>
+            <a><i className="material-icons">grade</i></a>
+
+
+            <a><i className="material-icons">grade</i></a>
+            <a><i className="material-icons">grade</i></a>
+
+
+            <a><i className="material-icons">grade</i></a>
+            <a><i className="material-icons" style={blackStar}>grade</i></a>
+          </div>
+
       </div>
+      )
+  }
+});
+
+const RatingStar = React.createClass({
+
+  render: function() {
+
+
+    return (
+      <a><i className="material-icons">star_rate</i></a>
       )
   }
 });
@@ -169,8 +222,16 @@ const DrinkReveal = React.createClass({
   render: function() {
     return (
       <div className="card-reveal">
-        <span className="card-title grey-text text-darken-4">{this.props.drinkName}<i className="material-icons right">close</i></span>
-        <p>This will have more information about the drinks</p>
+        <span className="card-title black-text text-darken-4">{this.props.drinkName}<i className="material-icons right">close</i></span>
+        <h3>{this.props.drinkName}</h3>
+        <h4>Ingredients</h4>
+        <ul>
+          <li>2 Parts Absolut Citron</li>
+          <li>1 Part Lime Juice</li>
+          <li>1 Part Orange Liqueur</li>
+          <li>½ Part Cranberry Juice</li>
+          <li>1 Twist Orange</li>
+        </ul>
       </div>
       )
   }
@@ -181,7 +242,7 @@ const DrinkContent = React.createClass({
   render: function() {
     return (
       <div className="card-content">
-        <span className="card-title activator grey-text text-darken-4">{this.props.drinkName}<i className="material-icons right">more_vert</i></span>
+        <span className="card-title activator black-text">{this.props.drinkName}<i className="material-icons right">more_vert</i></span>
       </div>
     )
   }
@@ -206,8 +267,9 @@ const Application = React.createClass({
 })
 
 
-//TODO: Make a default splash for the main screen. Possibly make redirection.
-render( <Application store = {store} /> ,
+
+render( 
+  <Application store = {store} />,
   document.getElementById('app')
   );
 

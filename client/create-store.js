@@ -3,9 +3,6 @@ import thunk from 'redux-thunk'
 import * as reducers from './reducers'
 
 
-
-
-
 export default function(data) {
   var reducer = combineReducers(reducers)
   var finalCreateStore = applyMiddleware(thunk)(createStore)
