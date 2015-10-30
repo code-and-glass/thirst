@@ -58,9 +58,13 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var user = require('./server/models/user.js');
 
 // load the auth variables
-var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId || process.env.googleId;
-var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret || process.env.googleSecret;
-
+if (process.env.googleId) {
+  var GOOGLE_CONSUMER_KEY = process.env.googleId;
+  var GOOGLE_CONSUMER_SECRET = process.env.googleSecret;
+} else {
+  var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
+  var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
+}
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
   // console.log("inside serialize user", user, done);
