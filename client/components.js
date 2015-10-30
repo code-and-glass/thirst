@@ -17,6 +17,7 @@ function mapStateToProps(state){
 
 const Main = React.createClass({
   render() {
+    console.log(this.props.children);
     return (
       <div>
         <Nav/>
@@ -39,10 +40,10 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
         <div className="nav-wrapper">
         <a href="#" className="brand-logo left">Thirst</a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li>Logout</li>
-            <li><Link to="recommend">Recommendations</Link></li>
             <li><Link to="rate">Rate Drinks</Link></li>
+            <li><Link to="recommend">Recommendations</Link></li>
             <li><a href="">Drinks I've Had</a></li>
+            <li><a href="/logout">Logout</a></li>
           </ul>
         </div>
       </nav>
@@ -66,8 +67,9 @@ class Recommend extends React.Component {
 
     console.log("Recommend Component Properties: ",this.props);
     return (
+
       <div className="recommend-container" style={ containerStyle }>
-        {
+        { 
           this.props.recommend.map(function(item){
             return <RecommendPanel drinkName={ item }></RecommendPanel>
           })
