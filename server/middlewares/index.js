@@ -15,11 +15,9 @@ function isLoggedIn(req, res, next) {
 }
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  isLoggedIn(req, res, next);
+router.get('/', isLoggedIn, function(req, res, next) {
   res.redirect('/static');
 });
-
 
 router.get('/logout', function(req, res){
   req.logout();

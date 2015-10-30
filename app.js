@@ -60,7 +60,6 @@ var user = require('./server/models/user.js');
 var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
 var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
 
-
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
   // console.log("inside serialize user", user, done);
@@ -69,9 +68,9 @@ passport.serializeUser(function(user, done) {
 
 // used to deserialize the user
 passport.deserializeUser(function(obj, done) {
-  // console.log("inside deserializeUser", obj, done);
   user.getUser(obj.userName, function(err, user) {
-    done(err, user);
+    console.log("inside deserializeUser", err, user[0]);
+    done(err, user[0]);
   });
 });
 
@@ -86,7 +85,6 @@ passport.use(new GoogleStrategy({
     process.nextTick(function() {
       // console.log(profile); // response obj
       // create session info here if needed:
-      // console.log("email object is", profile._json.emails[0]);
       req.session.userRecord = {
         userName: profile._json.displayName,
         email: profile._json.emails[0].value,
@@ -95,9 +93,16 @@ passport.use(new GoogleStrategy({
       // console.log("user record in strategy", req.session.userRecord);
       // associate the Google account with a user record in your database,
       // and return that user instead.
-      user.saveUser(req.session.userRecord, function (err, result) {
-        // console.log(result);
-        done(err, result);
+      var name = req.session.userRecord.userName;
+      user.getUser(name, function (err, nodes) {
+        if (err === null && nodes.length === 0) {
+          user.saveUser(req.session.userRecord, function (err, result) {
+            if (err) throw new Error(err);
+            done(err, result);
+          });
+        } else {
+          done(err, nodes[0]);
+        }
       });
     });
   }
