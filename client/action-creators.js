@@ -1,24 +1,6 @@
-// ACTION CREATORS DO THE ACTUAL API / SERVER REQUESTS
-// WE'RE USING THUNK AS MIDDLEWARE FOR ASYNC SERVER/API CALLS
-// put .catch functions in as well to handle errors
-// https://github.com/github/fetch   POLYFILL - use ajax if can't work this
-
-export function test() {
-  return function (dispatch, getState) {
-    // We can dispatch both plain object actions and other thunks,
-    // which lets us compose the asynchronous actions in a single flow.
-    return fetch('/drinks', {method: 'get'})
-    .then(
-      response =>
-        console.log(response),
-        // dispatch({
-        //   type: 'TEST',
-        //   data: response.data
-        // }),
-      error => console.log(error)
-    )
-  }
-}
+// ACTION CREATORS DO THE API / SERVER REQUESTS
+// WE'RE USING THUNK MIDDLEWARE FOR ASYNC CALLS
+// https://github.com/github/fetch   POLYFILL
 
 
 export function rate(drink, rating) {
@@ -63,13 +45,5 @@ export function getRecommendations() {
         }),
       error => console.log(error)
     )
-  }
-}
-
-// IS THIS EVEN NEEDED?
-export function notInterested(drink) {
-  return {
-    type: 'NOT_INTERESTED',
-    drink: drink
   }
 }
