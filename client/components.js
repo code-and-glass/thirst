@@ -39,7 +39,7 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
       <nav>
         <div className="nav-wrapper">
         <a href="#" className="brand-logo left">Thirst</a>
-          <ul id="nav-mobile" className="right hide-on-med-and-down">
+          <ul id="nav-mobile" className="right">
             <li><Link to="rate">Rate Drinks</Link></li>
             <li><Link to="recommend">Recommendations</Link></li>
             <li><a href="">Drinks I've Had</a></li>
@@ -49,13 +49,18 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
       </nav>
     );
   },
-  
+
   handleTouchTap() {
   },
 });
 
 @connect(mapStateToProps)
 class Recommend extends React.Component {
+
+  componentWillMount() {
+    this.props.dispatch(actionCreators.getRecommendations())
+  }
+
   render() {
 
     let containerStyle = {
@@ -69,7 +74,7 @@ class Recommend extends React.Component {
     return (
 
       <div className="recommend-container" style={ containerStyle }>
-        { 
+        {
           this.props.recommend.map(function(item){
             return <RecommendPanel drinkName={ item }></RecommendPanel>
           })
@@ -81,6 +86,11 @@ class Recommend extends React.Component {
 
 @connect(mapStateToProps)
 class Rate extends React.Component {
+
+  componentWillMount() {
+    this.props.dispatch(actionCreators.rate())
+  }
+
   render() {
 
     let containerStyle = {
@@ -103,6 +113,11 @@ class Rate extends React.Component {
 };
 
 const RatingPanel = React.createClass({
+
+  rate(drink) {
+    this.props.dispatch(actionCreators.rateDrink(drink))
+  },
+
   render: function() {
     //TODO: adjust size
     //wire up buttons
@@ -147,7 +162,7 @@ const DrinkCard = React.createClass({
 
 
   render: function() {
-    
+
     let imageStyles = {
       width: "inherit",
       height: "100%",
@@ -261,15 +276,14 @@ const Application = React.createClass({
             <Route path="recommend" component={Recommend} />
           </Route>
         </Router>
-      </Provider>    
+      </Provider>
     )
   }
 })
 
 
 
-render( 
+render(
   <Application store = {store} />,
   document.getElementById('app')
   );
-
