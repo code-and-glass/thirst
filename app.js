@@ -51,14 +51,15 @@ function isLoggedIn(req, res, next) {
 module.exports = app;
 
 /********************* goggle auth ***************************/
+
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 // load up the user model
 var user = require('./server/models/user.js');
 
 // load the auth variables
-var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
-var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
+var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId || process.env.googleId;
+var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret || process.env.googleSecret;
 
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
@@ -75,8 +76,8 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CONSUMER_KEY || process.env.googleId,
-    clientSecret: GOOGLE_CONSUMER_SECRET || process.env.googleSecret,
+    clientID: GOOGLE_CONSUMER_KEY,
+    clientSecret: GOOGLE_CONSUMER_SECRET,
     callbackURL: "http://127.0.0.1:3000/auth/google/callback",
     passReqToCallback   : true
   },
