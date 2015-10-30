@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "postinstall": "grunt build",
+    "grunt": "^0.4.5",
     "test": "mocha",
     "start": "bin/www"
   },
