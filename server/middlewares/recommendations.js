@@ -21,15 +21,16 @@ app.post('/rate', function(req, res, next) {
    //req should have user, rating and drink properties
    
    //********may need to change based on req structure*******
-   var user = req.user; 
-   var rating = req.rating;
-   var drink = req.drink;
+   var user = req.session.userrecord.username; //needs work
+   var rating = req.body.rating;
+   var drink = req.body.drink;
    //*********************************************************
 
-    User.rate(user, rating, drink, function(results) {
+    User.rate(223, 4, 229, function(results) {
     //console.log('results from app.get callback', results);
     //console.log(results);
-     var testJSON = {'results':results};
+     var testJSON = {'results':results,
+   };
      res.json(testJSON);
   });
 });
@@ -77,7 +78,8 @@ app.get('/recommend', function(req, res, next) {
          //take the matrix, run recommend
          var model = recommend.model(matrix, userLabels, drinks);
          var results = model.recommendations('user2');
-         //console.log(results);
+         //res.json {recommendations: []};
+         console.log(results);
          res.json({recommendations: results});
          }
       });
@@ -101,16 +103,7 @@ app.get('/recommend', function(req, res, next) {
 //     //console.log(res);
 //   });
 
-<<<<<<< HEAD
-//   request(app)
-//   .get('/recommend')
-//   .expect(200)
-//   .expect('Content-Type', /json/)
-//   .end(function(err, res){
-//     if (err) console.log(err);
-//     console.log(res);
-//   });
-=======
+
   request(app)
   .get('/recommend')
   .expect(200)
@@ -119,4 +112,4 @@ app.get('/recommend', function(req, res, next) {
     if (err) console.log(err);
     //console.log(res);
   });
->>>>>>> Begin recommendKNN.js file.
+
