@@ -2,6 +2,7 @@
 // WE'RE USING THUNK MIDDLEWARE FOR ASYNC CALLS
 // https://github.com/github/fetch   POLYFILL
 
+var mainURL = window.location.href.split('/static')[0];
 
 export function rate(drink, rating) {
   return function (dispatch, getState) {
