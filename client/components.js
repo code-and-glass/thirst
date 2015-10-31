@@ -17,7 +17,6 @@ function mapStateToProps(state){
 
 const Main = React.createClass({
   render() {
-    console.log(this.props.children);
     return (
       <div>
         <Nav/>
@@ -72,7 +71,6 @@ class Recommend extends React.Component {
       top: '50px',
     };
 
-    console.log("Recommend Component Properties: ",this.props);
     return (
 
       <div className="recommend-container" style={ containerStyle }>
@@ -90,7 +88,7 @@ class Recommend extends React.Component {
 class Rate extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch(actionCreators.rate())
+    this.props.dispatch(actionCreators.getDrinks());
   }
 
   render() {
