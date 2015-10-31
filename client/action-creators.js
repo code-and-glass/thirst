@@ -2,10 +2,11 @@
 // WE'RE USING THUNK MIDDLEWARE FOR ASYNC CALLS
 // https://github.com/github/fetch   POLYFILL
 
+var mainURL = window.location.href.split('/static')[0];
 
 export function rate(drink, rating) {
   return function (dispatch, getState) {
-    return fetch('/rate', {
+    return fetch( mainURL + '/rate', {
       method: 'post',
       body: {rating: rating, drink: drink}
     })
@@ -21,16 +22,19 @@ export function rate(drink, rating) {
 }
 
 export function getDrinks() {
+  console.log("I got to getDrinks");
   return function (dispatch, getState) {
-    return fetch('/randomDrinks', {method: 'get'})
-    .then(
-      response =>
-        dispatch({
-          type: 'GET_DRINKS',
-          drinks: response.body.results
-        }),
-      error => console.log(error)
-    )
+    return fetch(mainURL + '/drinks/drinks/randomDrinks', {method: 'get'})
+      .then(response => {
+        response.json().then(data => {
+          console.log(data);
+          dispatch({
+            type: 'GET_DRINKS',
+            value: data.results
+          })
+        })
+      })
+      .catch(error => console.log("This is an error: ", error))
   }
 }
 
