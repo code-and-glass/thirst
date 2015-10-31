@@ -6,7 +6,7 @@ var mainURL = window.location.href.split('/static')[0];
 
 export function rate(drink, rating) {
   return function (dispatch, getState) {
-    return fetch('/rate', {
+    return fetch( mainURL + '/rate', {
       method: 'post',
       body: {rating: rating, drink: drink}
     })
@@ -22,16 +22,13 @@ export function rate(drink, rating) {
 }
 
 export function getDrinks() {
+  console.log("I got to getDrinks");
   return function (dispatch, getState) {
-    return fetch('/randomDrinks', {method: 'get'})
-    .then(
-      response =>
-        dispatch({
-          type: 'GET_DRINKS',
-          drinks: response.body.results
-        }),
-      error => console.log(error)
-    )
+    return fetch(mainURL + '/drinks/randomDrinks', {method: 'get'})
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => console.log("This is an error: ", error))
   }
 }
 
