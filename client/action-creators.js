@@ -41,13 +41,15 @@ export function getDrinks() {
 export function getRecommendations() {
   return function (dispatch, getState) {
     return fetch('/recommendKNN', {method: 'get'})
-    .then(
-      response =>
+    .then(response => {
+      response.json().then(data => {
+        console.log(data);
         dispatch({
-          type: 'GET_RECS',
-          recs: response.body.results
-        }),
-      error => console.log(error)
-    )
+          type: "GET_RECOMMENDATIONS",
+          value: data.results
+        })
+      })
+    })
+    .catch(error => console.log("This is an error: ", error))
   }
 }
