@@ -7,11 +7,10 @@ import { render } from 'react-dom'
 
 const store = createStore();
 
-
 function mapStateToProps(state){
   return {
-    recommend: state._getThings.recommend,
-    rate: state._getThings.rate
+    recommended: state._getThings.recommended,
+    random: state._getThings.random
   };
 }
 
@@ -49,14 +48,14 @@ const Nav = React.createClass({
             <i className="material-icons">menu</i>
           </a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li><Link to="rate">Rate Drinks</Link></li>
-            <li><Link to="recommend">Recommendations</Link></li>
+            <li><Link to="random">Random Drinks</Link></li>
+            <li><Link to="recommended">Recommendations</Link></li>
             <li><a href="">Drinks I've Had</a></li>
             <li><a href="/logout">Logout</a></li>
           </ul>
           <ul className="side-nav" id="mobile-demo">
-            <li><Link to="rate">Rate Drinks</Link></li>
-            <li><Link to="recommend">Recommendations</Link></li>
+            <li><Link to="random">Random Drinks</Link></li>
+            <li><Link to="recommended">Recommendations</Link></li>
             <li><a href="">Drinks I've Had</a></li>
             <li><a href="/logout">Logout</a></li>
           </ul>
@@ -70,10 +69,10 @@ const Nav = React.createClass({
 });
 
 @connect(mapStateToProps)
-class Recommend extends React.Component {
+class Recommended extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch(actionCreators.getRecommendations())
+    // this.props.dispatch(actionCreators.getRecommendations())
   }
 
   render() {
@@ -85,9 +84,9 @@ class Recommend extends React.Component {
 
     return (
 
-      <div className="recommend-container" style={ containerStyle }>
+      <div className="recommended-container" style={ containerStyle }>
         {
-          this.props.recommend.map(function(item){
+          this.props.recommended.map(function(item){
             return <DrinkCard drinkName={ item }><RatingAction/></DrinkCard>
           })
         }
@@ -97,10 +96,10 @@ class Recommend extends React.Component {
 }
 
 @connect(mapStateToProps)
-class Rate extends React.Component {
+class Random extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch(actionCreators.getDrinks());
+    // this.props.dispatch(actionCreators.getDrinks());
   }
 
   render() {
@@ -113,7 +112,7 @@ class Rate extends React.Component {
     return (
       <div className="rating-container" style={ containerStyle }>
         {
-          this.props.rate.map(function(item){
+          this.props.random.map(function(item){
             return <DrinkCard drinkName={ item }><RatingAction/></DrinkCard>
           })
         }
@@ -138,7 +137,8 @@ const DrinkCard = React.createClass({
       "paddingTop": "55px",
     }
 
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-white/225x300/" + this.props.drinkName + ".png"
+    var urlName = this.props.drinkName.replace(" ", "-");
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-white/225x300/" + urlName + ".png"
 
     return (
     <div className="card medium">
@@ -228,9 +228,9 @@ const Application = React.createClass({
       <Provider store={ this.props.store }>
         <Router>
           <Route path="/" component={Main}>
-            <IndexRoute component={Rate}/>
-            <Route path="rate" component={Rate} />
-            <Route path="recommend" component={Recommend} />
+            <IndexRoute component={Random}/>
+            <Route path="random" component={Random} />
+            <Route path="recommended" component={Recommended} />
           </Route>
         </Router>
       </Provider>
