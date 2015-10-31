@@ -7,11 +7,10 @@ import { render } from 'react-dom'
 
 const store = createStore();
 
-
 function mapStateToProps(state){
   return {
-    recommend: state._getThings.recommend,
-    rate: state._getThings.rate
+    recommended: state._getThings.recommended,
+    random: state._getThings.random
   };
 }
 
@@ -21,7 +20,7 @@ const Main = React.createClass({
       <div>
         <Nav/>
         <div className="row">
-          <div className="col s6 offset-s3">
+          <div className="col s12 m8 l6 offset-l3 offset-m2">
             {this.props.children}
           </div>
         </div>
@@ -31,16 +30,29 @@ const Main = React.createClass({
 });
 
 
-const Nav = React.createClass({    // Needs to collapse better for mobile
+const Nav = React.createClass({
   render() {
+
+    $( document ).ready(function(){
+      $(".button-collapse").sideNav({closeOnClick: true})  // other options?
+    })
 
     return (
       <nav>
-        <div className="nav-wrapper">
-        <a href="#" className="brand-logo left">Thirst</a>
-          <ul id="nav-mobile" className="right">
-            <li><Link to="rate">Rate Drinks</Link></li>
-            <li><Link to="recommend">Recommendations</Link></li>
+        <div className="nav-wrapper indigo">
+          <a href="#" className="brand-logo" style={{ paddingLeft:'10px', fontWeight:'lighter' }}>Thirst</a>
+          <a href="#" data-activates="mobile-demo" className="button-collapse" style={{ paddingLeft:'10px' }}>
+            <i className="material-icons">menu</i>
+          </a>
+          <ul id="nav-mobile" className="right hide-on-med-and-down">
+            <li><Link to="random">Random Drinks</Link></li>
+            <li><Link to="recommended">Recommendations</Link></li>
+            <li><a href="">Drinks I've Had</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+          <ul className="side-nav" id="mobile-demo">
+            <li><Link to="random">Random Drinks</Link></li>
+            <li><Link to="recommended">Recommendations</Link></li>
             <li><a href="">Drinks I've Had</a></li>
             <li><a href="/logout">Logout</a></li>
           </ul>
@@ -54,27 +66,25 @@ const Nav = React.createClass({    // Needs to collapse better for mobile
 });
 
 @connect(mapStateToProps)
-class Recommend extends React.Component {
+class Recommended extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch(actionCreators.getRecommendations())
+    // this.props.dispatch(actionCreators.getRecommendations())
   }
 
   render() {
 
     let containerStyle = {
       position: 'relative',
-      width: '80%',
-      left: '10%',
-      top: '50px',
+      top: '30px',
     };
 
     return (
 
-      <div className="recommend-container" style={ containerStyle }>
+      <div className="recommended-container" style={ containerStyle }>
         {
-          this.props.recommend.map(function(item){
-            return <RecommendPanel drinkName={ item }></RecommendPanel>
+          this.props.recommended.map(function(item){
+            return <DrinkCard drinkName={ item }><RatingAction/></DrinkCard>
           })
         }
       </div>
@@ -83,26 +93,24 @@ class Recommend extends React.Component {
 }
 
 @connect(mapStateToProps)
-class Rate extends React.Component {
+class Random extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch(actionCreators.getDrinks());
+    // this.props.dispatch(actionCreators.getDrinks());
   }
 
   render() {
 
     let containerStyle = {
       position: 'relative',
-      width: '80%',
-      left: '10%',
-      top: '100px',
+      top: '30px',
     };
 
     return (
       <div className="rating-container" style={ containerStyle }>
         {
-          this.props.rate.map(function(item){
-            return <RatingPanel drinkName={ item }></RatingPanel>
+          this.props.random.map(function(item){
+            return <DrinkCard drinkName={ item }><RatingAction/></DrinkCard>
           })
         }
       </div>
@@ -110,71 +118,32 @@ class Rate extends React.Component {
   }
 };
 
-const RatingPanel = React.createClass({
+//Materialize card that will hold the picture of the drink and other components
+const DrinkCard = React.createClass({
 
   rate(drink) {
     this.props.dispatch(actionCreators.rateDrink(drink))
   },
 
   render: function() {
-    //TODO: adjust size
-    //wire up buttons
-
-    return (
-      <DrinkCard drinkName={this.props.drinkName}>
-        <RatingAction/>
-      </DrinkCard>
-    )
-  }
-});
-
-//TODO:Add expected rating or ranking
-const RecommendPanel = React.createClass({
-  render: function() {
 
     let imageStyles = {
-      width: "inherit",
+      width: "100%",
       height: "100%",
-      "marginLeft": "450px"
+      "paddingRight": "30px",
+      "paddingTop": "55px",
     }
 
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/225x300/" + this.props.drinkName + ".png"
-    return (
-      <div className="card medium">
-        <div className="card-image">
-          <img src={imageUrl} style= { imageStyles }/>
-          <span className="card-title black-text">{ this.props.drinkName }</span>
-        </div>
-        <div class="card-content">
-          <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
-        </div>
-        <DrinkReveal drinkname={this.props.drinkName}/>
-      </div>
-    )
-  }
-});
-
-//Materialize card that will hold the picture of the drink and other components
-const DrinkCard = React.createClass({
-
-
-
-  render: function() {
-
-    let imageStyles = {
-      width: "inherit",
-      height: "100%",
-      "marginLeft": "450px"
-    }
-
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/225x300/" + this.props.drinkName + ".png"
+    var urlName = this.props.drinkName.replace(" ", "-");
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-white/225x300/" + urlName + ".png"
 
     return (
     <div className="card medium">
-      <div className="card-image">
-        <img src={imageUrl} style= { imageStyles }/>
-        <span className="card-title black-text">{ this.props.drinkName }</span>
+      <div className="card-image right">
+        <img src={imageUrl} style={imageStyles}/>
       </div>
+      <span className="card-title black-text">{ this.props.drinkName }</span>
+      <DrinkReveal drinkname={this.props.drinkName}/>
       { this.props.children }
     </div>
     )
@@ -213,21 +182,19 @@ const RatingAction = React.createClass({
           <div className="container">
             <a><i className="material-icons">not_interested</i></a>
             {starMaker(3)}
+            <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
           </div>
       </div>
-      )
+    )
   }
 });
 
 const RatingStar = React.createClass({
-
   render: function() {
-
     let star = this.props.filled ? "star" : "star_border"
-
     return (
       <a><i className="material-icons">{star}</i></a>
-      )
+    )
   }
 });
 
@@ -246,17 +213,6 @@ const DrinkReveal = React.createClass({
           <li>1 Twist Orange</li>
         </ul>
       </div>
-      )
-  }
-});
-
-
-const DrinkContent = React.createClass({
-  render: function() {
-    return (
-      <div className="card-content">
-        <span className="card-title activator black-text">{this.props.drinkName}<i className="material-icons right">more_vert</i></span>
-      </div>
     )
   }
 });
@@ -269,9 +225,9 @@ const Application = React.createClass({
       <Provider store={ this.props.store }>
         <Router>
           <Route path="/" component={Main}>
-            <IndexRoute component={Rate}/>
-            <Route path="rate" component={Rate} />
-            <Route path="recommend" component={Recommend} />
+            <IndexRoute component={Random}/>
+            <Route path="random" component={Random} />
+            <Route path="recommended" component={Recommended} />
           </Route>
         </Router>
       </Provider>
