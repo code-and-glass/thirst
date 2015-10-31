@@ -52,7 +52,7 @@ module.exports = {
       var randomNum = Math.floor(Math.random() * (results.length - 10));
       var randomList = results.slice(randomNum, randomNum+10);
       // sends one random drink
-      callback(randomList[0]);
+      callback(randomList);
     });
   },
 

@@ -30,12 +30,15 @@ app.get('/drinks/randomDrinks', function(req, res, next) {
   //respond with data of all drinks in db
    drinks.getRandomDrinks(function(results) {
     // console.log('results length from router.get callback', results);
-    res.send(results);
+    var drinks = {results: results};
+    console.log(drinks);
+    
+    res.send(drinks);
   });
 });
 
 request(app)
-  .get('/drinks')
+  .get('/drinks/randomDrinks')
   .expect(200)
   .expect('Content-Type', /json/)
   .end(function(err, res){
