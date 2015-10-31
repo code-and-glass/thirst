@@ -192,6 +192,14 @@ const RatingAction = React.createClass({
     //Style icons color: black
     //Style hover to be yellow
 
+    var starMaker = function(rating) {
+      var rows = []
+      for(var i = 0; i < 5; i++){
+        rows.push(<RatingStar filled={ i < rating }/>);
+      }
+      return rows;
+    }
+
 
     let firstLinkStyle = {
       "marginRight" : "inherit",
@@ -208,17 +216,8 @@ const RatingAction = React.createClass({
       <div className="card-action">
           <div className="container">
             <a><i className="material-icons">not_interested</i></a>
-            <a><i className="material-icons">grade</i></a>
-
-
-            <a><i className="material-icons">grade</i></a>
-            <a><i className="material-icons">grade</i></a>
-
-
-            <a><i className="material-icons">grade</i></a>
-            <a><i className="material-icons" style={blackStar}>grade</i></a>
+            {starMaker(3)}
           </div>
-
       </div>
       )
   }
@@ -228,9 +227,10 @@ const RatingStar = React.createClass({
 
   render: function() {
 
+    let star = this.props.filled ? "star" : "star_border"
 
     return (
-      <a><i className="material-icons">star_rate</i></a>
+      <a><i className="material-icons">{star}</i></a>
       )
   }
 });
