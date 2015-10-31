@@ -47,8 +47,8 @@ app.get('/recommendKNN', function(req, res, next) {
             "RETURN   p2.name AS Neighbor, sim AS Similarity\n";
 
   //get movie recommendation for a user
-  var recommendations = 
-            "MATCH    (b:User)-[r:RATED]->(m:Drink), (b)-[s:SIMILARITY]-(a:User {userName: 'user6'})\n" +
+  var recommendString = 
+            "MATCH    (b:User)-[r:RATED]->(m:Drink), (b)-[s:SIMILARITY]-(a:User {userName: KEY})\n" +
             "WHERE     ((a)-[:RATED]->(m))\n" +
             "WITH     m, s.similarity AS similarity, r.rating AS rating\n" +
             "ORDER BY m.drinkName, similarity DESC\n" +
@@ -57,6 +57,9 @@ app.get('/recommendKNN', function(req, res, next) {
             "ORDER BY reco DESC\n" +
             "RETURN   drink AS Drink, reco AS Predicted";
   
+  user =    "'" + user.userName + "'" ;
+  console.log(user);
+  recommendations = recommendString.replace('KEY', user);
   
   // User.query(cosSim, null, function(results) {
   //   if (err) console.log(err);
