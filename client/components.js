@@ -72,7 +72,7 @@ const Nav = React.createClass({
 class Recommended extends React.Component {
 
   componentWillMount() {
-    // this.props.dispatch(actionCreators.getRecommendations())
+    this.props.dispatch(actionCreators.getRecommendations())
   }
 
   render() {
@@ -99,7 +99,7 @@ class Recommended extends React.Component {
 class Random extends React.Component {
 
   componentWillMount() {
-    // this.props.dispatch(actionCreators.getDrinks());
+    this.props.dispatch(actionCreators.getDrinks());
   }
 
   render() {
@@ -113,7 +113,7 @@ class Random extends React.Component {
       <div className="rating-container" style={ containerStyle }>
         {
           this.props.random.map(function(item){
-            return <DrinkCard drinkName={ item }><RatingAction/></DrinkCard>
+            return <DrinkCard drinkName={ item.name }><RatingAction/></DrinkCard>
           })
         }
       </div>
