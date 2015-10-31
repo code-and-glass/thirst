@@ -9,7 +9,8 @@ var db = require('seraph');
 
 
 app.get('/recommendKNN', function(req, res, next) {
-
+  
+  //#########FOR TESTING ONLY. Populates db with dummy user and drink nodes.##########
   //save test drink nodes
   // for (i = 1; i < 11; i++) {
   //     var drink = 'drink' + i;
@@ -22,13 +23,15 @@ app.get('/recommendKNN', function(req, res, next) {
   //   }
 
   //console.log('test db populated.');
+  //###################################################################################
+
 
   //use db.queryraw to query db with cypher and retrieve relations
 
-  //cosine similarity cypher query
+  //get username and stringify to be passed into cypher query  
+  var user =    "'" + req.session.userRecord.userName + "'" ;
   
-  // var user = req.user;
-  var user = {userName: 'user6'};
+  //cosine similarity cypher query
   var cosSim = 
             "MATCH (p1:User)-[x:RATED]->(m:Drink)<-[y:RATED]-(p2:User)\n" +
             "WITH  SUM(x.rating * y.rating) AS xyDotProduct,\n" +
@@ -57,8 +60,8 @@ app.get('/recommendKNN', function(req, res, next) {
             "ORDER BY reco DESC\n" +
             "RETURN   drink AS Drink, reco AS Predicted";
   
-  user =    "'" + user.userName + "'" ;
-  console.log(user);
+  
+  //place cypher current request's userName into cypher query
   recommendations = recommendString.replace('KEY', user);
   
   // User.query(cosSim, null, function(results) {
