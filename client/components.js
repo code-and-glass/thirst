@@ -21,7 +21,7 @@ const Main = React.createClass({
       <div>
         <Nav/>
         <div className="row">
-          <div className="col s6 offset-s3">
+          <div className="col s12 m8 l6 offset-l3 offset-m2">
             {this.props.children}
           </div>
         </div>
@@ -31,16 +31,28 @@ const Main = React.createClass({
 });
 
 
-const Nav = React.createClass({    // Needs to collapse better for mobile
+const Nav = React.createClass({
   render() {
+
+
+    $( document ).ready(function(){
+      $(".button-collapse").sideNav({closeOnClick: true})  // other options?
+    })
 
 
     return (
 
       <nav>
         <div className="nav-wrapper">
-        <a href="#" className="brand-logo left">Thirst</a>
-          <ul id="nav-mobile" className="right">
+          <a href="#" className="brand-logo">Thirst</a>
+          <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
+          <ul id="nav-mobile" className="right hide-on-med-and-down">
+            <li><Link to="rate">Rate Drinks</Link></li>
+            <li><Link to="recommend">Recommendations</Link></li>
+            <li><a href="">Drinks I've Had</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+          <ul className="side-nav" id="mobile-demo">
             <li><Link to="rate">Rate Drinks</Link></li>
             <li><Link to="recommend">Recommendations</Link></li>
             <li><a href="">Drinks I've Had</a></li>
@@ -66,9 +78,7 @@ class Recommend extends React.Component {
 
     let containerStyle = {
       position: 'relative',
-      width: '80%',
-      left: '10%',
-      top: '50px',
+      top: '30px',
     };
 
     return (
@@ -95,9 +105,7 @@ class Rate extends React.Component {
 
     let containerStyle = {
       position: 'relative',
-      width: '80%',
-      left: '10%',
-      top: '100px',
+      top: '30px',
     };
 
     return (
