@@ -24,9 +24,15 @@ export function rate(drink, rating) {
 export function getDrinks() {
   console.log("I got to getDrinks");
   return function (dispatch, getState) {
-    return fetch(mainURL + '/drinks/randomDrinks', {method: 'get'})
+    return fetch(mainURL + '/drinks/drinks/randomDrinks', {method: 'get'})
       .then(response => {
-        console.log(response);
+        response.json().then(data => {
+          console.log(data);
+          dispatch({
+            type: 'GET_DRINKS',
+            value: data.results
+          })
+        })
       })
       .catch(error => console.log("This is an error: ", error))
   }

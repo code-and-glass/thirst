@@ -1,11 +1,7 @@
-//placeholder
-const initialState = {
-  random: ["Mimoza", "Mojito", "Kremlin-Colonel", "American Dream"],
-  recommended: ["absolut-cosmopolitan","Pennsylvania", "Kremlin-Colonel", "absolut-cosmopolitan"]
-}
 
 export function _getThings(state, action) {
-  state = state || initialState;
+  state = state || { rate: [], recommend: [] };
+
   switch (action.type) {
     case 'GET_DRINKS':
       return {
