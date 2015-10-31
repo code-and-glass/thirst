@@ -21,17 +21,19 @@ app.post('/rate', function(req, res, next) {
    //req should have user, rating and drink properties
    
    //********may need to change based on req structure*******
-   var user = req.session.userrecord.username; //needs work
+   var user = req.session.userRecord.userName; //return name
+   var userNode = User.getUser({username:user}); //user node
    var rating = req.body.rating;
    var drink = req.body.drink;
    //*********************************************************
-
-    User.rate(223, 4, 229, function(results) {
+   
+    User.rate(userNode, rating, drink, function(err, results) {
     //console.log('results from app.get callback', results);
     //console.log(results);
-     var testJSON = {'results':results,
-   };
-     res.json(testJSON);
+    if (err) throw err;
+    console.log(user + ' rated ' + drink + ' ' + rating );
+    //var testJSON = {'results':results};
+    res.sendStatus(200);
   });
 });
 /*
