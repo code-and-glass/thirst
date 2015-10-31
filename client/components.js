@@ -40,9 +40,11 @@ const Nav = React.createClass({
 
     return (
       <nav>
-        <div className="nav-wrapper">
-          <a href="#" className="brand-logo">Thirst</a>
-          <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
+        <div className="nav-wrapper indigo">
+          <a href="#" className="brand-logo" style={{ paddingLeft:'10px', fontWeight:'lighter' }}>Thirst</a>
+          <a href="#" data-activates="mobile-demo" className="button-collapse" style={{ paddingLeft:'10px' }}>
+            <i className="material-icons">menu</i>
+          </a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li><Link to="rate">Rate Drinks</Link></li>
             <li><Link to="recommend">Recommendations</Link></li>
@@ -83,7 +85,7 @@ class Recommend extends React.Component {
       <div className="recommend-container" style={ containerStyle }>
         {
           this.props.recommend.map(function(item){
-            return <RecommendPanel drinkName={ item }></RecommendPanel>
+            return <DrinkCard drinkName={ item }><RatingAction/></DrinkCard>
           })
         }
       </div>
@@ -109,7 +111,7 @@ class Rate extends React.Component {
       <div className="rating-container" style={ containerStyle }>
         {
           this.props.rate.map(function(item){
-            return <RatingPanel drinkName={ item }></RatingPanel>
+            return <DrinkCard drinkName={ item }><RatingAction/></DrinkCard>
           })
         }
       </div>
@@ -117,71 +119,31 @@ class Rate extends React.Component {
   }
 };
 
-const RatingPanel = React.createClass({
+//Materialize card that will hold the picture of the drink and other components
+const DrinkCard = React.createClass({
 
   rate(drink) {
     this.props.dispatch(actionCreators.rateDrink(drink))
   },
 
   render: function() {
-    //TODO: adjust size
-    //wire up buttons
-
-    return (
-      <DrinkCard drinkName={this.props.drinkName}>
-        <RatingAction/>
-      </DrinkCard>
-    )
-  }
-});
-
-//TODO:Add expected rating or ranking
-const RecommendPanel = React.createClass({
-  render: function() {
 
     let imageStyles = {
-      width: "inherit",
+      width: "100%",
       height: "100%",
-      "marginLeft": "450px"
+      "paddingRight": "30px",
+      "paddingTop": "55px",
     }
 
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/225x300/" + this.props.drinkName + ".png"
-    return (
-      <div className="card medium">
-        <div className="card-image">
-          <img src={imageUrl} style= { imageStyles }/>
-          <span className="card-title black-text">{ this.props.drinkName }</span>
-        </div>
-        <div class="card-content">
-          <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
-        </div>
-        <DrinkReveal drinkname={this.props.drinkName}/>
-      </div>
-    )
-  }
-});
-
-//Materialize card that will hold the picture of the drink and other components
-const DrinkCard = React.createClass({
-
-
-
-  render: function() {
-
-    let imageStyles = {
-      width: "inherit",
-      height: "100%",
-      "marginLeft": "450px"
-    }
-
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-black/225x300/" + this.props.drinkName + ".png"
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-white/225x300/" + this.props.drinkName + ".png"
 
     return (
     <div className="card medium">
-      <div className="card-image">
-        <img src={imageUrl} style= { imageStyles }/>
-        <span className="card-title black-text">{ this.props.drinkName }</span>
+      <div className="card-image right">
+        <img src={imageUrl} style={imageStyles}/>
       </div>
+      <span className="card-title black-text">{ this.props.drinkName }</span>
+      <DrinkReveal drinkname={this.props.drinkName}/>
       { this.props.children }
     </div>
     )
@@ -220,21 +182,19 @@ const RatingAction = React.createClass({
           <div className="container">
             <a><i className="material-icons">not_interested</i></a>
             {starMaker(3)}
+            <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
           </div>
       </div>
-      )
+    )
   }
 });
 
 const RatingStar = React.createClass({
-
   render: function() {
-
     let star = this.props.filled ? "star" : "star_border"
-
     return (
       <a><i className="material-icons">{star}</i></a>
-      )
+    )
   }
 });
 
@@ -252,17 +212,6 @@ const DrinkReveal = React.createClass({
           <li>½ Part Cranberry Juice</li>
           <li>1 Twist Orange</li>
         </ul>
-      </div>
-      )
-  }
-});
-
-
-const DrinkContent = React.createClass({
-  render: function() {
-    return (
-      <div className="card-content">
-        <span className="card-title activator black-text">{this.props.drinkName}<i className="material-icons right">more_vert</i></span>
       </div>
     )
   }
