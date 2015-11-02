@@ -96,14 +96,14 @@ app.get('/recommend', function(req, res, next) {
 });
 */
 //test
-request(app)
-  .post('/rate')
-  .expect(200)
-  .expect('Content-Type', /json/)
-  .end(function(err, res){
-    if (err) throw err;
-    //console.log(res);
-  });
+// request(app)
+//   .post('/rate')
+//   .expect(200)
+//   .expect('Content-Type', /json/)
+//   .end(function(err, res){
+//     if (err) throw err;
+//     //console.log(res);
+//   });
 
 
   // request(app)
@@ -115,3 +115,4 @@ request(app)
   //   //console.log(res);
   // });
 
+module.exports = app;
