@@ -1,72 +1,62 @@
-// ACTION CREATORS DO THE ACTUAL API / SERVER REQUESTS
-// WE'RE USING THUNK AS MIDDLEWARE FOR ASYNC SERVER/API CALLS
-// put .catch functions in as well to handle errors
-// https://github.com/github/fetch   POLYFILL - use ajax if can't work this
+// ACTION CREATORS DO THE API / SERVER REQUESTS
+// WE'RE USING THUNK MIDDLEWARE FOR ASYNC CALLS
+// https://github.com/github/fetch   POLYFILL
 
-export function onLogin() {
+var mainURL = window.location.href.split('/static')[0];
+
+export function rate(drink, rating, drinkKey) {
+  console.log("Rate action creator called", drink, rating, drinkKey);
   return function (dispatch, getState) {
-    // We can dispatch both plain object actions and other thunks,
-    // which lets us compose the asynchronous actions in a single flow.
-    return dispatch(
-      fetch('/api/login', { // fetch user info when redirected to client / on first load
-	      method: 'get'
-      }).then(response =>
-        dispatch({
-          type: 'ON_LOGIN',
-          data: response.data // or whatever format is
-        }) // what page do we show them on login?
-      )
-    )
+    return fetch( mainURL + '/rate/rate', {
+      method: 'post',
+      body: JSON.stringify({rating: rating, drink: drink}),
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json'}
+    })
+    .then(response => {
+      //if response is 200
+      dispatch({
+        "type": "RATE",
+        "name": drink,
+        "rating": rating,
+        "key": drinkKey
+      })
+    })
+    .catch(err => {
+      console.log("Error in rate", err)
+    })
   }
 }
 
-export function postRatedDrink(drink) {
+export function getDrinks() {
   return function (dispatch, getState) {
-    return dispatch(
-      fetch('/api/rate', {
-	      method: 'post',
-        body: {drink: drink}
-      }).then((response) =>
-        dispatch({
-          type: 'RATE_DRINK',
-          drinks: response.data.drinks   // or whatever
+    return fetch(mainURL + '/drinks/drinks/randomDrinks', {method: 'get'})
+      .then(response => {
+        response.json().then(data => {
+          dispatch({
+            type: 'GET_DRINKS',
+            value: data.results
+          })
         })
-      )
-    )
-  }
-}
-
-export function getDrinksToRate() {
-  return function (dispatch, getState) {
-    return dispatch(
-      fetch('/api/rate', {method: 'get'})
-      .then((response) =>
-        dispatch({
-          type: 'GET_DRINKS',
-          drinks: response.data.drinks // or whatever it is
-        })
-      )
-    )
+      })
+      .catch(err => {
+        console.log("Error in getDrinks", err)
+      })
   }
 }
 
 export function getRecommendations() {
   return function (dispatch, getState) {
-    return dispatch(
-      fetch('/api/recommend', {method: 'get'})
-      .then((response) =>
+    console.log("getRecommendations was called");
+    return fetch(mainURL + '/recommend/recommendKNN', {method: 'get'})
+    .then(response => {
+      console.log("Recommendations response: ", response);
+      response.json().then(data => {
         dispatch({
-          type: 'GET_RECS',
-          recs: response.data.recommendations // or whatever
+          type: "GET_RECOMMENDATIONS",
+          value: data.results
         })
-      )
-    )
-  }
-}
-
-export function notInterested(drink) {
-  return {
-    type: 'NOT_INTERESTED',
-    drink: drink
+      })
+    })
+    .catch()
   }
 }

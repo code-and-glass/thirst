@@ -54,13 +54,9 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          "client/babelified/main.js" : ["client/main.js"],
           "client/babelified/components.js" : ["client/components.js"],
           "client/babelified/action-creators.js" : ["client/action-creators.js"],
-          "client/babelified/application.js" : ["client/application.jsx"],
           "client/babelified/create-store.js" : ["client/create-store.js"],
-          "client/babelified/home.js" : ["client/home.jsx"],
-          "client/babelified/promise-middleware.js" : ["client/promise-middleware.js"],
           "client/babelified/reducers.js" : ["client/reducers.js"],
         }
       }
@@ -107,5 +103,3 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['test', 'build', 'upload']);
 
 };
-
-

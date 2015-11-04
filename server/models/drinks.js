@@ -24,12 +24,11 @@ module.exports = {
   
   getDrink: function(drinkName, callback) {
     //return drink node by drinkName property
-    var predicate = {drinkName: name};
+    var predicate = {name: drinkName};
     return db.find(predicate, function(err, result) { 
     //may need to account for result being array of 1
       if (err) {
         throw err;
-        
       } else {
         //may return undefined or similar if no user
         callback(result); 
@@ -51,8 +50,19 @@ module.exports = {
     return db.nodesWithLabel('Drink', function(err, results) {
       var randomNum = Math.floor(Math.random() * (results.length - 10));
       var randomList = results.slice(randomNum, randomNum+10);
+
+      var randomList =  [ { name: 'Absolut Vanilia Chocolate Martini', id: 380 },
+     { name: 'Dempsey', id: 381 },
+     { name: 'Ping-pong', id: 382 },
+     { name: 'Di Saronno Punsch', id: 383 },
+     { name: 'Green Dragon', id: 384 },
+     { name: 'Pink Lady', id: 385 },
+     { name: 'Pioneer', id: 386 },
+     { name: 'Bolshoi Punsch', id: 387 },
+     { name: 'Graziella', id: 388 },
+     { name: 'Green Destiny', id: 389 } ]
       // sends one random drink
-      callback(randomList[0]);
+      callback(randomList);
     });
   },
 
