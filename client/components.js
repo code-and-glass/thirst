@@ -130,14 +130,12 @@ const DrinkCard = React.createClass({
   render: function() {
 
     let imageStyles = {
-      width: "100%",
-      height: "100%",
-      "paddingRight": "30px",
+      "paddingRight": "50px",
       "paddingTop": "55px",
     }
 
-    var urlName = this.props.drink.name.replace(" ", "-");
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/225x300/" + urlName + ".png"
+    var urlName = this.props.drink.name.replace(/\s/g, "-");
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/150x250/" + urlName + ".png"
     return (
     <div className="card medium">
       <div className="card-image right">
