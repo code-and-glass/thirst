@@ -33,7 +33,7 @@ app.get('/recommendKNN', function(req, res, next) {
   var id = req.sessionStore.googleId;
   User.getUser({googleId: id}, function(err, node) {
 
-    var user =    "'" + node.userName + "'";
+    var user =    "'" + node.googleId + "'";
 
     var cosSim =
             "MATCH (p1:User)-[x:RATED]->(m:Drink)<-[y:RATED]-(p2:User)\n" +
@@ -54,8 +54,8 @@ app.get('/recommendKNN', function(req, res, next) {
 
     //get movie recommendation for a user
     var recommendString =
-            "MATCH    (b:User)-[r:RATED]->(m:Drink), (b)-[s:SIMILARITY]-(a:User {userName: KEY})\n" +
-            "WHERE     ((a)-[:RATED]->(m))\n" +
+            "MATCH    (b:User)-[r:RATED]->(m:Drink), (b)-[s:SIMILARITY]-(a:User {googleId: KEY})\n" +
+            "WHERE NOT ((a)-[:RATED]->(m))\n" +
             "WITH     m, s.similarity AS similarity, r.rating AS rating\n" +
             "ORDER BY m.drinkName, similarity DESC\n" +
             "WITH     m.drinkName AS drink, COLLECT(rating)[0..3] AS ratings\n" +
@@ -72,12 +72,12 @@ app.get('/recommendKNN', function(req, res, next) {
   //   console.log('Graph cosine similarities updated');
   // });
 
-    User.query(recommendations, null, function(results) {
-    // if (err) throw err;
-    // console.log(results);
-      var recommended = {results:results};
-      console.log("Recommended" , recommended)
-      res.send(recommended);
+    User.query(cosSim, null, function(results) {
+      User.query(recommendations, null, function(results) {
+        var recommended = {results:results};
+        console.log("Recommended" , recommended)
+        res.send(recommended);
+      });
     });
   });
 })
