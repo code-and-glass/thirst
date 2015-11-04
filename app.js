@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 
-
 // uncomment to run migrations.js
 // var migrations = require('./server/migrations/migrations.js');
 
@@ -22,14 +21,14 @@ var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser('infinity divded by infinity'));
+app.use(cookieParser('keyboard cat'));
 app.use('/static', express.static(path.join(__dirname, 'client/dist')));
 app.use('/login', express.static(path.join(__dirname, 'client/login')));
 
 app.use(session({
-  saveUninitialized: true,
+  secret: 'keyboard cat',
   resave: false,
-  secret: 'infinity divded by infinity'
+  saveUninitialized: true
 }));
 
 app.use(passport.initialize());
@@ -73,9 +72,9 @@ if (process.env.googleId) {
 } else {
   var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
   var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
-    var callbackURL = 'http://127.0.0.1:3000/auth/google/callback';
-
+  var callbackURL = 'http://127.0.0.1:3000/auth/google/callback';
 }
+
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
   // console.log("inside serialize user", user, done);
@@ -106,6 +105,7 @@ passport.use(new GoogleStrategy({
         email: profile._json.emails[0].value,
         googleId: profile._json.id
       };
+      console.log("session in auth!!", req.session);
       // console.log("user record in strategy", req.session.userRecord);
       // associate the Google account with a user record in your database,
       // and return that user instead.

@@ -12,19 +12,15 @@ var recommend = require('../recommender.js');
 //var migrations = require('../migrations.js');
 /* GET home page. */
 
-
 // var user = User.saveUser({userName:'ArtemB'});
 // var rating = 4;
 // var drink = Drink.saveDrink({drinkName: 'bloody mary'});
 app.post('/rate', function(req, res, next) {
   //post rating to drink
-   //req should have user, rating and drink properties
-
-   //********may need to change based on req structure*******
-   console.log(req.sessionStore);
-   console.log(req.user);
-  //  console.log("Request:",req);
-   res.sendStatus(200);
+  //req should have user, rating and drink properties
+  //********may need to change based on req structure*******
+  console.log("USER SESSIONSTORE IS", req.sessionStore.googleId);
+  res.sendStatus(200);
   //  var user = req.session.userRecord.userName; //return name
   //  var userNode = User.getUser({username:user}); //user node
   //  var rating = req.body.rating;

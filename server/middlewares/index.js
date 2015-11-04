@@ -16,6 +16,7 @@ function isLoggedIn(req, res, next) {
 
 /* GET home page. */
 router.get('/', isLoggedIn, function(req, res, next) {
+  req.sessionStore.googleId = req.session.userRecord.googleId; 
   res.redirect('/static');
 });
 
@@ -33,9 +34,9 @@ router.get('/auth/google/callback',
   function(req, res) {
     // console.log("[OAuth2:redirect:query]:", JSON.stringify(req.query));
     // console.log("[OAuth2:redirect:body]:", JSON.stringify(req.body));
-    // console.log("Session", req.session);
+    // console.log("Session", req.session.user);
     // Successful authentication, redirect home.
-    res.redirect('/static');
+    res.redirect('/');
   });
 
 module.exports = router;
