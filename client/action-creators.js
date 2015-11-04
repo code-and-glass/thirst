@@ -21,6 +21,9 @@ export function rate(drink, rating, drinkKey) {
         "key": drinkKey
       })
     })
+    .catch(err => {
+      console.log("Error in rate", err)
+    })
   }
 }
 
@@ -35,13 +38,15 @@ export function getDrinks() {
           })
         })
       })
-      .catch()
+      .catch(err => {
+        console.log("Error in getDrinks", err)
+      })
   }
 }
 
 export function getRecommendations() {
   return function (dispatch, getState) {
-    return fetch('/recommendKNN', {method: 'get'})
+    return fetch('recommend/recommendKNN', {method: 'get'})
     .then(response => {
       response.json().then(data => {
         dispatch({
