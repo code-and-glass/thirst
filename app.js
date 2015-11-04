@@ -107,8 +107,8 @@ passport.use(new GoogleStrategy({
       // console.log("user record in strategy", req.session.userRecord);
       // associate the Google account with a user record in your database,
       // and return that user instead.
-      var name = req.session.userRecord.userName;
-      user.getUser({userName: name}, function (err, nodes) {
+      var id = req.session.userRecord.googleId;
+      user.getUser({googleId: id}, function (err, nodes) {
         if (err === null && nodes.length === 0) {
           user.saveUser(req.session.userRecord, function (err, result) {
             if (err) throw new Error(err);

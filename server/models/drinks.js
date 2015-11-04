@@ -50,6 +50,17 @@ module.exports = {
     return db.nodesWithLabel('Drink', function(err, results) {
       var randomNum = Math.floor(Math.random() * (results.length - 10));
       var randomList = results.slice(randomNum, randomNum+10);
+
+      var randomList =  [ { name: 'Absolut Vanilia Chocolate Martini', id: 380 },
+     { name: 'Dempsey', id: 381 },
+     { name: 'Ping-pong', id: 382 },
+     { name: 'Di Saronno Punsch', id: 383 },
+     { name: 'Green Dragon', id: 384 },
+     { name: 'Pink Lady', id: 385 },
+     { name: 'Pioneer', id: 386 },
+     { name: 'Bolshoi Punsch', id: 387 },
+     { name: 'Graziella', id: 388 },
+     { name: 'Green Destiny', id: 389 } ]
       // sends one random drink
       callback(randomList);
     });
