@@ -1,4 +1,4 @@
-var Drink = require('../models/drinks.js');
+  var Drink = require('../models/drinks.js');
 var User = require('../models/user.js');
 var express = require('express');
 // var router = express.Router();
@@ -9,14 +9,14 @@ var db = require('seraph');
 
 
 app.get('/recommendKNN', function(req, res, next) {
-  
+
   //#########FOR TESTING ONLY. Populates db with dummy user and drink nodes.##########
   //save test drink nodes
   // for (i = 1; i < 11; i++) {
   //     var drink = 'drink' + i;
   //     Drink.saveDrink({drinkName: drink});
   //   }
-  // //save test user nodes 
+  // //save test user nodes
   // for (var i = 1; i < 11; i++) {
   //     var name = 'user' + i;
   //     User.saveUser({userName: name});
@@ -28,11 +28,11 @@ app.get('/recommendKNN', function(req, res, next) {
 
   //use db.queryraw to query db with cypher and retrieve relations
 
-  //get username and stringify to be passed into cypher query  
+  //get username and stringify to be passed into cypher query
   var user =    "'" + req.session.userRecord.userName + "'" ;
-  
+
   //cosine similarity cypher query
-  var cosSim = 
+  var cosSim =
             "MATCH (p1:User)-[x:RATED]->(m:Drink)<-[y:RATED]-(p2:User)\n" +
             "WITH  SUM(x.rating * y.rating) AS xyDotProduct,\n" +
             "SQRT(REDUCE(xDot = 0.0, a IN COLLECT(x.rating) | xDot + a^2)) AS xLength,\n" +
@@ -42,7 +42,7 @@ app.get('/recommendKNN', function(req, res, next) {
             "SET   s.similarity = xyDotProduct / (xLength * yLength)";
 
   //N nearest neighbors
-  var nNeighbors = 
+  var nNeighbors =
             "MATCH    (p1:User {name:'user1'})-[s:SIMILARITY]-(p2:User)\n" +
             "WITH     p2, s.similarity AS sim\n" +
             "ORDER BY sim DESC\n" +
@@ -50,7 +50,7 @@ app.get('/recommendKNN', function(req, res, next) {
             "RETURN   p2.name AS Neighbor, sim AS Similarity\n";
 
   //get movie recommendation for a user
-  var recommendString = 
+  var recommendString =
             "MATCH    (b:User)-[r:RATED]->(m:Drink), (b)-[s:SIMILARITY]-(a:User {userName: KEY})\n" +
             "WHERE     ((a)-[:RATED]->(m))\n" +
             "WITH     m, s.similarity AS similarity, r.rating AS rating\n" +
@@ -59,16 +59,16 @@ app.get('/recommendKNN', function(req, res, next) {
             "WITH     drink, REDUCE(s = 0, i IN ratings | s + i)*1.0 / LENGTH(ratings) AS reco\n" +
             "ORDER BY reco DESC\n" +
             "RETURN   drink AS Drink, reco AS Predicted";
-  
-  
+
+
   //place cypher current request's userName into cypher query
   recommendations = recommendString.replace('KEY', user);
-  
+
   // User.query(cosSim, null, function(results) {
   //   if (err) console.log(err);
   //   console.log('Graph cosine similarities updated');
   // });
-  
+
   User.query(recommendations, null, function(results) {
     // if (err) throw err;
     // console.log(results);
@@ -83,13 +83,13 @@ module.exports = app;
 
 
 //test
-
-request(app)
-  .get('/recommendKNN')
-  .expect(200)
-  .expect('Content-Type', /json/)
-  .end(function(err, res){
-    //if (err) throw err;
-    
-    console.log(res.body.results);
-  });
+//
+// request(app)
+//   .get('/recommendKNN')
+//   .expect(200)
+//   .expect('Content-Type', /json/)
+//   .end(function(err, res){
+//     //if (err) throw err;
+//
+//     console.log(res.body.results);
+//   });

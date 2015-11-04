@@ -1,4 +1,4 @@
-//when a user rates a drink, the rating is stored as a relationship 
+//when a user rates a drink, the rating is stored as a relationship
 //and the recommendations for all users are updated
 var Drink = require('../models/drinks.js');
 var User = require('../models/user.js');
@@ -19,14 +19,18 @@ var recommend = require('../recommender.js');
 app.post('/rate', function(req, res, next) {
   //post rating to drink
    //req should have user, rating and drink properties
-   
+
    //********may need to change based on req structure*******
+   console.log(req.sessionStore);
+   console.log(req.user);
+  //  console.log("Request:",req);
+   res.sendStatus(200);
   //  var user = req.session.userRecord.userName; //return name
   //  var userNode = User.getUser({username:user}); //user node
   //  var rating = req.body.rating;
   //  var drink = req.body.drink;
-  //  //*********************************************************
-   
+  // //  //*********************************************************
+  //
   //   User.rate(userNode, rating, drink, function(err, results) {
   //   //console.log('results from app.get callback', results);
   //   //console.log(results);
@@ -35,12 +39,11 @@ app.post('/rate', function(req, res, next) {
   //   //var testJSON = {'results':results};
   //   res.sendStatus(200);
   // });
-  res.sendStatus(200);
 });
 /*
 
 app.get('/recommend', function(req, res, next) {
-  //get a list of all user and ratings 
+  //get a list of all user and ratings
 //   User.saveUser({userName: 'JACKIECHAN'});
 //   User.saveUser({userName: 'JIMMYCHAN'});
     //
@@ -51,7 +54,7 @@ app.get('/recommend', function(req, res, next) {
   //save all drinks
   //save alot of users.
   User.getAllUsers(function(result) {
-   
+
    //console.log(result);
   //read all relationships
    //set some relationships
@@ -60,9 +63,9 @@ app.get('/recommend', function(req, res, next) {
    var matrix =[];
    var ratings = [];
    var count = 0;
-   
-   
-   result.forEach( function(user) {    
+
+
+   result.forEach( function(user) {
          //console.log(user);
          userLabels.push(user.userName);
      User.getAllUserLikes(user, function(likedDrinks) {
