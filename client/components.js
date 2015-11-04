@@ -83,8 +83,8 @@ class Recommended extends React.Component {
 
       <div className="recommended-container" style={ containerStyle }>
         {
-          this.props.recommended.map(function(item){
-            return <DrinkCard drinkName={ item }><RatingAction/></DrinkCard>
+          this.props.recommended.map(function(item, key){
+            return <DrinkCard drink={item}></DrinkCard>
           })
         }
       </div>
@@ -100,7 +100,7 @@ class Random extends React.Component {
   }
 
   render() {
-
+    
     let containerStyle = {
       position: 'relative',
       top: '30px',
@@ -109,8 +109,11 @@ class Random extends React.Component {
     return (
       <div className="rating-container" style={ containerStyle }>
         {
-          this.props.random.map(function(item){
-            return <DrinkCard drinkName={ item.name }><RatingAction/></DrinkCard>
+          this.props.random.map(function(item, key){
+            return ( 
+            <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}>
+            </DrinkCard>
+            )
           })
         }
       </div>
@@ -121,10 +124,6 @@ class Random extends React.Component {
 //Materialize card that will hold the picture of the drink and other components
 const DrinkCard = React.createClass({
 
-  rate(drink) {
-    this.props.dispatch(actionCreators.rateDrink(drink))
-  },
-
   render: function() {
 
     let imageStyles = {
@@ -134,17 +133,16 @@ const DrinkCard = React.createClass({
       "paddingTop": "55px",
     }
 
-    var urlName = this.props.drinkName.replace(" ", "-");
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/transparent-background-white/225x300/" + urlName + ".png"
-
+    var urlName = this.props.drink.name.replace(" ", "-");
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/225x300/" + urlName + ".png"
     return (
     <div className="card medium">
       <div className="card-image right">
         <img src={imageUrl} style={imageStyles}/>
       </div>
-      <span className="card-title black-text">{ this.props.drinkName }</span>
-      <DrinkReveal drinkname={this.props.drinkName}/>
-      { this.props.children }
+      <span className="card-title black-text">{ this.props.drink.name }</span>
+      <DrinkReveal drink={this.props.drink}/>
+      <RatingAction drink={this.props.drink} rating={this.props.rating } drinkKey={this.props.drinkKey}/>
     </div>
     )
   }
@@ -153,14 +151,18 @@ const DrinkCard = React.createClass({
 //The UI for rating drinks. Will be used by DrinkCard
 const RatingAction = React.createClass({
 
+  // getInitialState: function(){
+  //   return {rating: this.props.rating}
+  // }
+
   render: function() {
-    //Style icons color: black
-    //Style hover to be yellow
+    var drink = this.props.drink;
+    var drinkKey = this.props.drinkKey;
 
     var starMaker = function(rating) {
       var rows = []
       for(var i = 0; i < 5; i++){
-        rows.push(<RatingStar filled={ i < rating }/>);
+        rows.push(<RatingStar filled={ i < rating } drink={drink} drinkKey={drinkKey} value={i} key={i}/>);
       }
       return rows;
     }
@@ -170,18 +172,20 @@ const RatingAction = React.createClass({
       "marginRight" : "inherit",
       "marginLeft" : "20px"
     }
+
     let firstIconStyle = {
       "marginRight": "60px"
     }
+
     let blackStar = {
       color: "black"
     }
-
+    
     return (
       <div className="card-action">
           <div className="container">
             <a><i className="material-icons">not_interested</i></a>
-            {starMaker(3)}
+            {starMaker(this.props.rating || 0)}
             <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
           </div>
       </div>
@@ -189,14 +193,21 @@ const RatingAction = React.createClass({
   }
 });
 
-const RatingStar = React.createClass({
-  render: function() {
+
+@connect()
+class RatingStar extends React.Component {
+
+  render() {
     let star = this.props.filled ? "star" : "star_border"
+    var handleClick = event => this.props.dispatch(actionCreators.rate(this.props.drink.name , this.props.value + 1, this.props.drinkKey))
+
     return (
-      <a><i className="material-icons">{star}</i></a>
+      <a onClick={ handleClick }>
+        <i className="material-icons">{star}</i>
+      </a>
     )
   }
-});
+};
 
 const DrinkReveal = React.createClass({
   render: function() {
