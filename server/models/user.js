@@ -57,9 +57,9 @@ module.exports = {
     });
   },
 
-  getUser: function(name, callback) {
+  getUser: function(obj, callback) {
     //get user node by name
-    var predicate = {userName: name};
+    var predicate = obj;
     db.find(predicate, function(err, result) { 
       //may need to account for result being array of 1
       if (err) throw err;
@@ -98,6 +98,7 @@ module.exports = {
     return db
       .relate(user, 'RATED', drink, {rating:rating, user:user.userName, drink:drink.name }, function(err, relationship) {
       console.log('rate callback triggered');
+      if (err) console.log("error in rate", err);
       if (callback) {
         callback(relationship);
       }
