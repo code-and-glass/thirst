@@ -33,7 +33,8 @@ app.get('/recommendKNN', function(req, res, next) {
   var id = req.sessionStore.googleId;
   User.getUser({googleId: id}, function(err, node) {
 
-    var user =    "'" + node.googleId + "'";
+    var user =    "'" + node[0].googleId + "'";
+    console.log("This is var user:" , user);
 
     var cosSim =
             "MATCH (p1:User)-[x:RATED]->(m:Drink)<-[y:RATED]-(p2:User)\n" +
@@ -57,8 +58,8 @@ app.get('/recommendKNN', function(req, res, next) {
             "MATCH    (b:User)-[r:RATED]->(m:Drink), (b)-[s:SIMILARITY]-(a:User {googleId: KEY})\n" +
             "WHERE NOT ((a)-[:RATED]->(m))\n" +
             "WITH     m, s.similarity AS similarity, r.rating AS rating\n" +
-            "ORDER BY m.drinkName, similarity DESC\n" +
-            "WITH     m.drinkName AS drink, COLLECT(rating)[0..3] AS ratings\n" +
+            "ORDER BY m.name, similarity DESC\n" +
+            "WITH     m.name AS drink, COLLECT(rating)[0..3] AS ratings\n" +
             "WITH     drink, REDUCE(s = 0, i IN ratings | s + i)*1.0 / LENGTH(ratings) AS reco\n" +
             "ORDER BY reco DESC\n" +
             "RETURN   drink AS Drink, reco AS Predicted";
