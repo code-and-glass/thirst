@@ -29,10 +29,13 @@ app.get('/recommendKNN', function(req, res, next) {
   //use db.queryraw to query db with cypher and retrieve relations
 
   //get username and stringify to be passed into cypher query
-  var user =    "'" + req.session.userRecord.userName + "'" ;
+  // var user =    "'" + req.session.userRecord.userName + "'" ;
+  var id = req.sessionStore.googleId;
+  User.getUser({googleId: id}, function(err, node) {
 
-  //cosine similarity cypher query
-  var cosSim =
+    var user =    "'" + node.userName + "'";
+
+    var cosSim =
             "MATCH (p1:User)-[x:RATED]->(m:Drink)<-[y:RATED]-(p2:User)\n" +
             "WITH  SUM(x.rating * y.rating) AS xyDotProduct,\n" +
             "SQRT(REDUCE(xDot = 0.0, a IN COLLECT(x.rating) | xDot + a^2)) AS xLength,\n" +
@@ -41,16 +44,16 @@ app.get('/recommendKNN', function(req, res, next) {
             "MERGE (p1)-[s:SIMILARITY]-(p2)\n" +
             "SET   s.similarity = xyDotProduct / (xLength * yLength)";
 
-  //N nearest neighbors
-  var nNeighbors =
+    //N nearest neighbors
+    var nNeighbors =
             "MATCH    (p1:User {name:'user1'})-[s:SIMILARITY]-(p2:User)\n" +
             "WITH     p2, s.similarity AS sim\n" +
             "ORDER BY sim DESC\n" +
             "LIMIT    5\n" +
             "RETURN   p2.name AS Neighbor, sim AS Similarity\n";
 
-  //get movie recommendation for a user
-  var recommendString =
+    //get movie recommendation for a user
+    var recommendString =
             "MATCH    (b:User)-[r:RATED]->(m:Drink), (b)-[s:SIMILARITY]-(a:User {userName: KEY})\n" +
             "WHERE     ((a)-[:RATED]->(m))\n" +
             "WITH     m, s.similarity AS similarity, r.rating AS rating\n" +
@@ -62,21 +65,22 @@ app.get('/recommendKNN', function(req, res, next) {
 
 
   //place cypher current request's userName into cypher query
-  recommendations = recommendString.replace('KEY', user);
+    recommendations = recommendString.replace('KEY', user);
 
   // User.query(cosSim, null, function(results) {
   //   if (err) console.log(err);
   //   console.log('Graph cosine similarities updated');
   // });
 
-  User.query(recommendations, null, function(results) {
+    User.query(recommendations, null, function(results) {
     // if (err) throw err;
     // console.log(results);
-    var recommended = {results:results};
-    res.send(recommended);
+      var recommended = {results:results};
+      console.log("Recommended" , recommended)
+      res.send(recommended);
+    });
   });
-  //res.sendStatus(200);
-});
+})
 
 module.exports = app;
 

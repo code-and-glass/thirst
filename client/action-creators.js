@@ -46,8 +46,10 @@ export function getDrinks() {
 
 export function getRecommendations() {
   return function (dispatch, getState) {
-    return fetch('recommend/recommendKNN', {method: 'get'})
+    console.log("getRecommendations was called");
+    return fetch(mainURL + '/recommend/recommendKNN', {method: 'get'})
     .then(response => {
+      console.log("Recommendations response: ", response);
       response.json().then(data => {
         dispatch({
           type: "GET_RECOMMENDATIONS",
