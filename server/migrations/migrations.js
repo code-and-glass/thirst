@@ -38,7 +38,7 @@ var forEach = function (list, count) {
 
 
 /****************** api request to write data files ************************/
-// DON'T NEED TO RUN UNLESS 
+// DON'T NEED TO RUN UNLESS
 var request = require('request');
 var fs = require('fs');
 
@@ -52,11 +52,11 @@ var absolutEndPoint3550 = "https://addb.absolutdrinks.com/drinks/?apiKey=0f80b9b
 
 //LinkedList constructor
 function List(){
-  this.start = null; 
+  this.start = null;
   this.end = null;
   this.add = function (data){
-    if(this.start === null && this.end === null){ 
-      this.start = List.makeNode(data); 
+    if(this.start === null && this.end === null){
+      this.start = List.makeNode(data);
       this.end = this.start;
     } else if (this.end === this.start) {
       this.end = List.makeNode(data);
@@ -68,7 +68,7 @@ function List(){
   };
 }
 
-List.makeNode = function(list){ 
+List.makeNode = function(list){
   return {
     drinks: list,
     next: null
@@ -77,7 +77,7 @@ List.makeNode = function(list){
 
 var data = new List();
 
-// This function makes recursive calls to the api endpoint until targetUrl is reached 
+// This function makes recursive calls to the api endpoint until targetUrl is reached
 // usually used to retrieve 1000 drinks and stored in datastructure to write files
 function createLinkedList (endPoint, targetUrl) {
   var list = [];
@@ -110,4 +110,3 @@ function createLinkedList (endPoint, targetUrl) {
 // createLinkedList(absolutEndPoint1000, absolutEndPoint2000);
 // createLinkedList(absolutEndPoint2000, absolutEndPoint3000);
 // createLinkedList(absolutEndPoint3000);
-

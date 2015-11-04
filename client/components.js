@@ -100,7 +100,7 @@ class Random extends React.Component {
   }
 
   render() {
-    
+
     let containerStyle = {
       position: 'relative',
       top: '30px',
@@ -110,7 +110,7 @@ class Random extends React.Component {
       <div className="rating-container" style={ containerStyle }>
         {
           this.props.random.map(function(item, key){
-            return ( 
+            return (
             <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}>
             </DrinkCard>
             )
@@ -180,7 +180,7 @@ const RatingAction = React.createClass({
     let blackStar = {
       color: "black"
     }
-    
+
     return (
       <div className="card-action">
           <div className="container">

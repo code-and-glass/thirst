@@ -4,11 +4,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+
 
 // uncomment to run migrations.js
 // var migrations = require('./server/migrations/migrations.js');
 
-// routing 
+// routing
 var request = require("request");
 var session = require('express-session');
 var routes = require('./server/middlewares/index.js');
@@ -20,7 +22,7 @@ var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('infinity divded by infinity'));
 app.use('/static', express.static(path.join(__dirname, 'client/dist')));
 app.use('/login', express.static(path.join(__dirname, 'client/login')));
 
@@ -29,6 +31,9 @@ app.use(session({
   resave: false,
   secret: 'infinity divded by infinity'
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', routes);
 
@@ -118,4 +123,3 @@ passport.use(new GoogleStrategy({
     });
   }
 ));
-
