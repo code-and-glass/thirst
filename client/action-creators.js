@@ -4,37 +4,38 @@
 
 var mainURL = window.location.href.split('/static')[0];
 
-export function rate(drink, rating) {
+export function rate(drink, rating, drinkKey) {
+  console.log("Rate action creator called", drink, rating, drinkKey);
   return function (dispatch, getState) {
-    return fetch( mainURL + '/rate', {
+    return fetch( mainURL + '/rate/rate', {
       method: 'post',
-      body: {rating: rating, drink: drink}
+      body: JSON.stringify({rating: rating, drink: drink}),
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json'}
     })
-    .then(
-      response =>
-        dispatch({
-          type: 'RATE_DRINK',
-          drinks: response.body.results
-        }),
-      error => console.log(error)
-    )
+    .then(response => {
+      //if response is 200
+      dispatch({
+        "type": "RATE",
+        "name": drink,
+        "rating": rating,
+        "key": drinkKey
+      })
+    })
   }
 }
 
 export function getDrinks() {
-  console.log("I got to getDrinks");
   return function (dispatch, getState) {
     return fetch(mainURL + '/drinks/drinks/randomDrinks', {method: 'get'})
       .then(response => {
         response.json().then(data => {
-          console.log(data);
           dispatch({
             type: 'GET_DRINKS',
             value: data.results
           })
         })
       })
-      .catch(error => console.log("This is an error: ", error))
+      .catch()
   }
 }
 
@@ -43,13 +44,12 @@ export function getRecommendations() {
     return fetch('/recommendKNN', {method: 'get'})
     .then(response => {
       response.json().then(data => {
-        console.log(data);
         dispatch({
           type: "GET_RECOMMENDATIONS",
           value: data.results
         })
       })
     })
-    .catch(error => console.log("This is an error: ", error))
+    .catch()
   }
 }
