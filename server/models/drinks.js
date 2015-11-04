@@ -24,12 +24,11 @@ module.exports = {
   
   getDrink: function(drinkName, callback) {
     //return drink node by drinkName property
-    var predicate = {drinkName: name};
+    var predicate = {name: drinkName};
     return db.find(predicate, function(err, result) { 
     //may need to account for result being array of 1
       if (err) {
         throw err;
-        
       } else {
         //may return undefined or similar if no user
         callback(result); 

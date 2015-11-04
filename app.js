@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 
 // uncomment to run migrations.js
-// var migrations = require('./server/migrations/migrations.js');
+var migrations = require('./server/migrations/migrations.js');
 
 // routing
 var request = require("request");
@@ -83,7 +83,7 @@ passport.serializeUser(function(user, done) {
 
 // used to deserialize the user
 passport.deserializeUser(function(obj, done) {
-  user.getUser(obj.userName, function(err, user) {
+  user.getUser({userName: obj.userName}, function(err, user) {
     // console.log("inside deserializeUser", err, user[0]);
     done(err, user[0]);
   });
@@ -98,19 +98,17 @@ passport.use(new GoogleStrategy({
   function(req, token, tokenSecret, profile, done) {
     // make the code asynchronous
     process.nextTick(function() {
-      // console.log(profile); // response obj
       // create session info here if needed:
       req.session.userRecord = {
         userName: profile._json.displayName,
         email: profile._json.emails[0].value,
         googleId: profile._json.id
       };
-      console.log("session in auth!!", req.session);
       // console.log("user record in strategy", req.session.userRecord);
       // associate the Google account with a user record in your database,
       // and return that user instead.
       var name = req.session.userRecord.userName;
-      user.getUser(name, function (err, nodes) {
+      user.getUser({userName: name}, function (err, nodes) {
         if (err === null && nodes.length === 0) {
           user.saveUser(req.session.userRecord, function (err, result) {
             if (err) throw new Error(err);
