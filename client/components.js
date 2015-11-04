@@ -138,7 +138,9 @@ const DrinkCard = React.createClass({
       <div className="card-image right">
         <img src={imageUrl} style={imageStyles}/>
       </div>
-      <span className="card-title black-text">{ this.props.drink.name }</span>
+      <div className="card-content">
+        <span className="card-title black-text">{ this.props.drink.name }</span>
+      </div>
       <DrinkReveal drink={this.props.drink}/>
       <RatingAction drink={this.props.drink} rating={this.props.rating } drinkKey={this.props.drinkKey}/>
     </div>
@@ -148,11 +150,6 @@ const DrinkCard = React.createClass({
 
 //The UI for rating drinks. Will be used by DrinkCard
 const RatingAction = React.createClass({
-
-  // getInitialState: function(){
-  //   return {rating: this.props.rating}
-  // }
-
   render: function() {
     var drink = this.props.drink;
     var drinkKey = this.props.drinkKey;
@@ -165,23 +162,9 @@ const RatingAction = React.createClass({
       return rows;
     }
 
-
-    let firstLinkStyle = {
-      "marginRight" : "inherit",
-      "marginLeft" : "20px"
-    }
-
-    let firstIconStyle = {
-      "marginRight": "60px"
-    }
-
-    let blackStar = {
-      color: "black"
-    }
-
     return (
       <div className="card-action">
-          <div className="container">
+          <div>
             <a><i className="material-icons">not_interested</i></a>
             {starMaker(this.props.rating || 0)}
             <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
