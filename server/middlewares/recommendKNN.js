@@ -76,25 +76,25 @@ app.get('/recommendKNN', function(req, res, next) {
     User.query(cosSim, null, function(results) {
       User.query(recommendations, null, function(results) {
         var recommended = {results:results};
-        console.log("Recommended" , recommended)
+        console.log("Recommended" , recommended);
         res.send(recommended);
       });
     });
   });
-})
+});
 
 module.exports = app;
 
 
 
-//test
-//
+// test
+
 // request(app)
 //   .get('/recommendKNN')
 //   .expect(200)
 //   .expect('Content-Type', /json/)
 //   .end(function(err, res){
 //     //if (err) throw err;
-//
+
 //     console.log(res.body.results);
 //   });
