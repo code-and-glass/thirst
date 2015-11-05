@@ -38,9 +38,7 @@ const Nav = React.createClass({
       $(".button-collapse").sideNav({closeOnClick: true})  // other options?
     })
 
-
     return (
-
       <nav>
         <div className="nav-wrapper indigo">
           <a href="#" className="brand-logo" style={{ paddingLeft:'10px', fontWeight:'lighter' }}>Thirst</a>
@@ -50,6 +48,7 @@ const Nav = React.createClass({
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li><Link to="random">Random Drinks</Link></li>
             <li><Link to="recommended">Recommendations</Link></li>
+
             <li><a href="">Drinks I've Had</a></li>
             <li><a href="/logout">Logout</a></li>
           </ul>
@@ -58,6 +57,7 @@ const Nav = React.createClass({
             <li><Link to="recommended">Recommendations</Link></li>
             <li><a href="">Drinks I've Had</a></li>
             <li><a href="/logout">Logout</a></li>
+
           </ul>
         </div>
       </nav>
