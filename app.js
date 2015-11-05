@@ -46,7 +46,7 @@ app.use('/recommend' , recommend);
 //rate routes
 app.use('/rate', rate);
 //
-app.use('ratedDrink', ratedDrinks);
+app.use('/rated', ratedDrinks);
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
   // if user is authenticated in the session, carry on
@@ -124,6 +124,8 @@ passport.use(new GoogleStrategy({
       });
 
     });
+  }
+));
 
 
 app.use('/', routes);
@@ -142,7 +144,7 @@ function isLoggedIn(req, res, next) {
     return next();
 
   }
-));
+}
 
 // app.all('*', isLoggedIn);
 

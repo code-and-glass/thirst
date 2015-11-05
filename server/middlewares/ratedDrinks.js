@@ -7,7 +7,11 @@ var User = require('../models/user.js');
 app.get('/drinks/ratedDrinks', function(req, res, next) {
   //respond with data of all drinks in db
    var id = req.sessionStore.googleId;
-   
+
+   console.log("got to server");
+   console.log("id:", id);
+   console.log(req.sessionStore);
+
 
    User.getUser({googleId: id}, function(err, user) {
      if (err) throw err;
@@ -22,12 +26,4 @@ app.get('/drinks/ratedDrinks', function(req, res, next) {
   });
 });
 
-request(app)
-  .get('/recommendKNN')
-  .expect(200)
-  .expect('Content-Type', /json/)
-  .end(function(err, res){
-    //if (err) throw err;
-
-    console.log(res.body.results);
-  });
+module.exports = app;

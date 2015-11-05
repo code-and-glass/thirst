@@ -15,7 +15,7 @@ if (process.env.GRAPHENEDB_URL){
     server: "http://localhost:7474",
     user: config.neo4jAuth.user,
     pass: config.neo4jAuth.password //your password here
-  });  
+  });
 }
 
 var User = function(name, email, password) {
@@ -47,7 +47,7 @@ module.exports = {
         //     function getRandomInt(min, max) {
         //       return Math.floor(Math.random() * (max - min)) + min;}
         //     var rating = getRandomInt(1,5);
-        //     db.relate(user, 'RATED', drink, {rating:rating}, 
+        //     db.relate(user, 'RATED', drink, {rating:rating},
         //     function(err, relationship) {
         //       if (err) console.log(err);
         //     });
@@ -60,9 +60,9 @@ module.exports = {
   getUser: function(obj, callback) {
     //get user node by name
     var predicate = obj;
-    db.find(predicate, function(err, result) { 
+    db.find(predicate, function(err, result) {
       //may need to account for result being array of 1
-      if (err) throw err;
+      if (err) console.log(err);
       callback(err, result); 
     });
   },
@@ -74,7 +74,7 @@ module.exports = {
     });
   },
 
-  getAllUserLikes: function(user, callback) { 
+  getAllUserLikes: function(user, callback) {
     //user should be a node in db with id property
     //return a list of drink nodes that a user has rated
     return db.relationships(user, 'out', 'likes', function(err, relationships) {
@@ -82,7 +82,7 @@ module.exports = {
        callback(relationships);
     });
   },
-  
+
   getUserLikes: function(user, rating) {
    //return a list of drink nodes which a user has rated at least [rating]
    var allLikes = getAllUserLikes(user);
@@ -108,7 +108,7 @@ module.exports = {
   query: function(cypher, user, callback) {
     return db.query(cypher, user, function(err,results) {
       if (err) console.log(err);
-      callback(results); 
+      callback(results);
     });
   }
 };

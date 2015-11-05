@@ -64,7 +64,7 @@ export function getRecommendations() {
 
 export function getRated() {
   return function (dispatch, getState) {
-    return fetch(mainURL + '/drinks/drinks/randomDrinks', {method: 'get'})  // CHANGE ROUTE
+    return fetch(mainURL + '/rated/drinks/ratedDrinks', {method: 'get'})  // CHANGE ROUTE
       .then(response => {
         response.json().then(data => {
           dispatch({
