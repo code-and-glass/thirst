@@ -14,13 +14,21 @@ var app = express();
 }
 */
 
-/* GET home page. */
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // if they aren't redirect them to the home/login page
+  res.redirect('/login');
+}
+
 app.get('/drinks', function(req, res, next) {
   //respond with data of all drinks in db
   // console.log(req.body);
   drinks.getAllDrinks(function(results) {
     // console.log('results from router.get callback', results);
-    // console.log(results);
     var testJSON = {'results':results};
     res.json(testJSON);
   });
@@ -37,14 +45,14 @@ app.get('/drinks/randomDrinks', function(req, res, next) {
   });
 });
 
-request(app)
-  .get('/drinks/randomDrinks')
-  .expect(200)
-  .expect('Content-Type', /json/)
-  .end(function(err, res){
-    if (err) throw err;
+// request(app)
+//   .get('/drinks/randomDrinks')
+//   .expect(200)
+//   .expect('Content-Type', /json/)
+//   .end(function(err, res){
+//     if (err) throw err;
 
-     // console.log(res);
-  });
+//      // console.log(res);
+//   });
 
 module.exports = app;

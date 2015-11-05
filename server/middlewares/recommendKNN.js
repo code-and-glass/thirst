@@ -1,4 +1,4 @@
-  var Drink = require('../models/drinks.js');
+var Drink = require('../models/drinks.js');
 var User = require('../models/user.js');
 var express = require('express');
 // var router = express.Router();
@@ -7,8 +7,17 @@ var app = express();
 var utils = require('../utilities/utils.js');
 var db = require('seraph');
 
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // if they aren't redirect them to the home/login page
+  res.redirect('/login');
+}
 
-app.get('/recommendKNN', function(req, res, next) {
+app.get('/recommendKNN', isLoggedIn, function(req, res, next) {
 
   //#########FOR TESTING ONLY. Populates db with dummy user and drink nodes.##########
   //save test drink nodes

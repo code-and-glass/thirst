@@ -36,9 +36,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+// static and auth routes
 app.use('/', routes);
-
 //drinks routes
 app.use('/drinks', drinks );
 //recommend routes
@@ -47,17 +46,6 @@ app.use('/recommend' , recommend);
 app.use('/rate', rate);
 //
 app.use('/rated', ratedDrinks);
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  // if they aren't redirect them to the home/login page
-  res.redirect('/login');
-}
-
-// app.all('*', isLoggedIn);
 
 module.exports = app;
 
@@ -127,92 +115,5 @@ passport.use(new GoogleStrategy({
   }
 ));
 
-
-app.use('/', routes);
-
-//drinks routes
-app.use('/drinks', drinks );
-//recommend routes
-app.use('/recommend' , recommend);
-//rate routes
-app.use('/rate', rate);
-
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated()) {
-    return next();
-  }
-}
-
-// app.all('*', isLoggedIn);
-
 module.exports = app;
 
-/********************* goggle auth ***************************/
-
-// var passport = require('passport');
-// var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-// // load up the user model
-// var user = require('./server/models/user.js');
-
-// // load the auth variables
-// if (process.env.googleId) {
-//   var GOOGLE_CONSUMER_KEY = process.env.googleId;
-//   var GOOGLE_CONSUMER_SECRET = process.env.googleSecret;
-//   var callbackURL = 'http://thirst.herokuapp.com/auth/google/callback';
-// } else {
-//   var GOOGLE_CONSUMER_KEY = require('./config.js').googleAuth.clientId;
-//   var GOOGLE_CONSUMER_SECRET = require('./config.js').googleAuth.clientSecret;
-//   var callbackURL = 'http://127.0.0.1:3000/auth/google/callback';
-// }
-
-// // used to serialize the user for the session
-// passport.serializeUser(function(user, done) {
-//   // console.log("inside serialize user", user, done);
-//   done(null, user);
-// });
-
-// // used to deserialize the user
-// passport.deserializeUser(function(obj, done) {
-//   user.getUser({userName: obj.userName}, function(err, user) {
-//     // console.log("inside deserializeUser", err, user[0]);
-//     done(err, user[0]);
-//   });
-// });
-
-// passport.use(new GoogleStrategy({
-//     clientID: GOOGLE_CONSUMER_KEY,
-//     clientSecret: GOOGLE_CONSUMER_SECRET,
-//     "callbackURL": callbackURL,
-//     passReqToCallback   : true
-//   },
-//   function(req, token, tokenSecret, profile, done) {
-//     // make the code asynchronous
-//     process.nextTick(function() {
-//       // create session info here if needed:
-//       req.session.userRecord = {
-//         userName: profile._json.displayName,
-//         email: profile._json.emails[0].value,
-//         googleId: profile._json.id
-//       };
-//       // console.log("user record in strategy", req.session.userRecord);
-//       // associate the Google account with a user record in your database,
-//       // and return that user instead.
-
-//       return done(null, profile);
-
-//       var id = req.session.userRecord.googleId;
-//       user.getUser({googleId: id}, function (err, nodes) {
-//         if (err === null && nodes.length === 0) {
-//           user.saveUser(req.session.userRecord, function (err, result) {
-//             if (err) throw new Error(err);
-//             done(err, result);
-//           });
-//         } else {
-//           done(err, nodes[0]);
-//         }
-//       });
-//     });
-//   }
-// ));
