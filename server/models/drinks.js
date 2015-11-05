@@ -49,7 +49,7 @@ module.exports = {
     // gets 10 drinks starting at random index
     return db.nodesWithLabel('Drink', function(err, results) {
       var randomNum = Math.floor(Math.random() * (results.length - 10));
-      var randomList = results.slice(randomNum, randomNum+10);
+      var randomList = results.slice(randomNum, randomNum + 10);
 
      //  var randomList =  [ { name: 'Absolut Vanilia Chocolate Martini', id: 380 },
      // { name: 'Dempsey', id: 381 },

@@ -21,6 +21,7 @@ app.post('/rate', function(req, res, next) {
   Drink.getDrink(drinkName, function (drinkNode) {
     console.log("drinkNode is ", drinkNode);
     User.getUser({googleId: id}, function (err, result) {
+      console.log("after get user", result);
       User.rate(result[0], rating, drinkNode, function(err, results) {
         console.log('results from app.get callback', results);
         if (err) console.log(err);
