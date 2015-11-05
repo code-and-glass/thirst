@@ -62,7 +62,7 @@ app.get('/recommendKNN', function(req, res, next) {
             "WITH     m.name AS drink, COLLECT(rating)[0..3] AS ratings\n" +
             "WITH     drink, REDUCE(s = 0, i IN ratings | s + i)*1.0 / LENGTH(ratings) AS reco\n" +
             "ORDER BY reco DESC\n" +
-            "RETURN   drink AS Drink, reco AS Predicted";
+            "RETURN   drink AS name, reco AS Predicted";
 
 
   //place cypher current request's userName into cypher query

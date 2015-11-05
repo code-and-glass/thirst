@@ -51,6 +51,7 @@ export function getRecommendations() {
     .then(response => {
       console.log("Recommendations response: ", response);
       response.json().then(data => {
+        console.log("data", data)
         dispatch({
           type: "GET_RECOMMENDATIONS",
           value: data.results
