@@ -100,6 +100,7 @@ class Random extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(actionCreators.getDrinks());
+    
   }
 
   render() {
@@ -175,7 +176,7 @@ const DrinkCard = React.createClass({
         <span className="card-title black-text">{ this.props.drink.name }</span>
       </div>
       <RatingAction drink={this.props.drink} rating={this.props.rating } drinkKey={this.props.drinkKey}/>
-      <DrinkReveal drink={this.props.drink}/>
+      <DrinkReveal drink={this.props.drink} text={this.props.drink.text} index={this.props.drinkKey}/>
     </div>
     )
   }
@@ -223,24 +224,24 @@ class RatingStar extends React.Component {
   }
 };
 
-const DrinkReveal = React.createClass({
-  render: function() {
+@connect()
+class DrinkReveal extends React.Component{
+  
+  componentWillMount() {
+    var urlName = this.props.drink.name.replace(/\s/g, "-");
+    this.props.dispatch(actionCreators.getData(urlName, this.props.drink.name, this.props.index));
+  }
+
+  render() {
+    console.log(this.props.drink);
     return (
       <div className="card-reveal">
-        <span className="card-title black-text text-darken-4">{this.props.drinkName}<i className="material-icons right">close</i></span>
-        <h3>{this.props.drinkName}</h3>
-        <h4>Ingredients</h4>
-        <ul>
-          <li>2 Parts Absolut Citron</li>
-          <li>1 Part Lime Juice</li>
-          <li>1 Part Orange Liqueur</li>
-          <li>½ Part Cranberry Juice</li>
-          <li>1 Twist Orange</li>
-        </ul>
+        <span className="card-title black-text text-darken-4">{this.props.drink.name}<i className="material-icons right">close</i></span>
+        <p>{this.props.text || "no data yet"}</p>
       </div>
     )
   }
-});
+};
 
 
 const Application = React.createClass({

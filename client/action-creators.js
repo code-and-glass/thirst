@@ -4,6 +4,12 @@
 
 var mainURL = window.location.href.split('/static')[0];
 
+var absolut = {
+    'appId': '5761',
+    'apiKey': '0f80b9b651e546ceb4fbe3ef9360c14a',
+    'appSecret': 'd0eb2a88bedd4b3c8ad1e3b4f04a30fa'
+  }
+
 export function rate(drink, rating, drinkKey) {
   console.log("Rate action creator called", drink, rating, drinkKey);
   return function (dispatch, getState) {
@@ -79,3 +85,29 @@ export function getRated() {
       })
   }
 }
+
+
+addb.init({
+    appId: 5761
+});
+
+
+export function getData(drinkName, originalName,  index) {
+  return function(dispatch, getState){
+    addb.drinks().howToMix(drinkName, function(howtomix) {
+      console.log(howtomix);
+      var fullText = ""
+      var steps = howtomix.steps;
+      for(var i = 0; i < steps.length; i++){
+        fullText += steps[i].textPlain + " ";
+      }
+      dispatch({
+        type:'HOW_TO_MIX',
+        text: fullText,
+        index: index,
+        name: originalName
+      })
+    });
+  }
+}
+  
