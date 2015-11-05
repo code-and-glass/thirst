@@ -11,12 +11,12 @@ app.get('/drinks/ratedDrinks', function(req, res, next) {
    User.getUser({googleId: id}, function(err, user) {
      if (err) throw err;
      var cypher = "MATCH (b:User {googleId: 'KEY'})-[r:RATED]->(m:Drink)\n"+
-                  "WHERE  ((b)-[:RATED]->(m))\n"+
+                  "WHERE  (b:User {googleId: 'KEY'})-[:RATED]->(m))\n"+
                   "RETURN m,r";
      cypher = cypher.replace('KEY', id);
      User.query(cypher, null, function(results) {
        
-       responseData = {}
+       responseData = {};
        responseData.results = results.map(function(item) {
         return { name: item.m.name, id: item.m.id, rating: item.r.properties.rating};
       });
