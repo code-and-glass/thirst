@@ -15,13 +15,15 @@ app.get('/drinks/ratedDrinks', function(req, res, next) {
                   "RETURN m,r";
      cypher = cypher.replace('KEY', id);
      User.query(cypher, null, function(results) {
+
        
-       responseData = {}
+       responseData = {};
        responseData.results = results.map(function(item) {
         return { name: item.m.name, id: item.m.id, rating: item.r.properties.rating};
       });
       console.log(responseData);
       res.send(responseData);
+
      });
   });
 });
