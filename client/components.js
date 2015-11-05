@@ -10,7 +10,8 @@ const store = createStore();
 function mapStateToProps(state){
   return {
     recommended: state._getThings.recommended,
-    random: state._getThings.random
+    random: state._getThings.random,
+    rated: state._getThings.rated
   };
 }
 
@@ -48,14 +49,13 @@ const Nav = React.createClass({
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li><Link to="random">Random Drinks</Link></li>
             <li><Link to="recommended">Recommendations</Link></li>
-
-            <li><a href="">Drinks I've Had</a></li>
+            <li><Link to="rated">Rated</Link></li>
             <li><a href="/logout">Logout</a></li>
           </ul>
           <ul className="side-nav" id="mobile-demo">
             <li><Link to="random">Random Drinks</Link></li>
             <li><Link to="recommended">Recommendations</Link></li>
-            <li><a href="">Drinks I've Had</a></li>
+            <li><Link to="rated">Rated</Link></li>
             <li><a href="/logout">Logout</a></li>
 
           </ul>
@@ -113,6 +113,36 @@ class Random extends React.Component {
       <div className="rating-container" style={ containerStyle }>
         {
           this.props.random.map(function(item, key){
+            return (
+            <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}>
+            </DrinkCard>
+            )
+          })
+        }
+      </div>
+    );
+  }
+};
+
+
+@connect(mapStateToProps)
+class Rated extends React.Component {
+
+  componentWillMount() {
+    this.props.dispatch(actionCreators.getRated());
+  }
+
+  render() {
+
+    let containerStyle = {
+      position: 'relative',
+      top: '30px',
+    };
+
+    return (
+      <div className="rating-container" style={ containerStyle }>
+        {
+          this.props.rated.map(function(item, key){
             return (
             <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}>
             </DrinkCard>
@@ -223,6 +253,7 @@ const Application = React.createClass({
             <IndexRoute component={Random}/>
             <Route path="random" component={Random} />
             <Route path="recommended" component={Recommended} />
+            <Route path="rated" component={Rated} />
           </Route>
         </Router>
       </Provider>

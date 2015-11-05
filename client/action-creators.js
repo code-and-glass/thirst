@@ -61,3 +61,20 @@ export function getRecommendations() {
     .catch()
   }
 }
+
+export function getRated() {
+  return function (dispatch, getState) {
+    return fetch(mainURL + '/drinks/drinks/randomDrinks', {method: 'get'})  // CHANGE ROUTE
+      .then(response => {
+        response.json().then(data => {
+          dispatch({
+            type: 'GET_RATED',
+            value: data.results
+          })
+        })
+      })
+      .catch(err => {
+        console.log("Error in getRated", err)
+      })
+  }
+}
