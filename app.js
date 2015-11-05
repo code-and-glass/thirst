@@ -16,6 +16,7 @@ var routes = require('./server/middlewares/index.js');
 var drinks = require('./server/middlewares/drinks.js');
 var recommend = require('./server/middlewares/recommendKNN.js');
 var rate = require('./server/middlewares/rate.js');
+var ratedDrinks = require('./server/middlewares/ratedDrinks.js');
 
 var app = express();
 
@@ -42,7 +43,8 @@ app.use('/drinks', drinks );
 app.use('/recommend' , recommend);
 //rate routes
 app.use('/rate', rate);
-
+//
+app.use('ratedDrink', ratedDrinks);
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
   // if user is authenticated in the session, carry on
