@@ -87,7 +87,7 @@ class Recommended extends React.Component {
       <div className="recommended-container" style={ containerStyle }>
         {
           this.props.recommended.map(function(item, key){
-            return <DrinkCard drink={item}></DrinkCard>
+            return <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}></DrinkCard>
           })
         }
       </div>
