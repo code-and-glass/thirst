@@ -15,7 +15,7 @@ var session = require('express-session');
 var routes = require('./server/middlewares/index.js');
 var drinks = require('./server/middlewares/drinks.js');
 var recommend = require('./server/middlewares/recommendKNN.js');
-var rate = require('./server/middlewares/recommendations.js');
+var rate = require('./server/middlewares/rate.js');
 
 var app = express();
 
