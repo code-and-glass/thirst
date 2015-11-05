@@ -15,13 +15,12 @@ function isLoggedIn(req, res, next) {
   res.redirect('/login');
 }
 
-app.get('/drinks/ratedDrinks', isLoggedIn, function(req, res, next) {
+app.get('/drinks/ratedDrinks', function(req, res, next) {
   //respond with data of all drinks in db
-   var id = req.sessionStore.googleId;
-
-   User.getUser({googleId: id}, function(err, user) {
-     if (err) throw err;
-     var cypher = "MATCH (b:User {googleId: 'KEY'})-[r:RATED]->(m:Drink)\n"+
+  var id = req.sessionStore.googleId;
+  User.getUser({googleId: id}, function(err, user) {
+    if (err) throw err;
+    var cypher = "MATCH (b:User {googleId: 'KEY'})-[r:RATED]->(m:Drink)\n"+
                   "WHERE  ((b)-[:RATED]->(m))\n"+
                   "RETURN m,r";
     cypher = cypher.replace('KEY', id);

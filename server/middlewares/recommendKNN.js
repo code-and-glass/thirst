@@ -17,7 +17,7 @@ function isLoggedIn(req, res, next) {
   res.redirect('/login');
 }
 
-app.get('/recommendKNN', isLoggedIn, function(req, res, next) {
+app.get('/recommendKNN', function(req, res, next) {
 
   //#########FOR TESTING ONLY. Populates db with dummy user and drink nodes.##########
   //save test drink nodes
