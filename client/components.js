@@ -127,22 +127,22 @@ const DrinkCard = React.createClass({
   render: function() {
 
     let imageStyles = {
-      width: "100%",
-      height: "100%",
-      "paddingRight": "30px",
-      "paddingTop": "55px",
+      "marginRight": "50px",
+      "marginTop": "25px",
     }
 
-    var urlName = this.props.drink.name.replace(" ", "-");
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/225x300/" + urlName + ".png"
+    var urlName = this.props.drink.name.replace(/\s/g, "-");
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/150x150/" + urlName + ".png"
     return (
-    <div className="card medium">
-      <div className="card-image right">
-        <img src={imageUrl} style={imageStyles}/>
+    <div className="card small hoverable">
+      <div className="card-image right" style={imageStyles}>
+        <img src={imageUrl}/>
       </div>
-      <span className="card-title black-text">{ this.props.drink.name }</span>
-      <DrinkReveal drink={this.props.drink}/>
+      <div className="card-content">
+        <span className="card-title black-text">{ this.props.drink.name }</span>
+      </div>
       <RatingAction drink={this.props.drink} rating={this.props.rating } drinkKey={this.props.drinkKey}/>
+      <DrinkReveal drink={this.props.drink}/>
     </div>
     )
   }
@@ -150,11 +150,6 @@ const DrinkCard = React.createClass({
 
 //The UI for rating drinks. Will be used by DrinkCard
 const RatingAction = React.createClass({
-
-  // getInitialState: function(){
-  //   return {rating: this.props.rating}
-  // }
-
   render: function() {
     var drink = this.props.drink;
     var drinkKey = this.props.drinkKey;
@@ -167,26 +162,12 @@ const RatingAction = React.createClass({
       return rows;
     }
 
-
-    let firstLinkStyle = {
-      "marginRight" : "inherit",
-      "marginLeft" : "20px"
-    }
-
-    let firstIconStyle = {
-      "marginRight": "60px"
-    }
-
-    let blackStar = {
-      color: "black"
-    }
-
     return (
       <div className="card-action">
-          <div className="container">
+          <div>
             <a><i className="material-icons">not_interested</i></a>
             {starMaker(this.props.rating || 0)}
-            <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
+            <span className="activator grey-text text-darken-4"><i className="small material-icons right">more_vert</i></span>
           </div>
       </div>
     )
