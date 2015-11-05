@@ -130,22 +130,22 @@ const DrinkCard = React.createClass({
   render: function() {
 
     let imageStyles = {
-      "paddingRight": "50px",
-      "paddingTop": "55px",
+      "marginRight": "50px",
+      "marginTop": "25px",
     }
 
     var urlName = this.props.drink.name.replace(/\s/g, "-");
-    var imageUrl = "http://assets.absolutdrinks.com/drinks/150x250/" + urlName + ".png"
+    var imageUrl = "http://assets.absolutdrinks.com/drinks/150x150/" + urlName + ".png"
     return (
-    <div className="card medium">
-      <div className="card-image right">
-        <img src={imageUrl} style={imageStyles}/>
+    <div className="card small hoverable">
+      <div className="card-image right" style={imageStyles}>
+        <img src={imageUrl}/>
       </div>
       <div className="card-content">
         <span className="card-title black-text">{ this.props.drink.name }</span>
       </div>
-      <DrinkReveal drink={this.props.drink}/>
       <RatingAction drink={this.props.drink} rating={this.props.rating } drinkKey={this.props.drinkKey}/>
+      <DrinkReveal drink={this.props.drink}/>
     </div>
     )
   }
@@ -170,7 +170,7 @@ const RatingAction = React.createClass({
           <div>
             <a><i className="material-icons">not_interested</i></a>
             {starMaker(this.props.rating || 0)}
-            <span className="card-title activator grey-text text-darken-4"><i className="material-icons right">more_vert</i></span>
+            <span className="activator grey-text text-darken-4"><i className="small material-icons right">more_vert</i></span>
           </div>
       </div>
     )
