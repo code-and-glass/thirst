@@ -33,7 +33,7 @@ app.get('/drinks/ratedDrinks', function(req, res, next) {
       responseData.results = results.map(function(item) {
         return { name: item.m.name, id: item.m.id, rating: item.r.properties.rating};
       });
-      console.log("RESPONSE DATA OUTSIDE L(36)", responseData);
+      // console.log("RESPONSE DATA OUTSIDE L(36)", responseData);
       res.send(responseData);
      });
   });
