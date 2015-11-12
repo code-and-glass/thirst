@@ -75,21 +75,23 @@ passport.serializeUser(function(user, done) {
 
 // used to deserialize the user
 passport.deserializeUser(function(obj, done) {
+  console.log("deserialize obj", obj);
   // user.getUser({googleId: obj.googleId}, function(err, user) {
   //   // console.log("inside deserializeUser", err, user);
   //   done(err, user[0]);
   // });
-  done(null, user);
+  done(null, obj.id);
 });
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CONSUMER_KEY,
     clientSecret: GOOGLE_CONSUMER_SECRET,
     "callbackURL": callbackURL,
-    passReqToCallback   : true
+    passReqToCallback: true
   },
   function(req, token, tokenSecret, profile, done) {
     // make the code asynchronous
+    console.log('profile', profile);
     process.nextTick(function() {
       // create session info here if needed:
       req.session.userRecord = {

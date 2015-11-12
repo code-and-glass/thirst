@@ -17,6 +17,8 @@ function isLoggedIn(req, res, next) {
 
 app.get('/drinks/ratedDrinks', function(req, res, next) {
   //respond with data of all drinks in db
+  console.log("req.cookie", req.cookie);
+  console.log("req.session", req.session);
    var id = req.sessionStore.googleId;
    User.getUser({googleId: id}, function(err, user) {
      if (err) throw err;
