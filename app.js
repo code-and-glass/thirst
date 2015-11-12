@@ -23,14 +23,12 @@ var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser('keyboard cat'));
+app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'client/dist')));
 app.use('/login', express.static(path.join(__dirname, 'client/login')));
 
 app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
+  secret: 'keyboard cat'
 }));
 
 app.use(passport.initialize());
@@ -70,7 +68,7 @@ if (process.env.googleId) {
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
   // console.log("inside serialize user", user);
-  done(null, user);
+  done(null, user.id);
 });
 
 // used to deserialize the user
@@ -80,7 +78,7 @@ passport.deserializeUser(function(obj, done) {
   //   // console.log("inside deserializeUser", err, user);
   //   done(err, user[0]);
   // });
-  done(null, obj.id);
+  done(null, obj);
 });
 
 passport.use(new GoogleStrategy({
