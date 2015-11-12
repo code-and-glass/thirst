@@ -17,10 +17,10 @@ function isLoggedIn(req, res, next) {
 
 app.get('/drinks/ratedDrinks', function(req, res, next) {
   //respond with data of all drinks in db
-  console.log("RETRIEVING RATED DRINKS FOR USER:", req.sessionStore);
   // console.log("req.session", req.session);
    var id = req.sessionStore.googleId;
    User.getUser({googleId: id}, function(err, user) {
+    console.log("L(23) RETRIEVING RATED DRINKS FOR USER:", user);
     if (err) throw err;
     var cypher = "MATCH (b:User {googleId: 'KEY'})-[r:RATED]->(m:Drink)\n"+
                   //"WHERE  ((b)-[:RATED]->(m))\n"+
@@ -31,9 +31,8 @@ app.get('/drinks/ratedDrinks', function(req, res, next) {
       responseData = {};
       console.log("RESULTS FROM USER QUERY (L32)", results);
       responseData.results = results.map(function(item) {
-      console.log("RETURNING RESPONSE DATA INSIDE L(35)", responseData);
-      return { name: item.m.name, id: item.m.id, rating: item.r.properties.rating};
-    });
+        return { name: item.m.name, id: item.m.id, rating: item.r.properties.rating};
+      });
       console.log("RESPONSE DATA OUTSIDE L(36)", responseData);
       res.send(responseData);
      });
