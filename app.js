@@ -75,10 +75,11 @@ passport.serializeUser(function(user, done) {
 
 // used to deserialize the user
 passport.deserializeUser(function(obj, done) {
-  user.getUser({googleId: obj.googleId}, function(err, user) {
-    // console.log("inside deserializeUser", err, user);
-    done(err, user[0]);
-  });
+  // user.getUser({googleId: obj.googleId}, function(err, user) {
+  //   // console.log("inside deserializeUser", err, user);
+  //   done(err, user[0]);
+  // });
+  done(null, user);
 });
 
 passport.use(new GoogleStrategy({
