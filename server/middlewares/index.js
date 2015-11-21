@@ -19,7 +19,6 @@ function isLoggedIn(req, res, next) {
 /* GET home page. */
 router.get('/', isLoggedIn, function(req, res, next) {
   // console.log("session info in /", req.session);
-  // req.sessionStore.googleId = req.session.userRecord.googleId; 
   res.redirect('/static');
 });
 
@@ -42,14 +41,13 @@ router.get('/auth/google/callback',
     var userData = {
       googleId: id,
       userName: req.session.passport.user.displayName,
-      email: req.session.passport.user.emails[0]
+      email: req.session.passport.user.emails[0].value
     };
     // console.log("google ID", id);
     user.getUser({googleId: id}, function (err, nodes) {
       if (err === null && nodes.length === 0) {
         user.saveUser(userData, function (err, result) {
           if (err) throw new Error(err);
-          // console.log(err, result);
           res.redirect('/');
         });
       } else {
