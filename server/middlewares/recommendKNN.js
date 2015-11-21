@@ -18,7 +18,7 @@ function isLoggedIn(req, res, next) {
 }
 
 app.get('/recommendKNN', function(req, res, next) {
-
+  // console.log(req.session);
   //#########FOR TESTING ONLY. Populates db with dummy user and drink nodes.##########
   //save test drink nodes
   // for (i = 1; i < 11; i++) {
@@ -39,9 +39,8 @@ app.get('/recommendKNN', function(req, res, next) {
 
   //get username and stringify to be passed into cypher query
   // var user =    "'" + req.session.userRecord.userName + "'" ;
-  var id = req.sessionStore.googleId;
+  var id = req.session.passport.user.id;
   User.getUser({googleId: id}, function(err, node) {
-
     var user =    "'" + node[0].googleId + "'";
     console.log("This is var user:" , user);
 
