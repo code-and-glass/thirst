@@ -8,6 +8,9 @@
     "test": "mocha",
     "start": "bin/www"
   },
+  "engines": {
+    "node": "^0.12.7"
+  },
   "dependencies": {
     "node": "v0.12.7",
     "async": "^1.4.2",
