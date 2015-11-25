@@ -9,17 +9,25 @@ var app = express();
 var utils = require('../utilities/utils.js');
 var recommend = require('../recommender.js');
 
-
-/* GET home page. */
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // if they aren't redirect them to the home/login page
+  res.redirect('/login');
+}
 
 app.post('/rate', function(req, res, next) {
   //post rating to drink
-  var id = req.sessionStore.googleId;
+  // console.log("request session in rate", req.session.passport.user);
+  var id = req.session.passport.user.id;
   var rating = req.body.rating;
   var drinkName = req.body.drink;
-  console.log(drinkName);
+  // console.log(drinkName);
   Drink.getDrink(drinkName, function (drinkNode) {
-    console.log("drinkNode is ", drinkNode);
+    // console.log("drinkNode is ", drinkNode);
     User.getUser({googleId: id}, function (err, result) {
       console.log("after get user", result);
       User.rate(result[0], rating, drinkNode, function(err, results) {

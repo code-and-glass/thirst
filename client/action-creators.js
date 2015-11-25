@@ -15,6 +15,7 @@ export function rate(drink, rating, drinkKey) {
   return function (dispatch, getState) {
     return fetch( mainURL + '/rate/rate', {
       method: 'post',
+      credentials: 'same-origin',
       body: JSON.stringify({rating: rating, drink: drink}),
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json'}
     })
@@ -35,7 +36,7 @@ export function rate(drink, rating, drinkKey) {
 
 export function getDrinks() {
   return function (dispatch, getState) {
-    return fetch(mainURL + '/drinks/drinks/randomDrinks', {method: 'get'})
+    return fetch(mainURL + '/drinks/drinks/randomDrinks', {method: 'get', credentials: 'same-origin'})
       .then(response => {
         response.json().then(data => {
           dispatch({
@@ -53,7 +54,7 @@ export function getDrinks() {
 export function getRecommendations() {
   return function (dispatch, getState) {
     console.log("getRecommendations was called");
-    return fetch(mainURL + '/recommend/recommendKNN', {method: 'get'})
+    return fetch(mainURL + '/recommend/recommendKNN', {method: 'get', credentials: 'same-origin'})
     .then(response => {
       console.log("Recommendations response: ", response);
       response.json().then(data => {
@@ -70,7 +71,7 @@ export function getRecommendations() {
 
 export function getRated() {
   return function (dispatch, getState) {
-    return fetch(mainURL + '/rated/drinks/ratedDrinks', {method: 'get'})  // CHANGE ROUTE
+    return fetch(mainURL + '/rated/drinks/ratedDrinks', {method: 'get', credentials: 'same-origin'})  // CHANGE ROUTE
       .then(response => {
         response.json().then(data => {
           console.log("This is data", data);
