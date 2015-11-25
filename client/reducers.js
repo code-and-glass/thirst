@@ -1,74 +1,50 @@
 
-// REDUCERS PROCESS DISPATCHED ACTIONS AND UPDATE THE STATE
+export function _getThings(state, action) {
+  state = state || { random: [], recommended: [], rated: [] };
 
-export function _getThings(state = {}, action) {
   switch (action.type) {
     case 'GET_DRINKS':
       return {
         ...state,
-        something: 'something-else'
+        random: action.value
       }
-    case 'GET_RECS':
+    case 'GET_RECOMMENDATIONS':
       return {
         ...state,
-        something: 'something'
+        recommended: action.value
       }
-    case 'LOGIN':
-      // we could add an error message here, to be printed somewhere in our application
+    case 'GET_RATED':
       return {
         ...state,
-        user: 'userstuff'
+        rated: action.value
       }
+    case 'RATE':
+      var newState = { random: [ ...state.random], recommended: [...state.recommended ], rated: [...state.rated] };
+      if(newState.recommended[action.key] && newState.recommended[action.key].name === action.name){
+        newState.recommended[action.key].rating = action.rating;
+      }
+      if(newState.random[action.key] && newState.random[action.key].name === action.name){
+        newState.random[action.key].rating = action.rating;
+      }
+      if(newState.rated[action.key] && newState.rated[action.key].name === action.name){
+        newState.rated[action.key].rating = action.rating;
+      }
+      return newState;
+    case 'HOW_TO_MIX':
+      console.log("action: ", action);
+      var newState = { random: [...state.random], recommended: [...state.recommended], rated: [...state.rated]};
+      if(newState.recommended[action.index] && newState.recommended[action.index].name === action.name){
+        newState.recommended[action.index].text = action.text;
+      }
+      if(newState.random[action.index] && newState.random[action.index].name === action.name){
+        newState.random[action.index].text = action.text;
+      }
+      if(newState.rated[action.index] && newState.rated[action.index].name === action.name){
+        newState.rated[action.index].text = action.text;
+      }
+      console.log(newState);
+      return newState;
     default:
       return state
   }
 }
-
-
-
-
-
-
-
-// EXAMPLE CODE BELOW
-
-// This file holds the one and only reducer of our application. Its behavior is nothing new to you
-// except maybe its handling of three aspects of an action (GET_TIME) that become 3 dedicated actions...
-// This approach allows us to do some nice real time updates in our UI like this:
-// 1) When we receive GET_TIME_REQUEST action, we modify the state to say that some part of the
-//    UI should be frozen (because there is a pending operation)
-// 2) When we receive GET_TIME_SUCCESS (or GET_TIME_FAILURE) later on, we modify the state to
-//    unfreeze our application and to add the new data we received.
-
-// var initialTimeState = {}
-
-// The reducer is named with leading "_" to avoid having: state.time.time (time twice) when reading
-// from state. So it's just a personal preference here and you may not need this depending on
-// how your reducers are named and what properties they expose in Redux's store.
-
-
-// export function _time(state = initialTimeState, action) {
-//   switch (action.type) {
-//     case 'GET_TIME_REQUEST':
-//       return {
-//         ...state,
-//         frozen: true
-//       }
-//     case 'GET_TIME_SUCCESS':
-//       return {
-//         ...state,
-//         time: action.result.time,
-//         frozen: false
-//       }
-//     case 'GET_TIME_FAILURE':
-//       // we could add an error message here, to be printed somewhere in our application
-//       return {
-//         ...state,
-//         frozen: false
-//       }
-//     default:
-//       return state
-//   }
-// }
-
-

@@ -1,4 +1,4 @@
-//when a user rates a drink, the rating is stored as a relationship 
+//when a user rates a drink, the rating is stored as a relationship
 //and the recommendations for all users are updated
 var Drink = require('../models/drinks.js');
 var User = require('../models/user.js');
@@ -9,34 +9,40 @@ var app = express();
 var utils = require('../utilities/utils.js');
 var recommend = require('../recommender.js');
 
-//var migrations = require('../migrations.js');
-/* GET home page. */
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // if they aren't redirect them to the home/login page
+  res.redirect('/login');
+}
 
-
-// var user = User.saveUser({userName:'ArtemB'});
-// var rating = 4;
-// var drink = Drink.saveDrink({drinkName: 'bloody mary'});
 app.post('/rate', function(req, res, next) {
   //post rating to drink
-   //req should have user, rating and drink properties
-   
-   //********may need to change based on req structure*******
-   var user = req.user; 
-   var rating = req.rating;
-   var drink = req.drink;
-   //*********************************************************
-
-    User.rate(user, rating, drink, function(results) {
-    //console.log('results from app.get callback', results);
-    //console.log(results);
-     var testJSON = {'results':results};
-     res.json(testJSON);
+  // console.log("request session in rate", req.session.passport.user);
+  var id = req.session.passport.user.id;
+  var rating = req.body.rating;
+  var drinkName = req.body.drink;
+  // console.log(drinkName);
+  Drink.getDrink(drinkName, function (drinkNode) {
+    // console.log("drinkNode is ", drinkNode);
+    User.getUser({googleId: id}, function (err, result) {
+      console.log("after get user", result);
+      User.rate(result[0], rating, drinkNode, function(err, results) {
+        console.log('results from app.get callback', results);
+        if (err) console.log(err);
+        res.sendStatus(200);
+      });
+    });
   });
 });
+
 /*
 
 app.get('/recommend', function(req, res, next) {
-  //get a list of all user and ratings 
+  //get a list of all user and ratings
 //   User.saveUser({userName: 'JACKIECHAN'});
 //   User.saveUser({userName: 'JIMMYCHAN'});
     //
@@ -47,7 +53,7 @@ app.get('/recommend', function(req, res, next) {
   //save all drinks
   //save alot of users.
   User.getAllUsers(function(result) {
-   
+
    //console.log(result);
   //read all relationships
    //set some relationships
@@ -56,9 +62,9 @@ app.get('/recommend', function(req, res, next) {
    var matrix =[];
    var ratings = [];
    var count = 0;
-   
-   
-   result.forEach( function(user) {    
+
+
+   result.forEach( function(user) {
          //console.log(user);
          userLabels.push(user.userName);
      User.getAllUserLikes(user, function(likedDrinks) {
@@ -77,7 +83,8 @@ app.get('/recommend', function(req, res, next) {
          //take the matrix, run recommend
          var model = recommend.model(matrix, userLabels, drinks);
          var results = model.recommendations('user2');
-         //console.log(results);
+         //res.json {recommendations: []};
+         console.log(results);
          res.json({recommendations: results});
          }
       });
@@ -101,22 +108,14 @@ app.get('/recommend', function(req, res, next) {
 //     //console.log(res);
 //   });
 
-<<<<<<< HEAD
-//   request(app)
-//   .get('/recommend')
-//   .expect(200)
-//   .expect('Content-Type', /json/)
-//   .end(function(err, res){
-//     if (err) console.log(err);
-//     console.log(res);
-//   });
-=======
-  request(app)
-  .get('/recommend')
-  .expect(200)
-  .expect('Content-Type', /json/)
-  .end(function(err, res){
-    if (err) console.log(err);
-    //console.log(res);
-  });
->>>>>>> Begin recommendKNN.js file.
+
+  // request(app)
+  // .get('/recommend')
+  // .expect(200)
+  // .expect('Content-Type', /json/)
+  // .end(function(err, res){
+  //   if (err) console.log(err);
+  //   //console.log(res);
+  // });
+
+module.exports = app;
