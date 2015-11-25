@@ -44,6 +44,8 @@
     "babelify": "^6.3.0",
     "chai": "^3.3.0",
     "disposable-seraph": "^0.3.4",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-uglify": "^0.11.0",
     "mocha": "^2.3.3"
   }
 }
