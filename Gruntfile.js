@@ -62,11 +62,11 @@ module.exports = function(grunt) {
       }
     },
     browserify: {
-      // dist: {
-      //   files: {
-      //     'bundle.js' : ['client/babelified/*.js']
-      //   }
-      // }
+      dist: {
+        files: {
+          'bundle.js' : ['client/babelified/*.js']
+        }
+      }
     },
     concat: {
       //Configuration for concatinating files
