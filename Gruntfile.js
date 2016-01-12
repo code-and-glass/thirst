@@ -71,16 +71,16 @@ module.exports = function(grunt) {
     concat: {
       //Configuration for concatinating files
       dist: {
-        src: [
-          'bundle.js'
-        ],
-        dest:  'production.js' , //concatted production file 
+        // src: [
+          // 'bundle.js'
+        // ],
+        // dest:  'production.js' , //concatted production file 
       }
     },
     uglify: {
       build: {
-        src:  'Production.js' ,//concatted production file
-        dest:  'client/dist/bundle.js'//minified production file
+        // src:  'Production.js' ,//concatted production file
+        // dest:  'client/dist/bundle.js'//minified production file
       }
     },
   });

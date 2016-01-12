@@ -1,5 +1,6 @@
 var db;
 var Drink = require('./drinks.js');
+
 if (process.env.GRAPHENEDB_URL){
 
   var url = require('url').parse(process.env.GRAPHENEDB_URL);
@@ -9,6 +10,7 @@ if (process.env.GRAPHENEDB_URL){
     user: url.auth.split(':')[0],
     pass: url.auth.split(':')[1]
   });
+
 } else {
   var config = require('../../config.js');
   db = require("seraph")({
@@ -38,21 +40,6 @@ module.exports = {
         if (err) throw err;
         cb(err, user);
         console.log(user.userName + ' saved to database and labeled.');
-        //FOR TESTING: get all drinks and create relationship with 0 rating.
-        // require('./drinks.js').getAllDrinks(function(results) {
-        //   results.forEach(function(drink) {
-        //     // var skip = getRandomInt(1,10);
-        //     // if (skip%2 === 0) {}
-
-        //     function getRandomInt(min, max) {
-        //       return Math.floor(Math.random() * (max - min)) + min;}
-        //     var rating = getRandomInt(1,5);
-        //     db.relate(user, 'RATED', drink, {rating:rating},
-        //     function(err, relationship) {
-        //       if (err) console.log(err);
-        //     });
-        //   });
-        // });
       });
     });
   },
