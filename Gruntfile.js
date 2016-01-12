@@ -64,25 +64,10 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'bundle.js' : ['client/babelified/*.js']
+          'client/dist/bundle.js' : ['client/babelified/*.js']
         }
       }
-    },
-    concat: {
-      //Configuration for concatinating files
-      dist: {
-        src: [
-          'bundle.js'
-        ],
-        dest:  'production.js' , //concatted production file 
-      }
-    },
-    uglify: {
-      build: {
-        src:  'Production.js' ,//concatted production file
-        dest:  'client/dist/bundle.js'//minified production file
-      }
-    },
+    }
   });
 
   //Tasks
@@ -91,7 +76,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['jshint'] );
 
   //add more build tasks (concat, uglify, cssmin)
-  grunt.registerTask('build', ["babel", "browserify", "concat", "uglify"]);
+  grunt.registerTask('build', ["babel", "browserify"]);
 
   grunt.registerTask('server-dev', function (target) {
      // Running nodejs in a different process and displaying output on the main console
