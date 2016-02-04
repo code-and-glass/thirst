@@ -87,6 +87,10 @@ class Recommended extends React.Component {
       <div className="recommended-container" style={ containerStyle }>
         {
           this.props.recommended.map(function(item, key){
+            console.log("item:", item, "key:", key);
+            if (item === "Invite some friends and rate more drinks to receive recommendations!") {
+              return <AlertCard text={item}></AlertCard>
+            }
             return <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}></DrinkCard>
           })
         }
@@ -154,6 +158,19 @@ class Rated extends React.Component {
     );
   }
 };
+
+const AlertCard = React.createClass({
+  render: function () {
+    let alertStyles = {
+      "marginRight": "50px",
+      "marginTop": "25px"
+    }
+
+    return (
+    <div className="card small hoverable" style={alertStyles}>{this.props.text}</div>
+    )
+  }
+});
 
 //Materialize card that will hold the picture of the drink and other components
 const DrinkCard = React.createClass({

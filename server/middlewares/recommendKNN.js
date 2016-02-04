@@ -83,6 +83,9 @@ app.get('/recommendKNN', function(req, res, next) {
 
     User.query(cosSim, null, function(results) {
       User.query(recommendations, null, function(results) {
+        if (!results.length) {
+          results[0] = "Invite some friends and rate more drinks to receive recommendations!"
+        }
         var recommended = {results:results};
         console.log("Recommended" , recommended);
         res.send(recommended);
