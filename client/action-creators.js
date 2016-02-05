@@ -53,12 +53,12 @@ export function getDrinks() {
 
 export function getRecommendations() {
   return function (dispatch, getState) {
-    console.log("getRecommendations was called");
+    // console.log("getRecommendations was called");
     return fetch(mainURL + '/recommend/recommendKNN', {method: 'get', credentials: 'same-origin'})
     .then(response => {
-      console.log("Recommendations response: ", response);
+      // console.log("Recommendations response: ", response);
       response.json().then(data => {
-        console.log("data", data)
+        // console.log("data", data)
         dispatch({
           type: "GET_RECOMMENDATIONS",
           value: data.results
@@ -74,7 +74,7 @@ export function getRated() {
     return fetch(mainURL + '/rated/drinks/ratedDrinks', {method: 'get', credentials: 'same-origin'})  // CHANGE ROUTE
       .then(response => {
         response.json().then(data => {
-          console.log("This is data", data);
+          // console.log("This is data", data);
           dispatch({
             type: 'GET_RATED',
             value: data.results

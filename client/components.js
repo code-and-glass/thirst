@@ -30,6 +30,9 @@ const Main = React.createClass({
   },
 });
 
+/*
+* Navbar
+*/
 
 const Nav = React.createClass({
   render() {
@@ -68,6 +71,10 @@ const Nav = React.createClass({
   },
 });
 
+/*
+* Retrieves recommendations
+*/
+
 @connect(mapStateToProps)
 class Recommended extends React.Component {
 
@@ -87,7 +94,7 @@ class Recommended extends React.Component {
       <div className="recommended-container" style={ containerStyle }>
         {
           this.props.recommended.map(function(item, key){
-            console.log("item:", item, "key:", key);
+            // console.log("item:", item, "key:", key);
             if (item === "Invite some friends and rate more drinks to receive recommendations!") {
               return <AlertCard text={item}></AlertCard>
             }
@@ -98,6 +105,10 @@ class Recommended extends React.Component {
     );
   }
 }
+
+/*
+* Retrieves 10 Random Drinks
+*/
 
 @connect(mapStateToProps)
 class Random extends React.Component {
@@ -148,6 +159,8 @@ class Rated extends React.Component {
       <div className="rating-container" style={ containerStyle }>
         {
           this.props.rated.map(function(item, key){
+            // if ()
+            console.log("rating container: item:", item, "key:", key);
             return (
             <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}>
             </DrinkCard>
@@ -163,11 +176,15 @@ const AlertCard = React.createClass({
   render: function () {
     let alertStyles = {
       "marginRight": "50px",
-      "marginTop": "25px"
+      "marginTop": "25px",
+      "textAlign": "center",
+      "fontSize": "23px",
+      // "color": "#C2185B"
+      // "backgroundColor": "#grey darken-4"
     }
 
     return (
-    <div className="card small hoverable" style={alertStyles}>{this.props.text}</div>
+    <div className="card-panel grey darken-4 white-text" style={alertStyles}>{this.props.text}</div>
     )
   }
 });
