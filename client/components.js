@@ -140,6 +140,9 @@ class Random extends React.Component {
   }
 };
 
+/*
+* Retrieves Rated Drinks
+*/
 
 @connect(mapStateToProps)
 class Rated extends React.Component {
@@ -159,8 +162,11 @@ class Rated extends React.Component {
       <div className="rating-container" style={ containerStyle }>
         {
           this.props.rated.map(function(item, key){
-            // if ()
-            console.log("rating container: item:", item, "key:", key);
+            if (!item) {
+              item = "You have not rated any drinks yet!"
+              return <AlertCard text={item}></AlertCard>
+            }
+            // console.log("rating container: item:", item, "key:", key);
             return (
             <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}>
             </DrinkCard>
@@ -178,9 +184,7 @@ const AlertCard = React.createClass({
       "marginRight": "50px",
       "marginTop": "25px",
       "textAlign": "center",
-      "fontSize": "23px",
-      // "color": "#C2185B"
-      // "backgroundColor": "#grey darken-4"
+      "fontSize": "20px"
     }
 
     return (

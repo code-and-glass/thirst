@@ -86,7 +86,10 @@ export function getRated() {
     return fetch(mainURL + '/rated/drinks/ratedDrinks', {method: 'get', credentials: 'same-origin'})  // CHANGE ROUTE
       .then(response => {
         response.json().then(data => {
-          // console.log("This is data", data);
+          console.log("This is data", data);
+          if (data.results.length === 0) {
+            data.results.push(false);
+          }
           dispatch({
             type: 'GET_RATED',
             value: data.results
