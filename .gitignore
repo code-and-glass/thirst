@@ -33,3 +33,5 @@ config.js
 /client/dist/bundle.js.map
 
 .DS_Store
+
+notes.txt

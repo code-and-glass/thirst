@@ -30,6 +30,9 @@ const Main = React.createClass({
   },
 });
 
+/*
+* Navbar
+*/
 
 const Nav = React.createClass({
   render() {
@@ -68,6 +71,10 @@ const Nav = React.createClass({
   },
 });
 
+/*
+* Retrieves recommendations
+*/
+
 @connect(mapStateToProps)
 class Recommended extends React.Component {
 
@@ -87,6 +94,10 @@ class Recommended extends React.Component {
       <div className="recommended-container" style={ containerStyle }>
         {
           this.props.recommended.map(function(item, key){
+            // console.log("item:", item, "key:", key);
+            if (item === "Invite some friends and rate more drinks to receive recommendations!") {
+              return <AlertCard text={item}></AlertCard>
+            }
             return <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}></DrinkCard>
           })
         }
@@ -94,6 +105,10 @@ class Recommended extends React.Component {
     );
   }
 }
+
+/*
+* Retrieves 10 Random Drinks
+*/
 
 @connect(mapStateToProps)
 class Random extends React.Component {
@@ -125,6 +140,9 @@ class Random extends React.Component {
   }
 };
 
+/*
+* Retrieves Rated Drinks
+*/
 
 @connect(mapStateToProps)
 class Rated extends React.Component {
@@ -144,6 +162,11 @@ class Rated extends React.Component {
       <div className="rating-container" style={ containerStyle }>
         {
           this.props.rated.map(function(item, key){
+            if (!item) {
+              item = "You have not rated any drinks yet!"
+              return <AlertCard text={item}></AlertCard>
+            }
+            // console.log("rating container: item:", item, "key:", key);
             return (
             <DrinkCard drink={item} rating={item.rating || 0} drinkKey={key} key={key}>
             </DrinkCard>
@@ -154,6 +177,21 @@ class Rated extends React.Component {
     );
   }
 };
+
+const AlertCard = React.createClass({
+  render: function () {
+    let alertStyles = {
+      "marginRight": "50px",
+      "marginTop": "25px",
+      "textAlign": "center",
+      "fontSize": "20px"
+    }
+
+    return (
+    <div className="card-panel grey darken-4 white-text" style={alertStyles}>{this.props.text}</div>
+    )
+  }
+});
 
 //Materialize card that will hold the picture of the drink and other components
 const DrinkCard = React.createClass({

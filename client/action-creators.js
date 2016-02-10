@@ -10,6 +10,9 @@ var absolut = {
     'appSecret': 'd0eb2a88bedd4b3c8ad1e3b4f04a30fa'
   }
 
+/*
+* Post - User rates drink
+*/
 export function rate(drink, rating, drinkKey) {
   console.log("Rate action creator called", drink, rating, drinkKey);
   return function (dispatch, getState) {
@@ -34,6 +37,9 @@ export function rate(drink, rating, drinkKey) {
   }
 }
 
+/*
+* GET - 10 Random drinks
+*/
 export function getDrinks() {
   return function (dispatch, getState) {
     return fetch(mainURL + '/drinks/drinks/randomDrinks', {method: 'get', credentials: 'same-origin'})
@@ -51,14 +57,17 @@ export function getDrinks() {
   }
 }
 
+/*
+* GET - recommendations for user
+*/
 export function getRecommendations() {
   return function (dispatch, getState) {
-    console.log("getRecommendations was called");
+    // console.log("getRecommendations was called");
     return fetch(mainURL + '/recommend/recommendKNN', {method: 'get', credentials: 'same-origin'})
     .then(response => {
-      console.log("Recommendations response: ", response);
+      // console.log("Recommendations response: ", response);
       response.json().then(data => {
-        console.log("data", data)
+        // console.log("data", data)
         dispatch({
           type: "GET_RECOMMENDATIONS",
           value: data.results
@@ -69,12 +78,18 @@ export function getRecommendations() {
   }
 }
 
+/*
+* GET - users rated drinks
+*/
 export function getRated() {
   return function (dispatch, getState) {
     return fetch(mainURL + '/rated/drinks/ratedDrinks', {method: 'get', credentials: 'same-origin'})  // CHANGE ROUTE
       .then(response => {
         response.json().then(data => {
           console.log("This is data", data);
+          if (data.results.length === 0) {
+            data.results.push(false);
+          }
           dispatch({
             type: 'GET_RATED',
             value: data.results
